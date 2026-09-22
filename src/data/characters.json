@@ -1,0 +1,9 @@
+[
+  {
+    "CharacterID": "feichuan", "Name": "绯川", "AnimalType": "赤狐", "Gender": "Male",
+    "AgeGroup": "成年", "Occupation": "游商 / 摆渡人",
+    "Personality": ["狡黠", "聪明", "善于交易", "表面随性"], "VisualKeywords": [],
+    "CombatTrait": null, "ResourceTrait": null, "ExclusiveCards": [], "TraitUpgrades": [],
+    "StartingDeckModifier": { "Add": [], "Remove": [] }, "StoryID": null, "ArtReference": null
+  }
+]

@@ -1,0 +1,7 @@
+[
+  { "id": "intent_close", "name": "封闭", "shortDescription": "执念 +4", "longDescription": "亡魂重新陷入未解的执念。回合结束时，恢复4点执念。", "effectType": "restore_obsession", "value": 4 },
+  { "id": "intent_hesitate", "name": "迟疑", "shortDescription": "下回合1张牌 +1费", "longDescription": "下一回合随机选择1张正常可用手牌，本回合费用增加1。", "effectType": "next_cost", "value": 1 },
+  { "id": "intent_hesitation_spread", "name": "踌躇蔓延", "shortDescription": "牌堆加入1张「踌躇」", "longDescription": "回合结束时，将1张「踌躇」随机插入抽牌堆。之后按正常抽牌顺序抽入手牌，占据一个位置且不能主动打出。", "effectType": "add_burden", "value": 1 },
+  { "id": "intent_burden", "name": "杂念滋生", "shortDescription": "手牌加入1张「杂念」", "longDescription": "回合结束时，将1张「杂念」直接加入当前手牌。它会持续占据位置，支付1灯火主动处理后进入消耗牌堆。", "effectType": "add_burden", "value": 1 },
+  { "id": "intent_dim_light", "name": "魂灯黯淡", "shortDescription": "下回合灯火 -1", "longDescription": "下一回合的可用灯火减少1，之后恢复正常。", "effectType": "next_light", "value": -1 }
+]

@@ -1,0 +1,16 @@
+.card-face{position:absolute;inset:0;container-type:inline-size;display:block;overflow:hidden;border-radius:inherit;isolation:isolate;pointer-events:none;color:#251d13;font-family:"Microsoft YaHei",sans-serif}
+.card-art-mask{position:absolute;z-index:1;display:block;overflow:hidden;clip-path:inset(0)}
+.card-art-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.card-frame{position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:fill;display:block}
+.card-cost,.card-title,.card-description-box{position:absolute;box-sizing:border-box;z-index:3;display:flex;align-items:center;justify-content:center;text-align:center;margin:0}
+.card-cost{z-index:6;font-family:Georgia,serif;color:#fff1bc;font-weight:800;text-shadow:0 1px 2px #160d05,0 0 4px #160d05}
+.card-title{z-index:4;white-space:nowrap;font-weight:700;overflow:hidden;letter-spacing:0;color:#ddddb1}
+.card-description-box{z-index:5;overflow:hidden}
+.card-description-text{display:block;width:100%;overflow-wrap:anywhere;white-space:normal;max-height:100%;font-weight:500;letter-spacing:0}
+.card-test-scene{height:100dvh;overflow:auto;background:#112831;color:#e2d2a7;padding:18px;font-size:13px}
+.card-test-scene header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.card-test-scene h1{font-size:20px}.card-test-scene a{color:inherit}
+.card-test-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.test-card{position:relative;width:100%;aspect-ratio:2/3;max-width:300px;margin:auto;container-type:inline-size}
+.card-test-grid figcaption{text-align:center;margin-top:8px;font-size:11px}.card-test-grid figure{margin:0}
+@media(max-width:700px){.card-test-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
