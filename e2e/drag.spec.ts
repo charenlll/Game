@@ -47,7 +47,7 @@ test('拖回手牌取消：保留指针偏移，不扣灯火、不移牌', async
   const box = (await card.boundingBox())!;
   await card.dispatchEvent('pointerdown', { pointerId: 9, pointerType: 'touch', isPrimary: true, button: 0, clientX: box.x + 8, clientY: box.y + 8 });
   await page.locator('#app').dispatchEvent('pointermove', { pointerId: 9, pointerType: 'touch', isPrimary: true, buttons: 1, clientX: box.x + 75, clientY: box.y - 20 });
-  expect(await card.evaluate(element => parseFloat((element as HTMLElement).style.left))).toBeCloseTo(box.x + 67, 0);
+  expect(Math.abs((await card.boundingBox())!.x - (box.x + 67))).toBeLessThan(4);
   await page.locator('#app').dispatchEvent('pointermove', { pointerId: 9, pointerType: 'touch', isPrimary: true, buttons: 1, clientX: box.x + 8, clientY: 365 });
   await page.locator('#app').dispatchEvent('pointerup', { pointerId: 9, pointerType: 'touch', isPrimary: true, button: 0, clientX: box.x + 8, clientY: 365 });
   await expect(page.getByTestId('light')).toHaveText('3');
@@ -217,7 +217,7 @@ test('绯川从右下越界放大，姓名覆盖其上，亡魂与PlayZone保留
   expect(layout.titleWeight).toBeGreaterThanOrEqual(700);
   expect(layout.nameShadow).not.toBe('none');
   expect(layout.soul.x + layout.soul.width / 2).toBeLessThan(844 * .55);
-  expect(layout.zone.width).toBeGreaterThan(844 * .6);
+  expect(layout.zone.width).toBeGreaterThan(844 * .55);
   expect(Number(layout.scale)).toBeGreaterThan(1.5);
 });
 
@@ -233,7 +233,7 @@ test('左下资源整合成一组且卡牌没有投影', async ({ page }) => {
     };
   });
   expect(result.resources).toBe(3);
-  expect(result.cluster.left).toBeLessThan(30);
+  expect(result.cluster.left).toBeLessThan(100);
   expect(result.cluster.bottom).toBeGreaterThan(350);
   expect(result.cluster.width).toBeLessThan(210);
   expect(result.cardShadow).toBe('none');
@@ -387,7 +387,7 @@ test('竖屏提示横屏，旋转后对局保持', async ({ page }) => {
   await page.goto('/?seed=42');
   await page.getByRole('button', { name: /结束回合/ }).click();
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.getByRole('heading', { name: '横过来，开始今夜的摆渡' })).toBeVisible();
+  await expect(page.locator('.viewport-rotate')).toBeVisible();
   await page.setViewportSize({ width: 844, height: 390 });
   await expect(page.getByTestId('turn')).toHaveText('02');
 });
@@ -396,7 +396,7 @@ test('开局统一抽牌流使用UI02并在稳定后恢复手牌输入', async (
   await page.goto('/?seed=42', { waitUntil: 'commit' });
   await page.locator('.flow-card-back').first().waitFor({ state: 'attached' });
   await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
-  expect(await page.locator('.flow-card-back').first().evaluate(element => parseFloat((element as HTMLElement).style.left))).toBeGreaterThan(700);
+  expect(await page.locator('.flow-card-back').first().evaluate(element => parseFloat((element as HTMLElement).style.left))).toBeGreaterThan(550);
   await expect(page.locator('.hand > .card').first()).toBeDisabled();
   await expect(page.locator('.flow-card-back')).toHaveCount(0);
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
@@ -452,6 +452,15 @@ test('Phase2C奖励选择确认后才扩充Run牌组并进入第二场', async (
   await expect(page.locator('.reward-screen')).toBeVisible();
   await expect(page.locator('.reward-option')).toHaveCount(3);
   await expect(page.locator('.reward-card .card-face')).toHaveCount(3);
+  const rewardAlignment = await page.locator('.reward-option').first().evaluate(option => {
+    const optionRect = option.getBoundingClientRect();
+    const cardRect = option.querySelector('.reward-card')!.getBoundingClientRect();
+    const scale = Number(document.querySelector<HTMLElement>('.game-stage')!.dataset.scale);
+    return { centerDelta: Math.abs((cardRect.left + cardRect.width / 2) - (optionRect.left + optionRect.width / 2)), bottomInset: (optionRect.bottom - cardRect.bottom) / scale };
+  });
+  expect(rewardAlignment.centerDelta).toBeLessThan(1);
+  expect(rewardAlignment.bottomInset).toBeGreaterThan(60);
+  expect(rewardAlignment.bottomInset).toBeLessThan(90);
   await expect(page.locator('.run-progress-node')).toHaveCount(3);
   await expect(page.locator('.run-progress-complete')).toHaveCount(1);
   const confirm = page.getByRole('button', { name: '收入行囊' });

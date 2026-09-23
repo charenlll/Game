@@ -11,6 +11,7 @@ import { BattleFeedback, type FlowSource } from './battle-feedback';
 import type { IntentInstance } from '../core/types';
 import { getTrait } from '../core/traits';
 import { infoPanelClass, primaryButton } from './ui-components';
+import { screenToGamePoint } from './viewport';
 
 const freshSeed = (): number => crypto.getRandomValues(new Uint32Array(1))[0];
 type Panel = 'menu' | 'help' | 'deck' | 'discard' | 'exhaust' | 'light' | 'soul' | 'log' | 'intent' | 'trait' | null;
@@ -58,9 +59,9 @@ export class BattleView {
     this.feedback = new BattleFeedback(root);
     root.addEventListener('click', this.onClick);
     root.addEventListener('pointerdown', this.onPointerDown);
-    root.addEventListener('pointermove', this.onPointerMove);
-    root.addEventListener('pointerup', this.onPointerUp);
-    root.addEventListener('pointercancel', this.onPointerCancel);
+    window.addEventListener('pointermove', this.onPointerMove, { passive: false });
+    window.addEventListener('pointerup', this.onPointerUp);
+    window.addEventListener('pointercancel', this.onPointerCancel);
     root.addEventListener('keydown', this.onKeyDown);
     this.resizeObserver = new ResizeObserver(() => fitCardText(root));
     this.resizeObserver.observe(root);
@@ -71,9 +72,9 @@ export class BattleView {
   destroy(): void {
     this.root.removeEventListener('click', this.onClick);
     this.root.removeEventListener('pointerdown', this.onPointerDown);
-    this.root.removeEventListener('pointermove', this.onPointerMove);
-    this.root.removeEventListener('pointerup', this.onPointerUp);
-    this.root.removeEventListener('pointercancel', this.onPointerCancel);
+    window.removeEventListener('pointermove', this.onPointerMove);
+    window.removeEventListener('pointerup', this.onPointerUp);
+    window.removeEventListener('pointercancel', this.onPointerCancel);
     this.root.removeEventListener('keydown', this.onKeyDown);
     this.resizeObserver.disconnect();
     this.feedback.cancel();
@@ -122,8 +123,9 @@ export class BattleView {
     if (!card || card.disabled || this.pending || this.resolving || this.endTurnLocked || this.intentResolving || this.flowLocked || this.drag || event.button !== 0) return;
     const id = card.dataset.id!;
     const rect = card.getBoundingClientRect();
+    const point = screenToGamePoint(this.root, event.clientX, event.clientY);
     this.drag = { pointerId: event.pointerId, cardId: id, element: card, startX: event.clientX, startY: event.clientY,
-      offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, dragging: false, valid: false, previewing: false, previewElement: null };
+      offsetX: (event.clientX - rect.left) / point.scale, offsetY: (event.clientY - rect.top) / point.scale, dragging: false, valid: false, previewing: false, previewElement: null };
     try { card.setPointerCapture(event.pointerId); } catch { /* Synthetic tests may not own native pointer capture. */ }
     card.classList.add('pressed');
     this.pressTimer = setTimeout(() => {
@@ -155,12 +157,13 @@ export class BattleView {
       drag.element.classList.add('dragging');
     }
     event.preventDefault();
-    drag.element.style.left = `${event.clientX - drag.offsetX}px`;
-    drag.element.style.top = `${event.clientY - drag.offsetY}px`;
+    const point = screenToGamePoint(this.root, event.clientX, event.clientY);
+    drag.element.style.left = `${point.x - drag.offsetX}px`;
+    drag.element.style.top = `${point.y - drag.offsetY}px`;
     drag.element.style.bottom = 'auto';
     const zone = DragConfig.playZone;
-    const inZone = event.clientX >= innerWidth * zone.leftRatio && event.clientX <= innerWidth * zone.rightRatio
-      && event.clientY >= innerHeight * zone.topRatio && event.clientY <= innerHeight * zone.bottomRatio;
+    const inZone = point.x >= 1600 * zone.leftRatio && point.x <= 1600 * zone.rightRatio
+      && point.y >= 900 * zone.topRatio && point.y <= 900 * zone.bottomRatio;
     drag.valid = inZone && this.battle.reasonUnavailable(drag.cardId) === null;
     drag.element.classList.toggle('valid-target', drag.valid);
     drag.element.classList.toggle('invalid-target', !drag.valid);
@@ -221,8 +224,8 @@ export class BattleView {
     this.resolving = true;
     drag.element.classList.remove('dragging', 'valid-target');
     drag.element.classList.add('resolving');
-    drag.element.style.left = `${innerWidth / 2 - drag.offsetX}px`;
-    drag.element.style.top = `${innerHeight * 0.28 - drag.offsetY}px`;
+    drag.element.style.left = `${800 - drag.offsetX}px`;
+    drag.element.style.top = `${252 - drag.offsetY}px`;
     await new Promise(resolve => setTimeout(resolve, DragConfig.resolveDurationMs / 2));
     const source = this.captureElement(drag.element);
     await this.commit(drag.cardId, [], source ? [source] : []);
@@ -508,9 +511,12 @@ export class BattleView {
     const trait = s.CombatTraitID ? getTrait(s.CombatTraitID) : null;
     const intent = getIntentDisplay(this.intentVisualOverride ?? s.CurrentIntent);
     const visible = s.Hand.filter(card => !this.withheldHandIDs.has(card.InstanceID));
-    const spacingVw = visible.length <= 1 ? 0 : Math.min(HandLayout.spacingVw, HandLayout.maxSpreadVw / (visible.length - 1));
+    const spacingPx = visible.length <= 1 ? 0 : Math.min(
+      HandLayout.spacingVw * 16,
+      HandLayout.maxSpreadVw * 16 / (visible.length - 1),
+    );
     const modal = this.panel !== null;
-    const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingVw}vw`;
+    const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingPx}px`;
     this.root.innerHTML = `<main class="game ${this.resultStage === 'failed' ? 'battle-unresolved' : ''}" style="${variables}" aria-label="夜渡对局" ${modal ? 'inert' : ''}>
       <img class="scene-background" src="${assetURL(sceneArt.background)}" alt=""><div class="scene-vignette"></div><div class="play-zone" aria-hidden="true"></div>
       <header class="hud"><div class="location"><div><h1>无名渡口</h1><span>第一夜 · 子时</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button" data-action="menu" aria-label="打开菜单">☰</button></header>

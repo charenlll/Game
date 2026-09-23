@@ -9,8 +9,10 @@ export class BattleFeedback {
   private pending = new Map<number, (active: boolean) => void>();
   private animations = new Set<Animation>();
   private readonly preloaded: HTMLImageElement[];
+  private readonly overlay: HTMLElement;
 
   constructor(private readonly root: HTMLElement) {
+    this.overlay = root.closest('.game-viewport')?.querySelector<HTMLElement>('.viewport-overlay') ?? root;
     this.preloaded = [
       Assets.cards.back, Assets.piles.UC01, Assets.piles.UC02, Assets.piles.UC03,
       Assets.effects.soul_flame, Assets.effects.release_glow, Assets.souls.unresolved, Assets.souls.released,
@@ -28,7 +30,7 @@ export class BattleFeedback {
     this.pending.clear();
     for (const animation of this.animations) animation.cancel();
     this.animations.clear();
-    this.root.querySelectorAll('.flow-proxy,.floating-feedback,.soul-flame').forEach(node => node.remove());
+    this.overlay.querySelectorAll('.flow-proxy,.floating-feedback,.soul-flame').forEach(node => node.remove());
     this.root.querySelectorAll('.flow-hidden,.is-pulsing').forEach(node => node.classList.remove('flow-hidden', 'is-pulsing'));
   }
 
@@ -55,7 +57,7 @@ export class BattleFeedback {
       proxy.src = assetURL(Assets.cards.back);
       proxy.alt = '';
       Object.assign(proxy.style, { left: `${origin.left}px`, top: `${origin.top}px`, width: `${origin.width}px`, height: `${origin.height}px` });
-      this.root.append(proxy);
+      this.overlay.append(proxy);
       const animation = proxy.animate([
         { transform: 'translate(0,0) scale(.72)', opacity: .25 },
         { transform: `translate(${destination.left - origin.left}px,${destination.top - origin.top}px) scale(1)`, opacity: 1 },
@@ -74,7 +76,7 @@ export class BattleFeedback {
       holder.className = `flow-proxy flow-${kind}`;
       holder.innerHTML = source.html;
       Object.assign(holder.style, { left: `${source.rect.left}px`, top: `${source.rect.top}px`, width: `${source.rect.width}px`, height: `${source.rect.height}px` });
-      this.root.append(holder);
+      this.overlay.append(holder);
       const animation = holder.animate([
         { transform: 'translate(0,0) scale(1)', opacity: 1 },
         { transform: `translate(${target.left - source.rect.left}px,${target.top - source.rect.top}px) scale(.28) rotate(${kind === 'exhaust' ? 9 : -5}deg)`, opacity: 0 },
@@ -102,7 +104,7 @@ export class BattleFeedback {
     node.className = `floating-feedback floating-${tone}`;
     node.textContent = text;
     Object.assign(node.style, { left: `${anchor.left + anchor.width / 2}px`, top: `${anchor.top + anchor.height / 2}px` });
-    this.root.append(node);
+    this.overlay.append(node);
     const animation = node.animate([{ transform: 'translate(-50%,0)', opacity: 0 }, { opacity: 1, offset: .18 }, { transform: 'translate(-50%,-42px)', opacity: 0 }], { duration: FeedbackConfig.floatMs, easing: 'ease-out' });
     this.track(animation, () => node.remove());
   }
@@ -114,7 +116,7 @@ export class BattleFeedback {
       const flame = document.createElement('img');
       flame.className = 'soul-flame'; flame.src = assetURL(Assets.effects.soul_flame); flame.alt = '';
       Object.assign(flame.style, { left: `${anchor.left + anchor.width * (.3 + index / Math.max(1, count - 1) * .4)}px`, top: `${anchor.top + anchor.height * .58}px`, animationDelay: `${index * 70}ms` });
-      this.root.append(flame);
+      this.overlay.append(flame);
       void this.delay(FeedbackConfig.floatMs + index * 70, token).then(active => { if (active) flame.remove(); });
     }
   }

@@ -1,0 +1,64 @@
+.game-viewport{position:fixed;inset:0;overflow:hidden;background:#071720}
+.game-viewport::after{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 44%,transparent 25%,#07131f50 77%,#06101ad9 100%)}
+.viewport-background{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.viewport-background[src=""]{visibility:hidden}
+.safe-area-probe{position:absolute;inset:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);pointer-events:none;visibility:hidden}
+.game-stage{position:absolute;z-index:1;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:visible}
+.viewport-overlay{position:fixed;z-index:90;inset:0;overflow:hidden;pointer-events:none}
+.viewport-rotate{display:none;position:fixed;z-index:200;inset:0;background:radial-gradient(ellipse at center,#284a46,#081c29);text-align:center;align-items:center;justify-content:center;flex-direction:column;padding:35px;color:#e6e4ce}
+.viewport-rotate span{display:block;font-size:90px;line-height:1.2;color:#d4bd80;transform:rotate(90deg);margin-bottom:30px}
+.viewport-rotate h2{font-family:var(--serif);font-size:23px;font-weight:400;line-height:1.8;letter-spacing:3px}
+
+/* Phase 2D-1: every gameplay surface uses the 1600x900 logical stage. */
+:root{--card-h:250px;--card-w:165px;--step:124px;--safe-bottom:0px;--safe-left:0px;--safe-right:0px}
+.game,.run-screen{position:relative;width:1600px;height:900px}
+.game{overflow:visible}
+.game>.scene-background,.game>.scene-vignette,.run-screen>.run-background{visibility:hidden}
+.run-screen{background:transparent}
+.game-viewport:has(.battle-unresolved) .viewport-background{filter:brightness(.72);transition:filter .65s ease}
+.game-stage>.rotate-screen{display:none!important}
+.hud{top:30px;left:50px;right:20px}
+.location h1{font-size:30px}.location div>span{font-size:15px}
+.soul-target{width:525px;height:585px}
+.soul-hud h2{font-size:26px}
+.character{width:350px;height:510px}
+.character-name{right:48px;bottom:18px}
+.character-name b{font-size:68px}
+.character-name span{font-size:27px}
+.light-orb{width:100px;height:100px}.light-orb strong{font-size:44px}
+.resource-cluster{left:20px;bottom:18px;grid-template-columns:113px 90px 90px;gap:9px}
+.resource-cluster .light-orb{width:169px;height:169px}
+.resource-cluster .pile{width:135px;height:135px}
+.resource-cluster .light-value{font-size:45px}
+.draw-pile{right:280px;bottom:18px;width:135px;height:135px}
+.draw-pile .draw-count{font-size:45px}
+.trait-badge{top:auto;right:48px;bottom:118px;width:65px;height:65px;padding:0}
+.end-button{width:170px}
+.selection-control{width:330px}
+.modal-backdrop{position:absolute;inset:0;padding:16px}
+.modal{width:570px;max-height:868px}
+.modal.deck{width:1000px}
+.deck-carousel article{flex-basis:190px}
+.floating-feedback{font-size:25px}.floating-intent,.floating-trait{font-size:19px}
+.soul-flame{width:48px;height:70px}
+.result-banner img{width:620px;height:360px}.result-banner strong{font-size:68px}
+.intent-card>span b,.soul-title-row .intent-card>span b{font-size:17px}
+.card.dragging,.card.resolving{position:fixed}
+
+.run-screen{height:900px}
+.reward-title{top:45px;width:480px}
+.reward-title h1{font-size:39px}
+.reward-options{top:162px;width:850px;height:486px;gap:80px}
+.reward-option{width:245px}
+.run-progress{bottom:162px}
+.run-primary{bottom:90px}
+.info-panel{border-width:43px 54px}
+.run-result-icon{width:210px;height:82px}
+.run-result-screen>h1{font-size:45px}
+.run-result-panel{width:720px}
+
+@media(orientation:portrait){
+  .game-stage{visibility:hidden}
+  .viewport-overlay{visibility:hidden}
+  .viewport-rotate{display:flex}
+}
