@@ -5,6 +5,9 @@ import type { BattleState, IntentID, IntentInstance } from './types';
 
 export const BattleConfig = Object.freeze({
   maxRounds: 6,
+  initialDraw: 5,
+  cardsPerTurn: 2,
+  retainedHandLimit: 5,
   intentPool: [
     { IntentID: 'intent_hesitation_spread', BurdenCardID: 'burden_001' },
     { IntentID: 'intent_burden', BurdenCardID: 'burden_002' },

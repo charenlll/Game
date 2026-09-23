@@ -1,0 +1,9 @@
+[
+  {
+    "id": "good_merchant",
+    "name": "善贾",
+    "icon": "assets/ui/traits/TR01.png",
+    "glowColor": "#ff3b35",
+    "description": "每回合第一次获得灯火后，本回合下一张普通牌费用-1，最低为0。"
+  }
+]

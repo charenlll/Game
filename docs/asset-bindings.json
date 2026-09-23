@@ -60,10 +60,34 @@
     "sha256": "5e5c923e7ac8ce97be388b9fbbf3220fc04f4a623dbd4e9b3eb35e1b36e482b0"
   },
   {
+    "source": "cards/feichuan/FC01狐火.png",
+    "destination": "assets/cards/feichuan/FC01.png",
+    "bytes": 4510121,
+    "sha256": "da5450e0098fb4d3e85bbdd9c9ea53a4975ca15561413049c012e8fcf9d03b33"
+  },
+  {
+    "source": "cards/feichuan/FC02借灯.png",
+    "destination": "assets/cards/feichuan/FC02.png",
+    "bytes": 4781831,
+    "sha256": "c57dcd3eb5faa18f16aa46851eeb8b0c719aec8cf3d65762d33037b9e29444a0"
+  },
+  {
+    "source": "cards/feichuan/FC03讨价还价.png",
+    "destination": "assets/cards/feichuan/FC03.png",
+    "bytes": 4676768,
+    "sha256": "e4dc68889c7979e76571b7add7ee336b3c8237e440c849829f5f3ddb0bec3ab6"
+  },
+  {
+    "source": "cards/feichuan/FCF01绯川专属卡框.png",
+    "destination": "assets/cards/feichuan/FCF01.png",
+    "bytes": 2954679,
+    "sha256": "2380ccba0a3e331e843618cd31c57b20c8a8bdcf6054f70ec521711e5635631e"
+  },
+  {
     "source": "ferrymen/feichuan/CH01绯川标准立绘.png",
     "destination": "assets/characters/CH01.png",
-    "bytes": 2316246,
-    "sha256": "e0517a99712fd2cb1141dbe6bdf2f61c597b5240f8d81219bc3e1d6abfe51de9"
+    "bytes": 2589282,
+    "sha256": "3a12788c4701b7ed63f2aad1c09e1121a5a17be015759b54e701e1fa7a108d1c"
   },
   {
     "source": "souls/soul-001/GH01执念状态.png",
@@ -82,6 +106,12 @@
     "destination": "assets/backgrounds/BA01.png",
     "bytes": 4055869,
     "sha256": "b4bbb653979e0fba97605992b34716cd66b9c4a68db5bbe2b782463e95a790f0"
+  },
+  {
+    "source": "background/run/BA05reward公用背景.png",
+    "destination": "assets/backgrounds/run/BA05.png",
+    "bytes": 2318433,
+    "sha256": "5508d7ed20addebde44cb713296b09ffa52f44799c307ccf494ba8d1233b4104"
   },
   {
     "source": "ui/icons/IC01灯火.png",
@@ -160,6 +190,96 @@
     "destination": "assets/ui/results/RT02.png",
     "bytes": 2315369,
     "sha256": "084c82a32e64a0cd5013fc52e10d8966277acfd2d4c593ecfaa4bad91d0759bf"
+  },
+  {
+    "source": "ui/traits/TR01善贾.png",
+    "destination": "assets/ui/traits/TR01.png",
+    "bytes": 2478480,
+    "sha256": "45e93e635e8e46b7c1ed29ee8d2da05ab43fc1dcd14485003262f5e9695ea731"
+  },
+  {
+    "source": "ui/run/reward/RW01-A奖励底座.png",
+    "destination": "assets/ui/run/reward/RW01-A.png",
+    "bytes": 760487,
+    "sha256": "19a46ad28e50b6a473d12fc0dab1de025043fa958e5ab284eaf24b221f201998"
+  },
+  {
+    "source": "ui/run/reward/RW01-B奖励底座.png",
+    "destination": "assets/ui/run/reward/RW01-B.png",
+    "bytes": 806931,
+    "sha256": "9c72b4e6ed8a7f258696c0b96df6f9034c756c73fe7528550538daccf510699d"
+  },
+  {
+    "source": "ui/run/reward/RW01-C奖励底座.png",
+    "destination": "assets/ui/run/reward/RW01-C.png",
+    "bytes": 1069874,
+    "sha256": "f981e7ad72fc2e85da1a54886ceb7b1d80554909410f5bd198743cc1454c4525"
+  },
+  {
+    "source": "ui/run/reward/RW02标题装饰框.png",
+    "destination": "assets/ui/run/reward/RW02.png",
+    "bytes": 1872084,
+    "sha256": "04a3382d8862815b5f05af78151812f51666b0f29456cc5686e3b639ebe3f940"
+  },
+  {
+    "source": "ui/run/progress/RP01-A未到达.png",
+    "destination": "assets/ui/run/progress/RP01-A.png",
+    "bytes": 1594956,
+    "sha256": "78c4d8e8fe4445e4a49d0fa2794f6a346e207de0917d313edb93a01ef7fe3864"
+  },
+  {
+    "source": "ui/run/progress/RP01-B当前.png",
+    "destination": "assets/ui/run/progress/RP01-B.png",
+    "bytes": 1463501,
+    "sha256": "1a6c932203f5eb4a10b179f1505992e03b72bd26619a0888008d362cf06681ce"
+  },
+  {
+    "source": "ui/run/progress/RP01-C已到达.png",
+    "destination": "assets/ui/run/progress/RP01-C.png",
+    "bytes": 1583305,
+    "sha256": "02893339bfa9d115d92fb1504fd74c03527eb189b1b806365cc4fa85a9fe4808"
+  },
+  {
+    "source": "ui/run/progress/RP02-A连接线pending.png",
+    "destination": "assets/ui/run/progress/RP02-A.png",
+    "bytes": 2203848,
+    "sha256": "e1ae9e6ec134b9a0c511152bb45be60bacb7d9ad3e254d670d0a8bd560304ab2"
+  },
+  {
+    "source": "ui/run/progress/RP02-B连接线complete.png",
+    "destination": "assets/ui/run/progress/RP02-B.png",
+    "bytes": 2486911,
+    "sha256": "b46ee5748618e8a4c31a7ece1d573f25471eaeab0edfd1d1831c608418689a4b"
+  },
+  {
+    "source": "ui/run/buttons/RB01-A按钮normal.png",
+    "destination": "assets/ui/run/buttons/RB01-A.png",
+    "bytes": 1203269,
+    "sha256": "8d221316eae633a89e95eac8c4ec7aba914624d274a22400e6e94993b5e7da49"
+  },
+  {
+    "source": "ui/run/buttons/RB01-B按钮hover.png",
+    "destination": "assets/ui/run/buttons/RB01-B.png",
+    "bytes": 1290931,
+    "sha256": "9f69dac72261f797c95a92e8f4e76cbfa032be39449089f8385fcd9c0876d9a3"
+  },
+  {
+    "source": "ui/run/buttons/RB01-C按钮pressed.png",
+    "destination": "assets/ui/run/buttons/RB01-C.png",
+    "bytes": 1202656,
+    "sha256": "45a54ebf3ad86a008ffed52713a44d99eea5a9c7626dc0125b362f103c389320"
+  },
+  {
+    "source": "ui/run/result/RR01渡船结算icon.png",
+    "destination": "assets/ui/run/result/RR01.png",
+    "bytes": 1069078,
+    "sha256": "2a490675c5061740442f14b8b61fbdc561c9de4f86b6682d86b5b22070af32e4"
+  },
+  {
+    "source": "ui/run/result/RR02信息底框.png",
+    "destination": "assets/ui/run/result/RR02.png",
+    "bytes": 5281753,
+    "sha256": "31ec3a3ef07c35f1bceb87719248d8e494b8efeb3e3600c3a6858dc8b46afb9c"
   },
   {
     "source": "effect/soul/FX01通用魂火.png",

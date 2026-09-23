@@ -1,6 +1,7 @@
 export type CardType = '安抚' | '引魂' | '净化' | '洞察' | '灵术';
-export type EffectType = 'ReduceObsession' | 'GainLight' | 'DrawCard' | 'DiscardCard';
-export interface CardEffect { Type: EffectType; Amount: number }
+export type CardEffect =
+  | { Type: 'ReduceObsession' | 'GainLight' | 'DrawCard' | 'DiscardCard' | 'ModifyNextRoundLight' | 'ModifySelectedCost'; Amount: number }
+  | { Type: 'ConditionalReduceObsession'; Amount: number; Bonus: number };
 export interface CardDefinition {
   CardID: string;
   Name: string;
@@ -16,6 +17,7 @@ export interface CardDefinition {
   ArtReference: string | null;
   DataType: 'normal' | 'burden';
   PlayBehavior: 'normal' | 'unplayable' | 'exhaust';
+  FrameStyle: 'common' | 'feichuan';
 }
 export interface CharacterDefinition {
   CharacterID: string;
@@ -67,6 +69,10 @@ export interface BattleState {
   CurrentIntent: IntentInstance;
   PendingLightModifier: number;
   PendingCostIncrease: number;
+  CombatTraitID: string | null;
+  GainedLightThisTurn: boolean;
+  CombatTraitTriggeredThisTurn: boolean;
+  CombatTraitDiscountActive: boolean;
   CharacterID: string;
   SoulID: string;
   DrawPile: CardInstance[];
@@ -81,5 +87,6 @@ export type BattleEvent =
   | { Type: 'OnTurnStart'; BattleID: string; Turn: number }
   | { Type: 'OnCardPlayed'; BattleID: string; InstanceID: string; DefinitionID: string }
   | { Type: 'OnCardDiscarded'; BattleID: string; InstanceID: string; Reason: 'effect' | 'turn-end' }
+  | { Type: 'OnTraitTriggered'; BattleID: string; TraitID: string }
   | { Type: 'OnBattleEnd'; BattleID: string; Result: 'won' | 'lost'; Stats: Readonly<BattleState['Stats']> };
 export type ActionResult = { Ok: true } | { Ok: false; Message: string };

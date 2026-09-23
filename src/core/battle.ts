@@ -1,15 +1,25 @@
-import { character, getCard, soul, startingDeck } from './content';
+import { buildStartingDeck, character, getCard, getCharacter, soul } from './content';
 import { drawCards, random, shuffle } from './deck';
 import { applyEffect } from './effects';
 import { BattleEvents } from './events';
 import { BattleConfig, randomIntent, resolveIntent } from './intents';
+import { getTrait, onLightGained, resetTurnTraitState } from './traits';
 import type { ActionResult, BattleState, CardInstance } from './types';
 
-export function getCost(card: CardInstance, turn: number): number {
-  return Math.max(0, getCard(card.DefinitionID).Cost + card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= turn).reduce((sum, mod) => sum + mod.Amount, 0));
+export function getCost(card: CardInstance, turn: number, runtimeModifier = 0): number {
+  return Math.max(0, getCard(card.DefinitionID).Cost + runtimeModifier + card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= turn).reduce((sum, mod) => sum + mod.Amount, 0));
 }
 export function discardCount(card: CardInstance): number {
   return getCard(card.DefinitionID).Effects.filter(effect => effect.Type === 'DiscardCard').reduce((sum, effect) => sum + effect.Amount, 0);
+}
+export function selectionCount(card: CardInstance): number {
+  const definition = getCard(card.DefinitionID);
+  return definition.Effects.reduce((total, effect) => total + (effect.Type === 'DiscardCard' || effect.Type === 'ModifySelectedCost' ? effect.Amount > 0 ? effect.Amount : 1 : 0), 0);
+}
+export function endTurnDiscardCount(state: Pick<BattleState, 'Hand' | 'HandSize'>): number {
+  const excess = Math.max(0, state.Hand.length - state.HandSize);
+  const discardable = state.Hand.filter(card => getCard(card.DefinitionID).DataType === 'normal').length;
+  return Math.min(excess, discardable);
 }
 
 export class Battle {
@@ -18,20 +28,31 @@ export class Battle {
   private busy = false;
   private nextInstanceNumber: number;
 
-  constructor(seed: number, battleID = `battle-${seed}`) {
+  constructor(seed: number, battleID = `battle-${seed}`, characterID = character.CharacterID, deckOverride?: readonly string[]) {
+    const selectedCharacter = getCharacter(characterID);
+    const selectedDeck = deckOverride ? [...deckOverride] : [...buildStartingDeck(selectedCharacter)];
+    if (!selectedDeck.length) throw new Error('战斗牌组不能为空');
+    selectedDeck.forEach(getCard);
+    if (selectedCharacter.CombatTrait) getTrait(selectedCharacter.CombatTrait);
     this.state = {
       BattleID: battleID, Seed: seed >>> 0, RandomState: seed >>> 0,
-      Turn: 1, MaxTurns: BattleConfig.maxRounds, Light: 3, BaseLight: 3, HandSize: 5,
+      Turn: 1, MaxTurns: BattleConfig.maxRounds, Light: 3, BaseLight: 3, HandSize: BattleConfig.retainedHandLimit,
       Obsession: soul.Obsession, MaxObsession: soul.Obsession, Status: 'playing',
       Phase: 'ROUND_START', CurrentIntent: { IntentID: 'intent_close' }, PendingLightModifier: 0, PendingCostIncrease: 0,
-      CharacterID: character.CharacterID, SoulID: soul.SoulID,
-      DrawPile: startingDeck.map((id, index) => ({ InstanceID: `card-${index + 1}`, DefinitionID: id, IsTemporary: false, CostModifiers: [] })),
+      CombatTraitID: selectedCharacter.CombatTrait, GainedLightThisTurn: false, CombatTraitTriggeredThisTurn: false, CombatTraitDiscountActive: false,
+      CharacterID: selectedCharacter.CharacterID, SoulID: soul.SoulID,
+      DrawPile: selectedDeck.map((id, index) => ({ InstanceID: `card-${index + 1}`, DefinitionID: id, IsTemporary: false, CostModifiers: [] })),
       Hand: [], DiscardPile: [], Resolving: [], ExhaustPile: [],
       Stats: { CardsPlayed: 0, TemporaryCardsPlayed: 0 }, Log: ['抵达渡口。今夜，从一盏灯开始。'],
     };
     this.nextInstanceNumber = this.state.DrawPile.length + 1;
     shuffle(this.state.DrawPile, this.state);
     this.startTurn();
+  }
+
+  cost(card: CardInstance): number {
+    const traitDiscount = this.state.CombatTraitID === 'good_merchant' && this.state.CombatTraitDiscountActive && getCard(card.DefinitionID).DataType === 'normal' ? -1 : 0;
+    return getCost(card, this.state.Turn, traitDiscount);
   }
 
   reasonUnavailable(instanceID: string): string | null {
@@ -42,9 +63,9 @@ export class Battle {
     const card = state.Hand.find(item => item.InstanceID === instanceID);
     if (!card) return '这张牌不在手中。';
     if (getCard(card.DefinitionID).PlayBehavior === 'unplayable') return '「踌躇」无法主动使用。';
-    if (state.Light < getCost(card, state.Turn)) return '灯火不足，试试添灯或结束回合。';
+    if (state.Light < this.cost(card)) return '灯火不足，试试添灯或结束回合。';
     const discardable = state.Hand.filter(item => item.InstanceID !== instanceID && getCard(item.DefinitionID).DataType === 'normal').length;
-    if (discardable < discardCount(card)) return `需要至少 ${discardCount(card)} 张可弃置的普通手牌。`;
+    if (discardable < selectionCount(card)) return `需要至少 ${selectionCount(card)} 张其他普通手牌。`;
     return null;
   }
 
@@ -55,20 +76,26 @@ export class Battle {
     const index = state.Hand.findIndex(card => card.InstanceID === instanceID);
     const card = state.Hand[index];
     const definition = getCard(card.DefinitionID);
-    if (selected.length !== discardCount(card) || new Set(selected).size !== selected.length || selected.some(id => {
+    if (selected.length !== selectionCount(card) || new Set(selected).size !== selected.length || selected.some(id => {
       const selectedCard = state.Hand.find(item => item.InstanceID === id);
       return id === instanceID || !selectedCard || getCard(selectedCard.DefinitionID).DataType === 'burden';
     })) {
-      return { Ok: false, Message: `请选择 ${discardCount(card)} 张不同的可弃置普通手牌。` };
+      return { Ok: false, Message: `请选择 ${selectionCount(card)} 张不同的其他普通手牌。` };
     }
     this.busy = true;
     state.Phase = 'RESOLVING_CARD';
     try {
-      state.Light -= getCost(card, state.Turn);
+      const consumesTraitDiscount = state.CombatTraitID === 'good_merchant' && state.CombatTraitDiscountActive && definition.DataType === 'normal';
+      state.Light -= this.cost(card);
+      if (consumesTraitDiscount) state.CombatTraitDiscountActive = false;
       state.Hand.splice(index, 1);
       state.Resolving.push(card);
       state.Log.push(`使用「${definition.Name}」。`);
-      for (const effect of definition.Effects) applyEffect(effect, state, selected, this.events);
+      for (const effect of definition.Effects) {
+        const lightBefore = state.Light;
+        applyEffect(effect, state, selected, this.events);
+        if (state.Light > lightBefore && onLightGained(state)) this.events.emit({ Type: 'OnTraitTriggered', BattleID: state.BattleID, TraitID: state.CombatTraitID! });
+      }
       state.Resolving.pop();
       if (definition.PlayBehavior === 'exhaust') state.ExhaustPile.push(card);
       else state.DiscardPile.push(card);
@@ -81,21 +108,25 @@ export class Battle {
     } finally { this.busy = false; }
   }
 
-  endTurn(): ActionResult {
+  endTurn(selected: readonly string[] = []): ActionResult {
     if (this.state.Status !== 'playing' || this.state.Phase !== 'PLAYER_TURN' || this.busy) return { Ok: false, Message: '当前不能结束回合。' };
+    const required = endTurnDiscardCount(this.state);
+    if (selected.length !== required || new Set(selected).size !== selected.length || selected.some(id => {
+      const card = this.state.Hand.find(item => item.InstanceID === id);
+      return !card || getCard(card.DefinitionID).DataType === 'burden';
+    })) return { Ok: false, Message: required ? `请先选择 ${required} 张可弃置的普通手牌。` : '当前不需要弃牌。' };
     this.busy = true;
     try {
       const state = this.state;
       state.Phase = 'TURN_END';
-      const retainedBurden: CardInstance[] = [];
-      for (const card of state.Hand.splice(0)) {
-        if (getCard(card.DefinitionID).DataType === 'burden') retainedBurden.push(card);
-        else {
-          state.DiscardPile.push(card);
-          this.events.emit({ Type: 'OnCardDiscarded', BattleID: state.BattleID, InstanceID: card.InstanceID, Reason: 'turn-end' });
-        }
+      resetTurnTraitState(state);
+      for (const id of selected) {
+        const index = state.Hand.findIndex(card => card.InstanceID === id);
+        const [card] = state.Hand.splice(index, 1);
+        state.DiscardPile.push(card);
+        state.Log.push(`回合结束时弃置「${getCard(card.DefinitionID).Name}」。`);
+        this.events.emit({ Type: 'OnCardDiscarded', BattleID: state.BattleID, InstanceID: card.InstanceID, Reason: 'turn-end' });
       }
-      state.Hand.push(...retainedBurden);
       state.Log.push(`第 ${state.Turn} 回合结束。`);
       if (state.Obsession <= 0) { state.Obsession = 0; this.finish('won'); return { Ok: true }; }
       state.Phase = 'RESOLVING_INTENT';
@@ -110,10 +141,11 @@ export class Battle {
   private startTurn(): void {
     const state = this.state;
     state.Phase = 'ROUND_START';
+    resetTurnTraitState(state);
     for (const card of [...state.DrawPile, ...state.Hand, ...state.DiscardPile]) card.CostModifiers = card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= state.Turn);
     state.Light = Math.max(0, state.BaseLight + state.PendingLightModifier);
     state.PendingLightModifier = 0;
-    drawCards(state, Math.max(0, state.HandSize - state.Hand.length));
+    drawCards(state, state.Turn === 1 ? BattleConfig.initialDraw : BattleConfig.cardsPerTurn);
     if (state.PendingCostIncrease > 0) {
       const candidates = state.Hand.filter(card => getCard(card.DefinitionID).DataType === 'normal');
       if (candidates.length) {

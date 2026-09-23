@@ -11,9 +11,9 @@ export class CardView {
   static render(data: CardData, displayedCost = data.cost): string {
     const font = Math.max(layout.name.min_font_size, Math.min(layout.name.font_size, layout.name.width / Math.max(1, Array.from(data.name).length)));
     const cost = { x: layout.cost.center_x - layout.cost.width / 2, y: layout.cost.center_y - layout.cost.height / 2, width: layout.cost.width, height: layout.cost.height };
-    return `<span class="card-face" data-card-id="${escapeHTML(data.id)}">
+    return `<span class="card-face frame-${escapeHTML(data.frame_style)}" data-card-id="${escapeHTML(data.id)}">
       <span class="card-art-mask" style="${rect(layout.art)}"><img class="card-art-image" src="${escapeHTML(assetURL(data.art_path))}" alt="" draggable="false"></span>
-      <img class="card-frame" src="${escapeHTML(assetURL(layout.frame))}" alt="" draggable="false">
+      <img class="card-frame" src="${escapeHTML(assetURL(layout.frames[data.frame_style]))}" alt="" draggable="false">
       <span class="card-cost" style="${rect(cost)};font-size:${layout.cost.font_size / 6}cqw">${escapeHTML(displayedCost)}</span>
       <span class="card-title" style="${rect(layout.name)};font-size:${font / 6}cqw">${escapeHTML(data.name)}</span>
       <span class="card-description-box" style="${rect(layout.description)};padding:${layout.description.padding / 6}cqw"><span class="card-description-text" style="font-size:${layout.description.font_size / 6}cqw;line-height:${layout.description.line_height}">${escapeHTML(data.description)}</span></span>

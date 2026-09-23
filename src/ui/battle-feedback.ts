@@ -14,7 +14,7 @@ export class BattleFeedback {
     this.preloaded = [
       Assets.cards.back, Assets.piles.UC01, Assets.piles.UC02, Assets.piles.UC03,
       Assets.effects.soul_flame, Assets.effects.release_glow, Assets.souls.unresolved, Assets.souls.released,
-      Assets.results.success, Assets.results.failure,
+      Assets.results.success, Assets.results.failure, Assets.traits.TR01,
     ].map(path => { const image = new Image(); image.src = assetURL(path); return image; });
     void this.preloaded.length;
   }
@@ -95,7 +95,7 @@ export class BattleFeedback {
     void this.delay(duration, token).then(active => { if (active) element.classList.remove('is-pulsing'); });
   }
 
-  float(selector: string, text: string, tone: 'soul' | 'light' | 'intent', token = this.generation): void {
+  float(selector: string, text: string, tone: 'soul' | 'light' | 'intent' | 'trait', token = this.generation): void {
     const anchor = this.root.querySelector(selector)?.getBoundingClientRect();
     if (!anchor || !this.active(token)) return;
     const node = document.createElement('strong');

@@ -17,7 +17,7 @@ export function shuffle(cards: CardInstance[], state: Pick<BattleState, 'RandomS
 
 export function drawCards(state: BattleState, count: number): number {
   let drawn = 0;
-  const allowed = Math.max(0, Math.min(count, state.HandSize - state.Hand.length));
+  const allowed = Math.max(0, count);
   for (let i = 0; i < allowed; i++) {
     if (state.DrawPile.length === 0 && state.DiscardPile.length > 0) {
       state.DrawPile.push(...state.DiscardPile.splice(0));
