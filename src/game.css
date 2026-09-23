@@ -111,7 +111,7 @@
 .deck-card{position:relative;width:100%;aspect-ratio:2/3;container-type:inline-size}
 .deck-count{display:block;margin-top:10px;font-size:17px;font-weight:800;color:#f0d79d;letter-spacing:2px;text-shadow:0 1px 3px #000}
 .intent-modal-short{text-align:center;font-size:22px!important;font-weight:800!important;color:#dceeff;margin:4px 0 16px!important}
-.intent-modal-detail{max-width:520px;margin:0 auto!important;padding:16px 18px;border:1px solid #5685a6;background:#071b29b8;color:#d4e4ed}
+.intent-modal-detail{max-width:520px;margin:0 auto!important;padding:0;border:0;background:transparent;color:#fff}
 
 /* Phase 2A-2 battle feedback. Gameplay state is already settled when these proxies play. */
 .resource-cluster{grid-template-columns:100px 80px 80px 80px}
@@ -306,7 +306,6 @@
   .deck-carousel article { flex-basis: 112px; }
   .deck-count { margin-top: 6px; font-size: 14px; }
   .intent-modal-short { margin-bottom: 8px !important; font-size: 18px !important; }
-  .intent-modal-detail { padding: 10px 14px; }
   .result-banner img { width: min(55vw, 440px); height: min(58vh, 260px); }
   .result-banner strong { font-size: clamp(25px, 6vw, 44px); }
 }
@@ -325,4 +324,3 @@
   .modal { max-height: calc(100dvh - 16px); }
   .modal-backdrop { padding: 8px; }
 }
-

@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  // GitHub Pages project sites are served below /<repository>/.
+  base: '/Game/',
   build: {
     outDir: 'build',
-    // 此 Windows 环境删除后立即重建目录会触发 EPERM；保留目录和旧哈希文件。
-    // 部署时以本次 index.html 引用的文件为准。
+    // Keep the directory on Windows to avoid intermittent EPERM failures.
+    // The generated index.html only references files from the current build.
     emptyOutDir: false,
   },
 });
