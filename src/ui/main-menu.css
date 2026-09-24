@@ -1,0 +1,18 @@
+.main-menu-screen{position:relative;width:1600px;height:900px;overflow:hidden;isolation:isolate;color:#eee5ce;font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+.menu-background{display:none}
+.menu-content{position:absolute;inset:0;z-index:2;display:flex;align-items:center;flex-direction:column}
+.menu-logo{position:absolute;left:50%;top:150px;width:720px;height:250px;transform:translateX(-50%);display:grid;place-items:center}
+.menu-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.menu-logo [hidden]{display:none!important}
+.menu-logo h1{font-family:var(--serif);font-size:76px;font-weight:500;letter-spacing:24px;color:#f0dfb6;text-shadow:0 2px 8px #06151a,0 0 30px #cfbf9166}
+.menu-start-button{position:absolute;left:50%;top:480px;transform:translateX(-50%);width:270px;height:80px;font-size:28px;letter-spacing:8px}
+.menu-start-button:hover:not(:disabled){transform:translateX(-50%) translateY(-2px) scale(1.025)}
+.menu-start-button:active:not(:disabled){transform:translateX(-50%) translateY(1px) scale(.98)}
+.menu-secondary{position:absolute;left:50%;top:590px;transform:translateX(-50%);min-width:150px;min-height:52px;padding:8px 30px;color:#d7ceb2;font-family:var(--serif);font-size:23px;letter-spacing:8px;text-shadow:0 2px 5px #041116;border-bottom:1px solid #c7b78366;transition:color .18s,text-shadow .18s}
+.menu-secondary:hover{color:#fff0c8;text-shadow:0 0 12px #ebd28c}
+.menu-version{position:absolute;z-index:2;right:45px;bottom:24px;color:#c3c4ae99;font:13px Georgia,serif;letter-spacing:2px}
+.menu-settings-backdrop{position:absolute;z-index:5;inset:0;display:grid;place-items:center;background:#03131dcc;backdrop-filter:blur(5px)}
+.menu-settings{width:650px;min-height:300px;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:24px;text-align:center}
+.menu-settings h2{font-family:var(--serif);font-size:36px;font-weight:500;letter-spacing:12px;color:#e5d09e;text-shadow:0 2px 5px #09171c}
+.menu-settings p{font-size:21px;letter-spacing:3px;color:#e4e3d4}
+.menu-settings-close{min-width:190px;min-height:65px;font-size:23px}

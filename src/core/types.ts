@@ -42,6 +42,8 @@ export interface SoulDefinition {
   Obsession: number;
   Story: string;
   ArtReference: string | null;
+  HesitantArtReference?: string | null;
+  ReleasedArtReference?: string | null;
 }
 export interface CardInstance {
   InstanceID: string;
@@ -52,6 +54,19 @@ export interface CardInstance {
 export type BattlePhase = 'ROUND_START' | 'PLAYER_TURN' | 'RESOLVING_CARD' | 'TURN_END' | 'RESOLVING_INTENT' | 'RESULT';
 export type IntentID = 'intent_close' | 'intent_hesitate' | 'intent_hesitation_spread' | 'intent_burden' | 'intent_dim_light';
 export interface IntentInstance { IntentID: IntentID; BurdenCardID?: 'burden_001' | 'burden_002' }
+export interface BattleEncounterConfig {
+  SoulID?: string;
+  StartingObsession?: number;
+  VictoryObsession?: number;
+  MaxRounds?: number;
+  InitialDraw?: number;
+  CardsPerTurn?: number;
+  HandSize?: number;
+  BaseLight?: number;
+  IntentPool?: readonly IntentInstance[];
+  IntentSequence?: readonly IntentInstance[];
+  CompletionLog?: string;
+}
 export type BattleStatus = 'playing' | 'won' | 'lost';
 export interface BattleState {
   BattleID: string;

@@ -37,10 +37,11 @@ export function createGameViewport(host: HTMLElement): GameViewport {
     stage.style.top = `${offsetTop + (safeHeight - DESIGN_HEIGHT * scale) / 2}px`;
     stage.style.transform = `scale(${scale})`;
     stage.dataset.scale = String(scale);
+    viewport.style.setProperty('--viewport-stage-scale', String(scale));
   };
 
   const syncBackground = (): void => {
-    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background');
+    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background,.menu-background,.prologue-background');
     if (source?.src && background.src !== source.src) background.src = source.src;
   };
   const resizeObserver = new ResizeObserver(update);

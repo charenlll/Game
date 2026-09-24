@@ -1,10 +1,10 @@
-import { buildStartingDeck, character, getCard, getCharacter, soul } from './content';
+import { buildStartingDeck, character, getCard, getCharacter, getSoul, soul } from './content';
 import { drawCards, random, shuffle } from './deck';
 import { applyEffect } from './effects';
 import { BattleEvents } from './events';
 import { BattleConfig, randomIntent, resolveIntent } from './intents';
 import { getTrait, onLightGained, resetTurnTraitState } from './traits';
-import type { ActionResult, BattleState, CardInstance } from './types';
+import type { ActionResult, BattleEncounterConfig, BattleState, CardInstance } from './types';
 
 export function getCost(card: CardInstance, turn: number, runtimeModifier = 0): number {
   return Math.max(0, getCard(card.DefinitionID).Cost + runtimeModifier + card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= turn).reduce((sum, mod) => sum + mod.Amount, 0));
@@ -27,20 +27,39 @@ export class Battle {
   readonly events = new BattleEvents();
   private busy = false;
   private nextInstanceNumber: number;
+  private turnIndex = 0;
+  private readonly encounter: Required<Pick<BattleEncounterConfig, 'SoulID' | 'StartingObsession' | 'VictoryObsession' | 'MaxRounds' | 'InitialDraw' | 'CardsPerTurn' | 'HandSize' | 'BaseLight'>> & BattleEncounterConfig;
 
-  constructor(seed: number, battleID = `battle-${seed}`, characterID = character.CharacterID, deckOverride?: readonly string[]) {
+  constructor(seed: number, battleID = `battle-${seed}`, characterID = character.CharacterID, deckOverride?: readonly string[], encounter: BattleEncounterConfig = {}) {
     const selectedCharacter = getCharacter(characterID);
+    const selectedSoul = getSoul(encounter.SoulID ?? soul.SoulID);
+    const startingObsession = encounter.StartingObsession ?? selectedSoul.Obsession;
+    const victoryObsession = encounter.VictoryObsession ?? 0;
+    if (!Number.isInteger(startingObsession) || startingObsession <= 0 || !Number.isInteger(victoryObsession) || victoryObsession < 0 || victoryObsession >= startingObsession) throw new Error('战斗执念配置无效');
+    this.encounter = {
+      ...encounter,
+      SoulID: selectedSoul.SoulID,
+      StartingObsession: startingObsession,
+      VictoryObsession: victoryObsession,
+      MaxRounds: encounter.MaxRounds ?? BattleConfig.maxRounds,
+      InitialDraw: encounter.InitialDraw ?? BattleConfig.initialDraw,
+      CardsPerTurn: encounter.CardsPerTurn ?? BattleConfig.cardsPerTurn,
+      HandSize: encounter.HandSize ?? BattleConfig.retainedHandLimit,
+      BaseLight: encounter.BaseLight ?? 3,
+    };
+    if (!Number.isInteger(this.encounter.MaxRounds) || this.encounter.MaxRounds < 1) throw new Error('战斗回合配置无效');
+    if (this.encounter.IntentPool && !this.encounter.IntentPool.length) throw new Error('Intent池不能为空');
     const selectedDeck = deckOverride ? [...deckOverride] : [...buildStartingDeck(selectedCharacter)];
     if (!selectedDeck.length) throw new Error('战斗牌组不能为空');
     selectedDeck.forEach(getCard);
     if (selectedCharacter.CombatTrait) getTrait(selectedCharacter.CombatTrait);
     this.state = {
       BattleID: battleID, Seed: seed >>> 0, RandomState: seed >>> 0,
-      Turn: 1, MaxTurns: BattleConfig.maxRounds, Light: 3, BaseLight: 3, HandSize: BattleConfig.retainedHandLimit,
-      Obsession: soul.Obsession, MaxObsession: soul.Obsession, Status: 'playing',
+      Turn: 1, MaxTurns: this.encounter.MaxRounds, Light: this.encounter.BaseLight, BaseLight: this.encounter.BaseLight, HandSize: this.encounter.HandSize,
+      Obsession: this.encounter.StartingObsession, MaxObsession: this.encounter.StartingObsession, Status: 'playing',
       Phase: 'ROUND_START', CurrentIntent: { IntentID: 'intent_close' }, PendingLightModifier: 0, PendingCostIncrease: 0,
       CombatTraitID: selectedCharacter.CombatTrait, GainedLightThisTurn: false, CombatTraitTriggeredThisTurn: false, CombatTraitDiscountActive: false,
-      CharacterID: selectedCharacter.CharacterID, SoulID: soul.SoulID,
+      CharacterID: selectedCharacter.CharacterID, SoulID: selectedSoul.SoulID,
       DrawPile: selectedDeck.map((id, index) => ({ InstanceID: `card-${index + 1}`, DefinitionID: id, IsTemporary: false, CostModifiers: [] })),
       Hand: [], DiscardPile: [], Resolving: [], ExhaustPile: [],
       Stats: { CardsPlayed: 0, TemporaryCardsPlayed: 0 }, Log: ['抵达渡口。今夜，从一盏灯开始。'],
@@ -102,7 +121,10 @@ export class Battle {
       state.Stats.CardsPlayed++;
       if (card.IsTemporary) state.Stats.TemporaryCardsPlayed++;
       this.events.emit({ Type: 'OnCardPlayed', BattleID: state.BattleID, InstanceID: card.InstanceID, DefinitionID: card.DefinitionID });
-      if (state.Obsession === 0) this.finish('won');
+      if (state.Obsession <= this.encounter.VictoryObsession) {
+        state.Obsession = this.encounter.VictoryObsession;
+        this.finish('won');
+      }
       else state.Phase = 'PLAYER_TURN';
       return { Ok: true };
     } finally { this.busy = false; }
@@ -128,10 +150,12 @@ export class Battle {
         this.events.emit({ Type: 'OnCardDiscarded', BattleID: state.BattleID, InstanceID: card.InstanceID, Reason: 'turn-end' });
       }
       state.Log.push(`第 ${state.Turn} 回合结束。`);
-      if (state.Obsession <= 0) { state.Obsession = 0; this.finish('won'); return { Ok: true }; }
       state.Phase = 'RESOLVING_INTENT';
       resolveIntent(state, (cardID, destination) => this.addBurden(cardID, destination));
-      if (state.Obsession <= 0) { state.Obsession = 0; this.finish('won'); }
+      if (state.Obsession <= this.encounter.VictoryObsession) {
+        state.Obsession = this.encounter.VictoryObsession;
+        this.finish('won');
+      }
       else if (state.Turn >= state.MaxTurns) this.finish('lost');
       else { state.Turn++; this.startTurn(); }
       return { Ok: true };
@@ -145,7 +169,7 @@ export class Battle {
     for (const card of [...state.DrawPile, ...state.Hand, ...state.DiscardPile]) card.CostModifiers = card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= state.Turn);
     state.Light = Math.max(0, state.BaseLight + state.PendingLightModifier);
     state.PendingLightModifier = 0;
-    drawCards(state, state.Turn === 1 ? BattleConfig.initialDraw : BattleConfig.cardsPerTurn);
+    drawCards(state, state.Turn === 1 ? this.encounter.InitialDraw : this.encounter.CardsPerTurn);
     if (state.PendingCostIncrease > 0) {
       const candidates = state.Hand.filter(card => getCard(card.DefinitionID).DataType === 'normal');
       if (candidates.length) {
@@ -155,7 +179,9 @@ export class Battle {
       }
       state.PendingCostIncrease = 0;
     }
-    state.CurrentIntent = randomIntent(state);
+    const scheduled = this.encounter.IntentSequence?.[this.turnIndex];
+    state.CurrentIntent = randomIntent(state, scheduled ? [scheduled] : this.encounter.IntentPool ?? BattleConfig.intentPool);
+    this.turnIndex++;
     state.Phase = 'PLAYER_TURN';
     state.Log.push(`第 ${state.Turn} 回合 · 灯火 ${state.Light}，手牌 ${state.Hand.length}。`);
     this.events.emit({ Type: 'OnTurnStart', BattleID: state.BattleID, Turn: state.Turn });
@@ -166,7 +192,7 @@ export class Battle {
     if (state.Status !== 'playing') return;
     state.Status = result;
     state.Phase = 'RESULT';
-    state.Log.push(result === 'won' ? '执念已释，渡魂成功。' : '天色渐明，今夜暂未完成。');
+    state.Log.push(result === 'won' ? this.encounter.CompletionLog ?? '执念已释，渡魂成功。' : '天色渐明，今夜暂未完成。');
     this.events.emit({ Type: 'OnBattleEnd', BattleID: state.BattleID, Result: result, Stats: Object.freeze({ ...state.Stats }) });
   }
 

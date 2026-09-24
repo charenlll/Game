@@ -1,14 +1,14 @@
 import { Battle, discardCount, endTurnDiscardCount, selectionCount } from '../core/battle';
-import { getCard, getCharacter, soul } from '../core/content';
+import { getCard, getCharacter, getSoul } from '../core/content';
 import { cardDatabase } from '../core/card-database';
 import { Assets } from '../core/asset-manifest';
-import type { CardInstance } from '../core/types';
+import type { BattleState, CardInstance } from '../core/types';
 import sceneArt from '../data/scene-art.json';
 import { CardView, assetURL, escapeHTML as esc, fitCardText } from './card-view';
 import { BattleLayout, DragConfig, FeedbackConfig, HandLayout } from './layout-config';
 import { getIntentDisplay } from '../core/intents';
 import { BattleFeedback, type FlowSource } from './battle-feedback';
-import type { IntentInstance } from '../core/types';
+import type { BattleEncounterConfig, IntentInstance } from '../core/types';
 import { getTrait } from '../core/traits';
 import { infoPanelClass, primaryButton } from './ui-components';
 import { screenToGamePoint } from './viewport';
@@ -20,6 +20,11 @@ export interface BattleViewOptions {
   battleID?: string;
   characterID?: string;
   deck?: readonly string[];
+  encounter?: BattleEncounterConfig;
+  backgroundPath?: string;
+  soulArtState?: 'normal' | 'hesitant';
+  skipVictoryPresentation?: boolean;
+  releaseOnlyVictory?: boolean;
   onComplete?: (result: 'won' | 'lost') => void;
 }
 interface DragState {
@@ -50,13 +55,17 @@ export class BattleView {
   private withheldHandIDs = new Set<string>();
   private readonly feedback: BattleFeedback;
   private readonly resizeObserver: ResizeObserver;
+  private readonly popupLayer: HTMLElement;
+  private destroyed = false;
 
   constructor(private readonly root: HTMLElement, private readonly options: BattleViewOptions = {}) {
     const param = new URLSearchParams(location.search).get('seed');
     const querySeed = param === null ? NaN : Number(param);
     const seed = options.seed ?? (Number.isInteger(querySeed) && querySeed >= 0 && querySeed <= 0xFFFFFFFF ? querySeed : freshSeed());
-    this.battle = new Battle(seed, options.battleID, options.characterID, options.deck);
+    this.battle = new Battle(seed, options.battleID, options.characterID, options.deck, options.encounter);
     this.feedback = new BattleFeedback(root);
+    this.popupLayer = root.closest('.game-viewport')?.querySelector<HTMLElement>('.viewport-overlay') ?? root;
+    this.popupLayer.addEventListener('click', this.onClick);
     root.addEventListener('click', this.onClick);
     root.addEventListener('pointerdown', this.onPointerDown);
     window.addEventListener('pointermove', this.onPointerMove, { passive: false });
@@ -69,8 +78,13 @@ export class BattleView {
     void this.runInitialDraw();
   }
 
+  get state(): Readonly<BattleState> { return this.battle.state; }
+
   destroy(): void {
+    this.destroyed = true;
     this.root.removeEventListener('click', this.onClick);
+    this.popupLayer.removeEventListener('click', this.onClick);
+    if (this.popupLayer !== this.root) this.popupLayer.querySelector('.battle-popup-layer')?.remove();
     this.root.removeEventListener('pointerdown', this.onPointerDown);
     window.removeEventListener('pointermove', this.onPointerMove);
     window.removeEventListener('pointerup', this.onPointerUp);
@@ -304,7 +318,7 @@ export class BattleView {
       this.feedback.draw(drawn, token),
     ]);
     if (!this.feedback.active(token)) return;
-    if (this.battle.state.Status === 'won') await this.runSuccess(token);
+    if (this.battle.state.Status === 'won') await this.handleVictory(token);
     else { this.flowLocked = false; this.render(); }
   }
 
@@ -367,6 +381,7 @@ export class BattleView {
     this.notice = state.Status === 'lost' ? '夜尽，亡魂的执念仍未化解。'
       : state.Turn === state.MaxTurns ? '最后一夜，灯火尚在。' : '灯火已恢复，摸取2张牌。';
     if (state.Status === 'lost') await this.runFailure(token);
+    else if (state.Status === 'won') await this.handleVictory(token);
     else { this.endTurnLocked = false; this.flowLocked = false; this.render(); }
   }
 
@@ -386,6 +401,31 @@ export class BattleView {
     this.showResult = false;
     if (this.options.onComplete) { this.options.onComplete('won'); return; }
     this.render();
+  }
+
+  private async handleVictory(token: number): Promise<void> {
+    if (this.options.skipVictoryPresentation && this.options.onComplete) {
+      this.options.onComplete('won');
+      return;
+    }
+    if (this.options.releaseOnlyVictory && this.options.onComplete) {
+      await this.runReleaseOnly(token);
+      return;
+    }
+    await this.runSuccess(token);
+  }
+
+  private async runReleaseOnly(token: number): Promise<void> {
+    if (!await this.feedback.delay(FeedbackConfig.releasePauseMs, token)) return;
+    this.resultStage = 'releasing';
+    this.render();
+    this.feedback.soulFlames(FeedbackConfig.soulFlameCount, token);
+    this.feedback.pulse('.release-glow', FeedbackConfig.releaseMs, token);
+    if (!await this.feedback.delay(FeedbackConfig.releaseMs, token)) return;
+    this.resultStage = 'released';
+    this.render();
+    if (!await this.feedback.delay(FeedbackConfig.resultDelayMs, token)) return;
+    this.options.onComplete?.('won');
   }
 
   private async runFailure(token: number): Promise<void> {
@@ -431,7 +471,7 @@ export class BattleView {
         if (this.pressTimer) clearTimeout(this.pressTimer);
         this.pressTimer = null; this.intentResolving = false; this.endTurnLocked = false; this.flowLocked = true; this.intentVisualOverride = null; this.withheldHandIDs.clear();
         const seed = action === 'replay' ? this.battle.state.Seed : freshSeed();
-        this.battle = new Battle(seed, `battle-${seed}-${Date.now()}`, this.options.characterID, this.options.deck);
+        this.battle = new Battle(seed, `battle-${seed}-${Date.now()}`, this.options.characterID, this.options.deck, this.options.encounter);
         this.page = 0; this.pending = null; this.panel = null; this.showResult = true; this.resultStage = 'none';
         this.notice = '按住手牌向上拖入战斗区域，松手使用。';
         this.render();
@@ -456,9 +496,10 @@ export class BattleView {
     const unavailable = this.battle.reasonUnavailable(card.InstanceID);
     const intentCostUp = card.CostModifiers.some(mod => mod.Source === 'intent_hesitate' && mod.ExpiresAtTurn >= this.battle.state.Turn);
     const displayedCost = this.battle.cost(card);
-    return `<button class="card ${data.card_type === 'burden' ? 'burden-card' : ''} ${intentCostUp ? 'intent-cost-up' : ''} ${chosen ? 'chosen' : ''} ${pending ? 'pending' : ''} ${unavailable ? 'unavailable' : ''}"
+    return `<button class="card ${data.card_type === 'burden' ? 'burden-card' : ''} ${intentCostUp ? 'intent-cost-up' : ''} ${chosen ? 'chosen' : ''} ${pending ? 'pending' : ''} ${unavailable ? 'unavailable' : ''} ${unavailable?.startsWith('灯火不足') ? 'insufficient-light' : ''}"
       style="--offset:${position};--angle:0deg;--arc:0px;--order:${index + 1}"
       data-action="card" data-id="${esc(card.InstanceID)}" data-card="${esc(data.id)}"
+      data-unavailable-reason="${esc(unavailable ?? '')}"
       aria-label="${esc(data.name)}，${displayedCost}灯火，${esc(data.description)}" aria-pressed="${chosen}"
       ${pending || this.battle.state.Status !== 'playing' || this.resolving || this.endTurnLocked || this.intentResolving || this.flowLocked ? 'disabled' : ''}>${CardView.render(data, displayedCost)}</button>`;
   }
@@ -491,7 +532,7 @@ export class BattleView {
     if (this.panel === 'discard') return this.pileContent('弃牌堆', s.DiscardPile);
     if (this.panel === 'exhaust') return this.pileContent('消耗牌堆', s.ExhaustPile);
     if (this.panel === 'light') return `<h2 id="dialog-title">灯火</h2><p class="intent-modal-detail">当前拥有 ${s.Light} 点灯火。使用卡牌会消耗灯火，每个新回合恢复至基础灯火，并结算下一回合修正。</p>`;
-    if (this.panel === 'soul') return `<h2 id="dialog-title">${esc(soul.Name)}</h2><p class="intent-modal-detail">当前执念 ${s.Obsession} / ${s.MaxObsession}。在第6夜结束前将执念化解至0，即可完成本场摆渡。</p>`;
+    if (this.panel === 'soul') return `<h2 id="dialog-title">${esc(getSoul(s.SoulID).Name)}</h2><p class="intent-modal-detail">当前执念 ${s.Obsession} / ${s.MaxObsession}。在第${s.MaxTurns}夜结束前将执念化解，即可完成本阶段。</p>`;
     if (this.panel === 'intent') {
       const intent = getIntentDisplay(this.intentVisualOverride ?? s.CurrentIntent);
       return `<h2 id="dialog-title">${esc(intent.name)}</h2><p class="intent-modal-short">${esc(intent.shortDescription)}</p><p class="intent-modal-detail">${esc(intent.longDescription)}</p>`;
@@ -506,8 +547,14 @@ export class BattleView {
   }
 
   private render(): void {
+    if (this.destroyed) return;
     const s = this.battle.state, finished = s.Status !== 'playing';
     const activeCharacter = getCharacter(s.CharacterID);
+    const activeSoul = getSoul(s.SoulID);
+    const unresolvedSoulArt = this.options.soulArtState === 'hesitant'
+      ? activeSoul.HesitantArtReference ?? activeSoul.ArtReference
+      : activeSoul.ArtReference;
+    const releasedSoulArt = activeSoul.ReleasedArtReference;
     const trait = s.CombatTraitID ? getTrait(s.CombatTraitID) : null;
     const intent = getIntentDisplay(this.intentVisualOverride ?? s.CurrentIntent);
     const visible = s.Hand.filter(card => !this.withheldHandIDs.has(card.InstanceID));
@@ -518,9 +565,9 @@ export class BattleView {
     const modal = this.panel !== null;
     const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingPx}px`;
     this.root.innerHTML = `<main class="game ${this.resultStage === 'failed' ? 'battle-unresolved' : ''}" style="${variables}" aria-label="夜渡对局" ${modal ? 'inert' : ''}>
-      <img class="scene-background" src="${assetURL(sceneArt.background)}" alt=""><div class="scene-vignette"></div><div class="play-zone" aria-hidden="true"></div>
+      <img class="scene-background" src="${assetURL(this.options.backgroundPath ?? sceneArt.background)}" alt=""><div class="scene-vignette"></div><div class="play-zone" aria-hidden="true"></div>
       <header class="hud"><div class="location"><div><h1>无名渡口</h1><span>第一夜 · 子时</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button" data-action="menu" aria-label="打开菜单">☰</button></header>
-      <section class="soul-target ${this.intentVisualOverride ? 'intent-reacting' : ''} ${this.resultStage === 'releasing' ? 'releasing' : ''} ${this.resultStage === 'released' ? 'released' : ''}" aria-label="亡魂"><div class="soul-hud"><div class="soul-title-row"><button class="intent-card ${this.intentResolving ? 'resolving' : ''}" data-testid="intent" data-action="intent" aria-label="查看亡魂意图：${esc(intent.name)}"><img src="${assetURL(Assets.battle.intent)}" alt=""><span><b>${esc(intent.name)}</b></span></button><h2>${esc(soul.Name)}</h2></div><div class="soul-status-line"><button class="obsession-track" data-action="soul" aria-label="查看亡魂状态"><span style="width:${(this.obsessionVisualFrom ?? s.Obsession) / s.MaxObsession * 100}%"></span><strong data-testid="obsession">执念 ${s.Obsession} / ${s.MaxObsession}</strong></button></div></div><span class="soul-feedback-anchor" aria-hidden="true"></span><img class="release-glow" src="${assetURL(Assets.effects.release_glow)}" alt=""><img class="soul-image soul-unresolved" src="${assetURL(Assets.souls.unresolved)}" alt=""><img class="soul-image soul-released" src="${assetURL(Assets.souls.released)}" alt=""></section>
+      <section class="soul-target ${this.intentVisualOverride ? 'intent-reacting' : ''} ${this.resultStage === 'releasing' ? 'releasing' : ''} ${this.resultStage === 'released' ? 'released' : ''}" aria-label="亡魂"><div class="soul-hud"><div class="soul-title-row"><button class="intent-card ${this.intentResolving ? 'resolving' : ''}" data-testid="intent" data-action="intent" aria-label="查看亡魂意图：${esc(intent.name)}"><img src="${assetURL(Assets.battle.intent)}" alt=""><span><b>${esc(intent.name)}</b></span></button><h2>${esc(activeSoul.Name)}</h2></div><div class="soul-status-line"><button class="obsession-track" data-action="soul" aria-label="查看亡魂状态"><span style="width:${(this.obsessionVisualFrom ?? s.Obsession) / s.MaxObsession * 100}%"></span><strong data-testid="obsession">执念 ${s.Obsession} / ${s.MaxObsession}</strong></button></div></div><span class="soul-feedback-anchor" aria-hidden="true"></span><img class="release-glow" src="${assetURL(Assets.effects.release_glow)}" alt=""><img class="soul-image soul-unresolved" src="${assetURL(unresolvedSoulArt ?? Assets.souls.unresolved)}" alt=""><img class="soul-image soul-released" src="${assetURL(releasedSoulArt ?? Assets.souls.released)}" alt=""></section>
       <aside class="character" aria-label="绯川"><img class="character-image" src="${assetURL(sceneArt.character)}" alt=""></aside>
       <div class="character-name" aria-hidden="true"><b>${esc(activeCharacter.Name)}</b><span>${esc(activeCharacter.AnimalType)} · 摆渡人</span></div>
       ${trait ? `<button class="trait-badge ${s.CombatTraitDiscountActive ? 'active' : ''}" style="--trait-glow:${esc(trait.glowColor)}" data-action="trait" aria-label="查看角色特性：${esc(trait.name)}" title="点击查看角色特性"><img src="${assetURL(trait.icon)}" alt=""></button>` : ''}
@@ -535,7 +582,20 @@ export class BattleView {
       <section class="hand-layer" aria-label="手牌区"><div class="hand" data-testid="hand">${visible.map((card, i) => this.cardMarkup(card, i, visible.length)).join('') || '<p class="empty-hand">手牌已用尽</p>'}</div></section>
       <p class="notice" role="status">${esc(this.notice)}</p>
       ${finished && this.showResult ? `<div class="result-banner ${s.Status === 'won' ? 'success' : 'failure'}" role="status"><img src="${assetURL(s.Status === 'won' ? Assets.results.success : Assets.results.failure)}" alt=""><strong>${s.Status === 'won' ? '渡魂完成' : '渡魂未竟'}</strong></div>` : ''}
-    </main>${modal ? `<div class="modal-backdrop"><section class="modal ${infoPanelClass(this.panel ?? 'result')}" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button class="modal-close" aria-label="关闭弹层" data-action="${this.panel ? 'close' : 'dismiss-result'}">×</button>${this.modalContent()}</section></div>` : ''}<div class="rotate-screen"><span class="rotate-icon">▯</span><h2>横过来，开始今夜的摆渡</h2></div>`;
+    </main><div class="rotate-screen"><span class="rotate-icon">▯</span><h2>横过来，开始今夜的摆渡</h2></div>`;
+    if (this.popupLayer !== this.root) {
+      let modalLayer = this.popupLayer.querySelector<HTMLElement>('.battle-popup-layer');
+      if (!modalLayer) {
+        modalLayer = document.createElement('div');
+        modalLayer.className = 'battle-popup-layer';
+        this.popupLayer.append(modalLayer);
+      }
+      modalLayer.innerHTML = modal ? `<div class="modal-backdrop"><section class="modal ${infoPanelClass(this.panel ?? 'result')}" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button class="modal-close" aria-label="关闭弹层" data-action="${this.panel ? 'close' : 'dismiss-result'}">×</button>${this.modalContent()}</section></div>` : '';
+    } else {
+      const oldModal = this.root.querySelector('.modal-backdrop');
+      oldModal?.remove();
+      if (modal) this.root.insertAdjacentHTML('beforeend', `<div class="modal-backdrop"><section class="modal ${infoPanelClass(this.panel ?? 'result')}" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button class="modal-close" aria-label="关闭弹层" data-action="${this.panel ? 'close' : 'dismiss-result'}">×</button>${this.modalContent()}</section></div>`);
+    }
     const animateObsession = this.obsessionVisualFrom !== null;
     const renderedBattleID = s.BattleID;
     this.obsessionVisualFrom = null;

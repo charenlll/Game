@@ -38,7 +38,7 @@ test('1600x900舞台在全部目标横屏尺寸中等比居中且坐标不漂移
   let baseline: Awaited<ReturnType<typeof stageSnapshot>> | undefined;
   for (const size of landscapeSizes) {
     await page.setViewportSize(size);
-    if (!baseline) await page.goto('/?seed=42');
+    if (!baseline) await page.goto('/?seed=42&test-run=1');
     const expectedScale = Math.min(size.width / 1600, size.height / 900);
     await expect.poll(() => page.locator('.game-stage').getAttribute('data-scale')).toBe(String(expectedScale));
     await expect.poll(async () => (await page.locator('.game-stage').boundingBox())?.x).toBeCloseTo((size.width - 1600 * expectedScale) / 2, 1);
@@ -60,7 +60,7 @@ test('1600x900舞台在全部目标横屏尺寸中等比居中且坐标不漂移
 
 test('窗口尺寸往返不会累计缩放误差', async ({ page }) => {
   await page.setViewportSize({ width: 1980, height: 1020 });
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const before = await stageSnapshot(page);
   await page.setViewportSize({ width: 1600, height: 900 });
   await page.setViewportSize({ width: 1366, height: 768 });
@@ -75,7 +75,7 @@ test('窗口尺寸往返不会累计缩放误差', async ({ page }) => {
 test('手机横屏缩放后触摸拖牌仍按舞台坐标结算', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 932, height: 430 }, hasTouch: true, isMobile: true });
   const page = await context.newPage();
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
   const card = page.locator('[data-card="common_001"]').first();
   const box = (await card.boundingBox())!;
@@ -89,7 +89,7 @@ test('手机横屏缩放后触摸拖牌仍按舞台坐标结算', async ({ brows
 });
 
 test('竖屏只显示全局旋转提示且旋转后状态保留', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await page.getByRole('button', { name: /结束回合/ }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator('.viewport-rotate')).toBeVisible();
@@ -101,7 +101,7 @@ test('竖屏只显示全局旋转提示且旋转后状态保留', async ({ page 
 
 test('奖励卡牌与卡座在全部目标横屏尺寸中保持相同对齐', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 900 });
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
   await page.evaluate(() => (globalThis as any).__nightFerryDebug.finishBattle('won'));
   await expect(page.locator('.reward-screen')).toBeVisible();

@@ -1,10 +1,16 @@
 .game-viewport{position:fixed;inset:0;overflow:hidden;background:#071720}
 .game-viewport::after{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 44%,transparent 25%,#07131f50 77%,#06101ad9 100%)}
+.game-viewport::before{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:#000;opacity:0;transition:opacity .45s ease}
+.game-viewport.prologue-story-black::before{z-index:2;opacity:1;transition:none}
+.game-viewport.prologue-story-black .game-stage{z-index:3}
 .viewport-background{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .viewport-background[src=""]{visibility:hidden}
 .safe-area-probe{position:absolute;inset:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);pointer-events:none;visibility:hidden}
 .game-stage{position:absolute;z-index:1;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:visible}
 .viewport-overlay{position:fixed;z-index:90;inset:0;overflow:hidden;pointer-events:none}
+.battle-popup-layer{position:absolute;z-index:100;inset:0;pointer-events:none}
+.battle-popup-layer .modal-backdrop{position:absolute;z-index:1;inset:0;pointer-events:auto}
+.battle-popup-layer .modal{transform:scale(var(--viewport-stage-scale,1));transform-origin:center}
 .viewport-rotate{display:none;position:fixed;z-index:200;inset:0;background:radial-gradient(ellipse at center,#284a46,#081c29);text-align:center;align-items:center;justify-content:center;flex-direction:column;padding:35px;color:#e6e4ce}
 .viewport-rotate span{display:block;font-size:90px;line-height:1.2;color:#d4bd80;transform:rotate(90deg);margin-bottom:30px}
 .viewport-rotate h2{font-family:var(--serif);font-size:23px;font-weight:400;line-height:1.8;letter-spacing:3px}
@@ -32,7 +38,7 @@
 .resource-cluster .light-value{font-size:45px}
 .draw-pile{right:280px;bottom:18px;width:135px;height:135px}
 .draw-pile .draw-count{font-size:45px}
-.trait-badge{top:auto;right:48px;bottom:118px;width:65px;height:65px;padding:0}
+.trait-badge{top:auto;right:48px;bottom:145px;width:65px;height:65px;padding:0}
 .end-button{width:170px}
 .selection-control{width:330px}
 .modal-backdrop{position:absolute;inset:0;padding:16px}

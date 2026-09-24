@@ -1,0 +1,45 @@
+.prologue-scene{position:relative;width:1600px;height:900px;overflow:hidden;isolation:isolate;color:#f4efe0;font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#000}
+.prologue-scene.is-story-black{background:#000}
+.prologue-background{display:none}
+.prologue-darken{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#06131b55 0%,#07192382 48%,#06131b99 100%);pointer-events:none}
+.story-character{position:absolute;z-index:2;bottom:0;height:83%;object-fit:contain;object-position:center bottom;pointer-events:none;filter:brightness(.38);transition:filter .22s ease,opacity .22s ease}
+.story-character.is-active{filter:brightness(1)}
+.story-character.story-dim{filter:brightness(.62)}
+.story-character.story-child{left:3%;width:28%}
+.story-character.story-feichuan{right:2%;width:29%;height:90%;bottom:0}
+.story-character[hidden]{display:none}
+.story-dialogue{position:absolute;z-index:5;left:50%;top:51%;transform:translate(-50%,-50%);width:min(600px,40%);min-height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px 36px;background:transparent;pointer-events:none}
+.story-speaker{margin-bottom:13px;color:#e5cf9b;font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:8px;text-shadow:0 2px 8px #07141b}
+.story-text{font-size:32px;font-weight:700;line-height:1.8;letter-spacing:2px;text-shadow:0 2px 7px #06141d,0 0 16px #06141d}
+.story-continue{position:absolute;z-index:6;left:50%;bottom:48px;transform:translateX(-50%);color:#e6d39f;font-size:18px;letter-spacing:5px;text-shadow:0 2px 8px #06141d;animation:story-prompt 1.6s ease-in-out infinite;pointer-events:none}
+.story-skip-trigger{position:absolute;z-index:10;right:40px;top:34px;padding:12px 22px;border:1px solid #b9a770;border-radius:5px;background:#152a31dd;color:#e8dfc9;font:600 18px "Microsoft YaHei","PingFang SC",sans-serif;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 14px #0008;transition:background .16s ease,color .16s ease}
+.story-skip-trigger:hover{background:#344b4c;color:#fff2c4}
+.skip-confirm-backdrop{position:absolute;z-index:20;inset:0;display:grid;place-items:center;background:#000b;backdrop-filter:blur(5px)}
+.skip-confirm-dialog{width:520px;padding:44px 42px;text-align:center;background:linear-gradient(145deg,#1a373c,#0c242d);border:1px solid #b7a36c;box-shadow:0 16px 48px #02090dcc,inset 0 0 0 4px #d0c18210;color:#eee8d7}
+.skip-confirm-dialog h2{font:700 31px var(--serif);letter-spacing:7px;color:#e3cc99;margin:0 0 18px}
+.skip-confirm-dialog p{font-size:19px;line-height:1.8;margin:0 0 26px}
+.skip-confirm-actions{display:flex;justify-content:center;gap:18px}
+.skip-confirm-actions .primary-button{width:180px;min-height:60px;font-size:19px;letter-spacing:3px}
+.skip-confirm-actions .skip-confirm-secondary{filter:grayscale(.75) brightness(.78)}
+@keyframes story-prompt{50%{opacity:.45;transform:translate(-50%,3px)}}
+.story-prop{position:absolute;z-index:4;left:50%;bottom:13%;width:250px;height:160px;transform:translateX(-50%);object-fit:contain;filter:drop-shadow(0 12px 18px #030b0dbb);pointer-events:none;animation:story-prop-arrive .24s ease-out both}
+@keyframes story-prop-arrive{from{opacity:0;transform:translate(-50%,12px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+.prologue-obsession{position:absolute;z-index:7;left:50%;top:34px;transform:translateX(-50%);width:300px;text-align:center;color:#e9dec0;font-size:16px;letter-spacing:3px;text-shadow:0 2px 6px #06141d}
+.prologue-obsession-track{height:12px;margin-top:9px;border:1px solid #c9b67b;background:#071b25aa;box-shadow:0 0 14px #05131a;overflow:hidden}
+.prologue-obsession-track span{display:block;height:100%;background:linear-gradient(90deg,#174577,#348dd0);box-shadow:0 0 12px #44a9ff;transition:width .3s ease}
+.ferry-trace-layer{position:absolute;z-index:4;inset:0;pointer-events:none}
+.main-menu-screen .ferry-trace-layer{z-index:1}
+.ferry-trace{position:absolute;object-fit:contain;pointer-events:none}
+.trace-wooden-boat{left:25%;bottom:8%;width:220px;height:145px;filter:drop-shadow(0 9px 15px #02090dcc)}
+.prologue-retry-layer{position:absolute;z-index:12;inset:0;display:grid;place-items:center;background:#061923b8;backdrop-filter:blur(4px)}
+.prologue-retry-card{width:520px;padding:42px 38px;text-align:center;background:linear-gradient(145deg,#1a373c,#0c242d);border:1px solid #b7a36c;box-shadow:0 16px 48px #02090dcc,inset 0 0 0 4px #d0c18210}
+.prologue-retry-card h2{font:700 32px var(--serif);letter-spacing:8px;color:#e3cc99;margin-bottom:18px}
+.prologue-retry-card p{font-size:19px;line-height:1.8;color:#d7dfd4;margin-bottom:26px}
+.prologue-retry-button{width:245px;min-height:66px;font-size:22px}
+.prologue-ending-action{position:absolute;z-index:8;right:62px;bottom:45px;width:220px;min-height:64px;font-size:20px;letter-spacing:3px}
+.prologue-keepsake{position:relative;width:1600px;height:900px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#000;color:#f4efe0}
+.keepsake-art{width:360px;height:260px;object-fit:contain;filter:drop-shadow(0 0 28px #d9b75b70);animation:keepsake-arrive .9s ease-out both}
+.prologue-keepsake h1{font-family:var(--serif);font-size:34px;letter-spacing:12px;color:#e6d39f;text-shadow:0 0 18px #d8b45266}
+.prologue-keepsake-button{width:270px;min-height:72px;font-size:24px;letter-spacing:4px}
+@keyframes keepsake-arrive{from{opacity:0;transform:translateY(18px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.story-continue,.story-prop,.keepsake-art{animation:none}}

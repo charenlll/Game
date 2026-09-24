@@ -69,3 +69,7 @@ npm.cmd run test:browser
 - [素材规格与内容清单](docs/asset-checklist.md)
 - [Phase 1阶段报告](docs/phase-1-report.md)
 - [横屏界面验收](docs/phase-1-landscape-ui.md)
+
+## 核心叙事文档
+
+- [最高剧情方向与叙事闭环](docs/narrative-vision.md)：后续篇章、亡魂故事、角色养成和玩法叙事结合的最高参考。

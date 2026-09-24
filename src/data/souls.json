@@ -2,5 +2,10 @@
   {
     "SoulID": "waiting-soul", "Name": "候渡之魂", "Obsession": 30,
     "Story": "他在渡口等了很久。今夜，你愿意听听他的心事。", "ArtReference": null
+  },
+  {
+    "SoulID": "soul-000", "Name": "无名孩子", "Obsession": 60,
+    "Story": "他在寻找一艘普通的小木船。", "ArtReference": "assets/souls/prologue/GH-P01.png",
+    "HesitantArtReference": "assets/souls/prologue/GH-P02.png", "ReleasedArtReference": "assets/souls/prologue/GH-P03.png"
   }
 ]

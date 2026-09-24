@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
@@ -53,7 +53,24 @@ const files = {
   'ui/run/result/RR02信息底框.png': 'assets/ui/run/result/RR02.png',
   'effect/soul/FX01通用魂火.png': 'assets/effects/soul/FX01.png',
   'effect/soul/FX02释然魂光.png': 'assets/effects/soul/FX02.png',
+  'souls/soul-000/GH-P01初见孩子·普通状态.png': 'assets/souls/prologue/GH-P01.png',
+  'souls/soul-000/GH-P02初见孩子·迟疑状态.png': 'assets/souls/prologue/GH-P02.png',
+  'souls/soul-000/GH-P03初见孩子·释然状态.png': 'assets/souls/prologue/GH-P03.png',
+  'story/prologue/props/PR-P01孩子的小木船.png': 'assets/story/prologue/PR-P01.png',
+  'background/prologue/BA07五名渡口·序章主景.png': 'assets/backgrounds/prologue/BA07.png',
+  'background/prologue/BA08渡口附近·旧路河岸.png': 'assets/backgrounds/prologue/BA08.png',
+  'background/prologue/BA09临水浅滩·发现木船.png': 'assets/backgrounds/prologue/BA09.png',
 };
+const menuSourceDirectory = resolve(root, '资源图源文件', 'background', 'menu');
+try {
+  const menuSources = await readdir(menuSourceDirectory);
+  const background = menuSources.find(name => name.startsWith('BA06'));
+  const logo = menuSources.find(name => name.startsWith('LG01'));
+  if (background) files[`background/menu/${background}`] = 'assets/backgrounds/menu/main_menu_background.png';
+  if (logo) files[`background/menu/${logo}`] = 'assets/ui/menu/game_logo.png';
+} catch {
+  // Menu artwork is optional during development; the menu has a text logo fallback.
+}
 const report = [];
 for (const [source, destination] of Object.entries(files)) {
   const from = resolve(root, '资源图源文件', source);

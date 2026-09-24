@@ -86,8 +86,8 @@
   {
     "source": "ferrymen/feichuan/CH01绯川标准立绘.png",
     "destination": "assets/characters/CH01.png",
-    "bytes": 2589282,
-    "sha256": "3a12788c4701b7ed63f2aad1c09e1121a5a17be015759b54e701e1fa7a108d1c"
+    "bytes": 2030191,
+    "sha256": "b8acb1851fef1bab8b336067db7c552003e0da858077ea70a75cffdad7c47e4c"
   },
   {
     "source": "souls/soul-001/GH01执念状态.png",
@@ -290,7 +290,61 @@
   {
     "source": "effect/soul/FX02释然魂光.png",
     "destination": "assets/effects/soul/FX02.png",
-    "bytes": 1399373,
-    "sha256": "3d7d36bc3c8cf206f35d01901b4438ad20fb5cba3763300848b5fef754bbf589"
+    "bytes": 1154603,
+    "sha256": "151968fa038d688141ce8a1af7b3915df9826b7f5dee20e83be171fd310508b0"
+  },
+  {
+    "source": "souls/soul-000/GH-P01初见孩子·普通状态.png",
+    "destination": "assets/souls/prologue/GH-P01.png",
+    "bytes": 2054348,
+    "sha256": "803c512ef474039057d2d399b39fd4ac0b9224ab1f9262a610ef35419f7869ba"
+  },
+  {
+    "source": "souls/soul-000/GH-P02初见孩子·迟疑状态.png",
+    "destination": "assets/souls/prologue/GH-P02.png",
+    "bytes": 1908595,
+    "sha256": "fb40ca915c6f7fb16a23c0bc82f533b6203b29b56874dc0709454842a22f4191"
+  },
+  {
+    "source": "souls/soul-000/GH-P03初见孩子·释然状态.png",
+    "destination": "assets/souls/prologue/GH-P03.png",
+    "bytes": 2114564,
+    "sha256": "1ca050fe3f7dd339b5fea673f00b6406883145cca7759432b51159cb2792f2c0"
+  },
+  {
+    "source": "story/prologue/props/PR-P01孩子的小木船.png",
+    "destination": "assets/story/prologue/PR-P01.png",
+    "bytes": 1165364,
+    "sha256": "4d018ccec910f9c95afe77a81f0a1a23b6f4632b4671b6a9bfae8bde3c41bac7"
+  },
+  {
+    "source": "background/prologue/BA07五名渡口·序章主景.png",
+    "destination": "assets/backgrounds/prologue/BA07.png",
+    "bytes": 4825282,
+    "sha256": "3cbc9925c08b8ce01a8b053a30db12aa4fc58242ecf4b8461b164d13d9cbb013"
+  },
+  {
+    "source": "background/prologue/BA08渡口附近·旧路河岸.png",
+    "destination": "assets/backgrounds/prologue/BA08.png",
+    "bytes": 6586411,
+    "sha256": "f5cf9a65ce151b85cdf3de61b9b37938255cd002dbef27be7eeda1d1f3b26a1d"
+  },
+  {
+    "source": "background/prologue/BA09临水浅滩·发现木船.png",
+    "destination": "assets/backgrounds/prologue/BA09.png",
+    "bytes": 5290105,
+    "sha256": "05750c42b345cf8aa0438bd64c518c5811a3f31a78bf014adcbc91b282c78131"
+  },
+  {
+    "source": "background/menu/BA06主页背景.png",
+    "destination": "assets/backgrounds/menu/main_menu_background.png",
+    "bytes": 2019560,
+    "sha256": "48b3810ccb3c0aff3e754ec67d68fa3b83b5a9029584e75e3bd4998ebb211be1"
+  },
+  {
+    "source": "background/menu/LG01游戏logo.png",
+    "destination": "assets/ui/menu/game_logo.png",
+    "bytes": 1702000,
+    "sha256": "e90548675ec7d0329d4bc4765dfca1f4dc429ee551c26a7e84e66dab242b9d5f"
   }
 ]

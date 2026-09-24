@@ -40,7 +40,7 @@ test('CardTestScene组合全部卡牌并按归属绑定卡面与卡框', async (
 });
 
 test('拖回手牌取消：保留指针偏移，不扣灯火、不移牌', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const before = await handIds(page);
   const card = page.locator('.card').first();
   await expect(card).toBeEnabled();
@@ -56,7 +56,7 @@ test('拖回手牌取消：保留指针偏移，不扣灯火、不移牌', async
 });
 
 test('有效区松手只执行一次，Hand进入DiscardPile并补位', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const before = await handIds(page);
   const obsession = Number((await page.getByTestId('obsession').innerText()).match(/\d+/)![0]);
   const card = page.locator('[data-card="common_001"]').first();
@@ -73,7 +73,7 @@ test('有效区松手只执行一次，Hand进入DiscardPile并补位', async ({
 });
 
 test('桌面鼠标可原生拖出最上层手牌', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const card = page.locator('.card').last();
   await expect(card).toBeEnabled();
   const box = (await card.boundingBox())!;
@@ -85,7 +85,7 @@ test('桌面鼠标可原生拖出最上层手牌', async ({ page }) => {
 });
 
 test('抽牌效果允许超过五张且不侵占左侧资源区', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await drag(page, page.locator('[data-card="common_004"]').first(), 370, 150);
   await expect(page.locator('.card')).toHaveCount(6);
   const boxes = await page.locator('.card').evaluateAll(cards => cards.map(card => {
@@ -101,7 +101,7 @@ test('抽牌效果允许超过五张且不侵占左侧资源区', async ({ page 
 });
 
 test('结束回合超过5张时手动选择普通牌，浊念不可弃置', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await drag(page, page.locator('[data-card="common_004"]').first(), 370, 150);
   await expect(page.locator('.card')).toHaveCount(6);
   await page.getByRole('button', { name: /结束回合/ }).click();
@@ -115,7 +115,7 @@ test('结束回合超过5张时手动选择普通牌，浊念不可弃置', asyn
 });
 
 test('长按卡牌在中央放大，松手后关闭且不出牌', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const card = page.locator('.card').first();
   await expect(card).toBeEnabled();
   const id = await card.getAttribute('data-id');
@@ -136,7 +136,7 @@ test('长按卡牌在中央放大，松手后关闭且不出牌', async ({ page 
 });
 
 test('灯火不足拖入有效区仍取消', async ({ page }) => {
-  await page.goto('/?seed=2');
+  await page.goto('/?seed=2&test-run=1');
   await drag(page, page.locator('[data-card="common_002"]').first(), 370, 150);
   await expect(page.getByTestId('light')).toHaveText('1');
   await drag(page, page.locator('[data-card="common_004"]').first(), 370, 150);
@@ -151,7 +151,7 @@ test('灯火不足拖入有效区仍取消', async ({ page }) => {
 });
 
 test('整理行囊拖出后选择弃牌，取消零副作用，确认正确结算', async ({ page }) => {
-  await page.goto('/?seed=3');
+  await page.goto('/?seed=3&test-run=1');
   const before = await handIds(page);
   await drag(page, page.locator('[data-card="common_005"]'), 370, 150);
   await expect(page.getByRole('button', { name: '确认弃牌' })).toBeDisabled();
@@ -178,17 +178,17 @@ test('整理行囊拖出后选择弃牌，取消零副作用，确认正确结�
 });
 
 test('不带seed时每次新Run使用新的随机种子', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?test-run=1');
   await page.locator('.hand > .card').first().waitFor({ state: 'visible' });
   const firstSeed = await page.evaluate(() => (globalThis as any).__nightFerryDebug.state().Seed);
-  await page.goto('/');
+  await page.goto('/?test-run=1');
   await page.locator('.hand > .card').first().waitFor({ state: 'visible' });
   const secondSeed = await page.evaluate(() => (globalThis as any).__nightFerryDebug.state().Seed);
   expect(secondSeed).not.toBe(firstSeed);
 });
 
 test('结束回合位于底部中央且连点只前进一回合', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const button = page.getByRole('button', { name: /结束回合/ });
   const box = (await button.boundingBox())!;
   expect(box.x + box.width / 2).toBeCloseTo(844 / 2, 0);
@@ -199,7 +199,7 @@ test('结束回合位于底部中央且连点只前进一回合', async ({ page 
 });
 
 test('绯川从右下越界放大，姓名覆盖其上，亡魂与PlayZone保留中央空间', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const layout = await page.evaluate(() => {
     const character = document.querySelector('.character')!.getBoundingClientRect();
     const name = document.querySelector('.character-name')!.getBoundingClientRect();
@@ -222,7 +222,7 @@ test('绯川从右下越界放大，姓名覆盖其上，亡魂与PlayZone保留
 });
 
 test('左下资源整合成一组且卡牌没有投影', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const result = await page.evaluate(() => {
     const cluster = document.querySelector('.resource-cluster')!.getBoundingClientRect();
     const cardStyle = getComputedStyle(document.querySelector('.card')!);
@@ -240,7 +240,7 @@ test('左下资源整合成一组且卡牌没有投影', async ({ page }) => {
 });
 
 test('牌库UI、核心图标与灵魂特效使用正式路径且无旧编号', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.draw-pile .deck-stack img')).toHaveCount(3);
   await expect(page.locator('.draw-pile .deck-stack img').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
   await expect(page.locator('.discard-pile img')).toHaveAttribute('src', '/assets/ui/card/UC02.png');
@@ -252,7 +252,7 @@ test('牌库UI、核心图标与灵魂特效使用正式路径且无旧编号', 
 });
 
 test('善贾使用TR01并在实际获得灯火后进入激活状态', async ({ page }) => {
-  await page.goto('/?seed=3');
+  await page.goto('/?seed=3&test-run=1');
   const trait = page.locator('.trait-badge');
   await expect(trait).toBeEnabled();
   await expect(trait.locator('img')).toHaveAttribute('src', '/assets/ui/traits/TR01.png');
@@ -274,7 +274,7 @@ test('善贾使用TR01并在实际获得灯火后进入激活状态', async ({ p
 });
 
 test('讨价还价复用手牌选择并通过UI02抽1张', async ({ page }) => {
-  await page.goto('/?seed=5');
+  await page.goto('/?seed=5&test-run=1');
   const target = page.locator('[data-card="common_001"]').first();
   const targetID = await target.getAttribute('data-id');
   await drag(page, page.locator('[data-card="feichuan_003"]'), 370, 150);
@@ -297,7 +297,7 @@ test('讨价还价复用手牌选择并通过UI02抽1张', async ({ page }) => {
 test('Intent提前显示并位于居中亡魂名称左侧', async ({ page }) => {
   for (const viewport of [{ width: 2560, height: 1440 }, { width: 1920, height: 1080 }, { width: 1654, height: 800 }, { width: 1600, height: 900 }, { width: 1366, height: 768 }]) {
     await page.setViewportSize(viewport);
-    await page.goto('/?seed=42');
+    await page.goto('/?seed=42&test-run=1');
     await expect(page.getByTestId('intent').locator('b')).not.toHaveText('');
     const layout = await page.evaluate(() => {
       const soul = document.querySelector('.soul-target')!.getBoundingClientRect();
@@ -318,7 +318,7 @@ test('Intent提前显示并位于居中亡魂名称左侧', async ({ page }) => 
 });
 
 test('点击Intent使用统一弹窗显示完整说明且文字加粗', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.card').first()).toBeEnabled();
   const intentName = await page.getByTestId('intent').locator('b').innerText();
   await page.getByTestId('intent').click();
@@ -329,7 +329,7 @@ test('点击Intent使用统一弹窗显示完整说明且文字加粗', async ({
 });
 
 test('牌组弹窗使用实体卡牌横向滑动并在卡牌下方显示数量', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await page.locator('.draw-pile').click();
   const carousel = page.locator('.deck-carousel');
   await expect(carousel).toBeVisible();
@@ -342,7 +342,7 @@ test('牌组弹窗使用实体卡牌横向滑动并在卡牌下方显示数量',
 });
 
 test('结束回合执行预告Intent且双击不重复结算', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const button = page.getByRole('button', { name: /结束回合/ });
   await button.dblclick();
   await expect(page.getByTestId('turn')).toHaveText('02');
@@ -350,7 +350,7 @@ test('结束回合执行预告Intent且双击不重复结算', async ({ page }) 
 });
 
 test('亡魂Intent反馈完成前新回合手牌不提前占据底部布局', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
   const before = await page.locator('.hand > .card').evaluateAll(cards => cards.map(card => ({
     id: card.getAttribute('data-id'), left: card.getBoundingClientRect().left,
@@ -370,7 +370,7 @@ test('亡魂Intent反馈完成前新回合手牌不提前占据底部布局', as
 test('迟疑临时加费只让左上角费用数字变红', async ({ page }) => {
   let found = false;
   for (let seed = 0; seed < 40; seed++) {
-    await page.goto(`/?seed=${seed}`);
+    await page.goto(`/?seed=${seed}&test-run=1`);
     if ((await page.getByTestId('intent').innerText()).includes('迟疑')) { found = true; break; }
   }
   expect(found).toBe(true);
@@ -384,7 +384,7 @@ test('迟疑临时加费只让左上角费用数字变红', async ({ page }) => 
 });
 
 test('竖屏提示横屏，旋转后对局保持', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await page.getByRole('button', { name: /结束回合/ }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator('.viewport-rotate')).toBeVisible();
@@ -393,7 +393,7 @@ test('竖屏提示横屏，旋转后对局保持', async ({ page }) => {
 });
 
 test('开局统一抽牌流使用UI02并在稳定后恢复手牌输入', async ({ page }) => {
-  await page.goto('/?seed=42', { waitUntil: 'commit' });
+  await page.goto('/?seed=42&test-run=1', { waitUntil: 'commit' });
   await page.locator('.flow-card-back').first().waitFor({ state: 'attached' });
   await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
   expect(await page.locator('.flow-card-back').first().evaluate(element => parseFloat((element as HTMLElement).style.left))).toBeGreaterThan(550);
@@ -405,7 +405,7 @@ test('开局统一抽牌流使用UI02并在稳定后恢复手牌输入', async (
 test('杂念从Intent进入手牌并支付1灯火进入消耗牌堆', async ({ page }) => {
   let found = false;
   for (let seed = 0; seed < 40; seed++) {
-    await page.goto(`/?seed=${seed}`);
+    await page.goto(`/?seed=${seed}&test-run=1`);
     await expect(page.locator('.hand > .card').first()).toBeEnabled();
     if ((await page.getByTestId('intent').innerText()).includes('杂念滋生')) { found = true; break; }
   }
@@ -421,7 +421,7 @@ test('杂念从Intent进入手牌并支付1灯火进入消耗牌堆', async ({ p
 });
 
 test('第六夜未化解时延迟显示渡魂未竟并保留未释然亡魂', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   for (let turn = 2; turn <= 6; turn++) {
     await endTurn(page);
     await expect(page.getByTestId('turn')).toHaveText(String(turn).padStart(2, '0'));
@@ -436,7 +436,7 @@ test('第六夜未化解时延迟显示渡魂未竟并保留未释然亡魂', as
 });
 
 test('抽牌动画中重新开始会清除旧队列并恢复新对局输入', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await page.getByRole('button', { name: '打开菜单' }).click();
   await page.getByRole('button', { name: '重试相同牌序' }).click();
   await expect(page.locator('.flow-card-back')).toHaveCount(0);
@@ -446,7 +446,7 @@ test('抽牌动画中重新开始会清除旧队列并恢复新对局输入', as
 });
 
 test('Phase2C奖励选择确认后才扩充Run牌组并进入第二场', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
   await page.evaluate(() => (globalThis as any).__nightFerryDebug.finishBattle('won'));
   await expect(page.locator('.reward-screen')).toBeVisible();
@@ -482,7 +482,7 @@ test('Phase2C奖励选择确认后才扩充Run牌组并进入第二场', async (
 });
 
 test('三场成功进入Run Result，第二场失败会立即暂止', async ({ page }) => {
-  await page.goto('/?seed=21');
+  await page.goto('/?seed=2&test-run=11');
   for (let encounter = 1; encounter <= 3; encounter++) {
     await page.evaluate(() => (globalThis as any).__nightFerryDebug.finishBattle('won'));
     if (encounter < 3) {
@@ -509,7 +509,7 @@ test('三场成功进入Run Result，第二场失败会立即暂止', async ({ p
 });
 
 test('RR02信息框保持9-Slice且打开详情不改变底层资源尺寸', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
   const original = await page.locator('.resource-cluster').evaluate(element => {
     const box = element.getBoundingClientRect(); return { width: box.width, height: box.height, left: box.left, top: box.top };
@@ -531,7 +531,7 @@ test('RR02信息框保持9-Slice且打开详情不改变底层资源尺寸', asy
 });
 
 test('结束回合仅保留主文字并用基础RB01代码高亮', async ({ page }) => {
-  await page.goto('/?seed=42');
+  await page.goto('/?seed=42&test-run=1');
   const button = page.getByRole('button', { name: '结束回合' });
   await expect(button).toBeEnabled();
   await expect(button.locator('small')).toHaveCount(0);

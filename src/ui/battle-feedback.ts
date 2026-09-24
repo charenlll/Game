@@ -16,6 +16,7 @@ export class BattleFeedback {
     this.preloaded = [
       Assets.cards.back, Assets.piles.UC01, Assets.piles.UC02, Assets.piles.UC03,
       Assets.effects.soul_flame, Assets.effects.release_glow, Assets.souls.unresolved, Assets.souls.released,
+      ...Object.values(Assets.souls.prologueChild),
       Assets.results.success, Assets.results.failure, Assets.traits.TR01,
     ].map(path => { const image = new Image(); image.src = assetURL(path); return image; });
     void this.preloaded.length;

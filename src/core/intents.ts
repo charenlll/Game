@@ -24,8 +24,9 @@ export const intents = new Map<IntentID, IntentData>(rawIntents.map(raw => {
   return [raw.id as IntentID, Object.freeze(raw as IntentData)];
 }));
 export function getIntent(id: IntentID): IntentData { const intent = intents.get(id); if (!intent) throw new Error(`缺少Intent：${id}`); return intent; }
-export function randomIntent(state: Pick<BattleState, 'RandomState'>): IntentInstance {
-  return { ...BattleConfig.intentPool[Math.floor(random(state) * BattleConfig.intentPool.length)] };
+export function randomIntent(state: Pick<BattleState, 'RandomState'>, pool: readonly IntentInstance[] = BattleConfig.intentPool): IntentInstance {
+  if (!pool.length) throw new Error('Intent池不能为空');
+  return { ...pool[Math.floor(random(state) * pool.length)] };
 }
 export function getIntentDisplay(instance: IntentInstance): IntentData {
   const intent = getIntent(instance.IntentID);
