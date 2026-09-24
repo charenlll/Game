@@ -38,11 +38,44 @@ export function createGameViewport(host: HTMLElement): GameViewport {
     stage.style.transform = `scale(${scale})`;
     stage.dataset.scale = String(scale);
     viewport.style.setProperty('--viewport-stage-scale', String(scale));
+    syncSafeViewports();
+  };
+
+  const syncSafeViewports = (): void => {
+    const safeViews = stage.querySelectorAll<HTMLElement>('.hub-safe-viewport,.menu-safe-viewport');
+    if (!safeViews.length) return;
+    const visual = window.visualViewport;
+    const style = getComputedStyle(probe);
+    const safeLeft = parseFloat(style.paddingLeft) || 0;
+    const safeRight = parseFloat(style.paddingRight) || 0;
+    const safeTop = parseFloat(style.paddingTop) || 0;
+    const safeBottom = parseFloat(style.paddingBottom) || 0;
+    const viewportWidth = visual?.width ?? window.innerWidth;
+    const viewportHeight = visual?.height ?? window.innerHeight;
+    const offsetLeft = (visual?.offsetLeft ?? 0) + safeLeft;
+    const offsetTop = (visual?.offsetTop ?? 0) + safeTop;
+    const safeWidth = Math.max(1, viewportWidth - safeLeft - safeRight);
+    const safeHeight = Math.max(1, viewportHeight - safeTop - safeBottom);
+    const hubScale = Math.min(safeWidth / 1600, safeHeight / 800);
+    viewport.style.setProperty('--viewport-safe-800-scale', String(hubScale));
+    const desiredLeft = offsetLeft + (safeWidth - 1600 * hubScale) / 2;
+    const desiredTop = offsetTop + (safeHeight - 800 * hubScale) / 2;
+    viewport.style.setProperty('--viewport-safe-800-left', `${desiredLeft}px`);
+    viewport.style.setProperty('--viewport-safe-800-top', `${desiredTop}px`);
+    const stageRect = stage.getBoundingClientRect();
+    const stageScale = stageRect.width / 1600 || 1;
+    for (const safeView of safeViews) {
+      safeView.style.left = `${(desiredLeft - stageRect.left) / stageScale}px`;
+      safeView.style.top = `${(desiredTop - stageRect.top) / stageScale}px`;
+      safeView.style.transform = `scale(${hubScale / stageScale})`;
+      safeView.dataset.scale = String(hubScale);
+    }
   };
 
   const syncBackground = (): void => {
-    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background,.menu-background,.prologue-background');
+    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background,.menu-background,.prologue-background,.hub-background,.growth-background');
     if (source?.src && background.src !== source.src) background.src = source.src;
+    syncSafeViewports();
   };
   const resizeObserver = new ResizeObserver(update);
   const mutationObserver = new MutationObserver(syncBackground);

@@ -41,7 +41,7 @@ test('第一战背景和数值正确，第二战能恢复可操作手牌并使�
   await expect(page.getByTestId('obsession')).toHaveText('执念 40 / 40');
 
   await page.evaluate(() => (globalThis as any).__nightFerryDebug.finishBattle('won'));
-  await expect(page.locator('.reward-screen')).toBeVisible();
+  await expect(page.locator('.reward-screen')).toBeVisible({ timeout: 15000 });
   await page.locator('.reward-option').first().click();
   await page.getByRole('button', { name: '收入行囊' }).click();
   await advanceToBeat(page, 'transition-battle2');
@@ -63,7 +63,7 @@ test('第一战背景和数值正确，第二战能恢复可操作手牌并使�
   await expect.poll(() => page.evaluate(() => (globalThis as any).__nightFerryDebug.state().battle.Stats.CardsPlayed)).toBeGreaterThan(beforePlayed);
 });
 
-test('完成整章后先展示黑屏信物，点击获取才保存并返回主菜单', async ({ page }) => {
+test('完成整章后先展示黑屏信物，点击获取才保存并进入驿站', async ({ page }) => {
   await page.goto('/?seed=42');
   await page.getByRole('button', { name: '开始游戏' }).click();
   await advanceToBeat(page, 'transition-battle1');
@@ -92,8 +92,8 @@ test('完成整章后先展示黑屏信物，点击获取才保存并返回主�
   expect(await page.evaluate(() => localStorage.getItem('night-ferry.prologue.v1'))).toBeNull();
 
   await page.getByRole('button', { name: '获取信物' }).click();
-  await expect(page.locator('.main-menu-screen')).toBeVisible();
-  await expect(page.locator('.ferry-trace[data-trace-id="prologue-wooden-boat"]')).toBeVisible();
+  await expect(page.locator('.hub-screen')).toBeVisible();
+  await expect(page.locator('.hub-memento-slot')).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.prologue.v1')!).prologue_complete)).toBe(true);
 });
 
@@ -154,6 +154,8 @@ test('第二战执念归零后不依赖卡牌动画即可进入后续剧情', as
   await page.mouse.move(800, 400, { steps: 8 });
   await page.mouse.up();
   await expect(page.locator('.soul-target')).toHaveClass(/releasing/);
+  await expect(page.locator('.soul-unresolved')).toHaveCSS('animation-name', 'soul-dissolve-out');
+  await expect(page.locator('.soul-released')).toHaveCSS('animation-name', 'soul-reform-in');
   await expect(page.locator('.modal-backdrop')).toHaveCount(0);
   await expect(page.locator('.prologue-scene')).toHaveAttribute('data-beat-id', 'beat-0327');
   await expect(page.locator('.story-text')).toContainText('孩子抱着船坐回岸边');

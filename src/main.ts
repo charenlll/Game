@@ -7,6 +7,7 @@ import { createGameViewport } from './ui/viewport';
 import './ui/viewport.css';
 import './ui/main-menu.css';
 import './ui/prologue.css';
+import './ui/hub-view.css';
 
 const app = document.querySelector<HTMLElement>('#app');
 if (!app) throw new Error('页面缺少应用容器');

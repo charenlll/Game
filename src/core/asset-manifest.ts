@@ -1,5 +1,20 @@
 export const Assets = Object.freeze({
   menu: { background: 'assets/backgrounds/menu/main_menu_background.png', logo: 'assets/ui/menu/game_logo.png' },
+  hub: {
+    background: 'assets/backgrounds/hub/HB01.png', growthBackground: 'assets/backgrounds/hub/HB14.png',
+    shelf: 'assets/ui/hub/HB02.png', arrow: 'assets/ui/hub/HB03.png', category: 'assets/ui/hub/HB08.png',
+    primaryButton: 'assets/ui/hub/HB05.png', secondaryButton: 'assets/ui/hub/HB06.png', detailPanel: 'assets/ui/hub/HB07.png',
+    locked: 'assets/ui/hub/HB09.png', settings: 'assets/ui/hub/HB10.png', ferrymanCard: 'assets/ui/hub/HB11.png',
+    growthNode: 'assets/ui/hub/HB15.png', back: 'assets/ui/hub/HB16.png',
+    infoPanel: 'assets/ui/hub/characters/info_panel_9slice.png',
+    stageEntry: 'assets/ui/hub/stages/stage_entry_panel.png', ferryPrimaryButton: 'assets/ui/hub/buttons/ferry_primary_button.png',
+  },
+  resources: { copper: 'assets/ui/resources/RS01.png', soulFlame: 'assets/ui/resources/RS02.png' },
+  ferrymen: {
+    feichuan: { portrait: 'assets/characters/CH01.png', avatar: 'assets/characters/AV01.png' },
+    moyu: { portrait: 'assets/characters/CH02.png', avatar: 'assets/characters/AV02.png' },
+    qinglan: { portrait: 'assets/characters/CH03.png', avatar: 'assets/characters/AV03.png' },
+  },
   prologue: {
     backgrounds: {
       ferry: 'assets/backgrounds/prologue/BA07.png',

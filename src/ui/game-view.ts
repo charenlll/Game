@@ -25,6 +25,7 @@ export interface BattleViewOptions {
   soulArtState?: 'normal' | 'hesitant';
   skipVictoryPresentation?: boolean;
   releaseOnlyVictory?: boolean;
+  onReturnToMenu?: () => void;
   onComplete?: (result: 'won' | 'lost') => void;
 }
 interface DragState {
@@ -466,6 +467,13 @@ export class BattleView {
           this.notice = `手牌超过5张，请选择 ${this.requiredDiscard()} 张普通牌弃置。`;
         } else await this.resolveEndTurn();
         break;
+      case 'return-menu':
+        if (!this.options.onReturnToMenu) return;
+        this.feedback.cancel();
+        if (this.pressTimer) clearTimeout(this.pressTimer);
+        this.pressTimer = null;
+        this.options.onReturnToMenu();
+        return;
       case 'restart': case 'replay': {
         this.feedback.cancel();
         if (this.pressTimer) clearTimeout(this.pressTimer);
@@ -523,7 +531,7 @@ export class BattleView {
 
   private modalContent(): string {
     const s = this.battle.state;
-    if (this.panel === 'menu') return `<h2 id="dialog-title">夜渡</h2><p class="modal-subtitle">无名渡口 · 单场渡魂</p><div class="menu-grid"><button data-action="help">玩法说明</button><button data-action="deck">牌组一览</button><button data-action="log">渡魂手记</button><button data-action="replay">重试相同牌序</button><button data-action="restart">重新开始</button></div><p class="seed">牌序编号 ${s.Seed}</p>`;
+    if (this.panel === 'menu') return `<h2 id="dialog-title">设置</h2><div class="battle-menu-actions">${primaryButton('重新开始', 'restart', false, 'battle-menu-restart')}${primaryButton('返回主菜单', 'return-menu', !this.options.onReturnToMenu, 'battle-menu-return')}</div>`;
     if (this.panel === 'help') return `<h2 id="dialog-title">玩法说明</h2><div class="rules"><p><b>出牌</b>按住手牌，向上拖进中央战斗区，松手使用；拖回底部或取消手势不会消耗灯火。</p><p><b>目标</b>6夜内将亡魂执念降至0。</p><p><b>回合</b>未使用的牌会保留。每回合恢复灯火并摸2张牌；结束回合时若超过5张，需手动选择普通牌弃到5张。</p><p><b>浊念</b>踌躇不能使用；杂念可支付1灯火移出本局。所有浊念都不能被弃置。</p><p><b>换牌</b>拖出整理行囊后，再选择2张其他普通手牌并确认。</p></div>`;
     if (this.panel === 'deck') {
       const piles = [...s.Hand, ...s.DrawPile, ...s.DiscardPile, ...s.Resolving, ...s.ExhaustPile];
@@ -566,7 +574,7 @@ export class BattleView {
     const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingPx}px`;
     this.root.innerHTML = `<main class="game ${this.resultStage === 'failed' ? 'battle-unresolved' : ''}" style="${variables}" aria-label="夜渡对局" ${modal ? 'inert' : ''}>
       <img class="scene-background" src="${assetURL(this.options.backgroundPath ?? sceneArt.background)}" alt=""><div class="scene-vignette"></div><div class="play-zone" aria-hidden="true"></div>
-      <header class="hud"><div class="location"><div><h1>无名渡口</h1><span>第一夜 · 子时</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button" data-action="menu" aria-label="打开菜单">☰</button></header>
+      <header class="hud"><div class="location"><div><h1>无名渡口</h1><span>第一夜 · 子时</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button settings-icon-button" data-action="menu" aria-label="设置"><img src="${assetURL(Assets.hub.settings)}" alt=""></button></header>
       <section class="soul-target ${this.intentVisualOverride ? 'intent-reacting' : ''} ${this.resultStage === 'releasing' ? 'releasing' : ''} ${this.resultStage === 'released' ? 'released' : ''}" aria-label="亡魂"><div class="soul-hud"><div class="soul-title-row"><button class="intent-card ${this.intentResolving ? 'resolving' : ''}" data-testid="intent" data-action="intent" aria-label="查看亡魂意图：${esc(intent.name)}"><img src="${assetURL(Assets.battle.intent)}" alt=""><span><b>${esc(intent.name)}</b></span></button><h2>${esc(activeSoul.Name)}</h2></div><div class="soul-status-line"><button class="obsession-track" data-action="soul" aria-label="查看亡魂状态"><span style="width:${(this.obsessionVisualFrom ?? s.Obsession) / s.MaxObsession * 100}%"></span><strong data-testid="obsession">执念 ${s.Obsession} / ${s.MaxObsession}</strong></button></div></div><span class="soul-feedback-anchor" aria-hidden="true"></span><img class="release-glow" src="${assetURL(Assets.effects.release_glow)}" alt=""><img class="soul-image soul-unresolved" src="${assetURL(unresolvedSoulArt ?? Assets.souls.unresolved)}" alt=""><img class="soul-image soul-released" src="${assetURL(releasedSoulArt ?? Assets.souls.released)}" alt=""></section>
       <aside class="character" aria-label="绯川"><img class="character-image" src="${assetURL(sceneArt.character)}" alt=""></aside>
       <div class="character-name" aria-hidden="true"><b>${esc(activeCharacter.Name)}</b><span>${esc(activeCharacter.AnimalType)} · 摆渡人</span></div>

@@ -19,6 +19,11 @@ const files = {
   'cards/feichuan/FC03讨价还价.png': 'assets/cards/feichuan/FC03.png',
   'cards/feichuan/FCF01绯川专属卡框.png': 'assets/cards/feichuan/FCF01.png',
   'ferrymen/feichuan/CH01绯川标准立绘.png': 'assets/characters/CH01.png',
+  'ferrymen/moyu/CH02墨羽标准立绘.png': 'assets/characters/CH02.png',
+  'ferrymen/qinglan/CH03青岚标准立绘.png': 'assets/characters/CH03.png',
+  'ferrymen/feichuan/AV01绯川头像.png': 'assets/characters/AV01.png',
+  'ferrymen/moyu/AV02墨羽头像.png': 'assets/characters/AV02.png',
+  'ferrymen/qinglan/AV03青岚头像.png': 'assets/characters/AV03.png',
   'souls/soul-001/GH01执念状态.png': 'assets/souls/GH01.png',
   'souls/soul-001/GH02释然状态.png': 'assets/souls/GH02.png',
   'background/battle/BA01战斗场景1.png': 'assets/backgrounds/BA01.png',
@@ -60,7 +65,32 @@ const files = {
   'background/prologue/BA07五名渡口·序章主景.png': 'assets/backgrounds/prologue/BA07.png',
   'background/prologue/BA08渡口附近·旧路河岸.png': 'assets/backgrounds/prologue/BA08.png',
   'background/prologue/BA09临水浅滩·发现木船.png': 'assets/backgrounds/prologue/BA09.png',
+  'background/hub/HB01驿站主题背景.png': 'assets/backgrounds/hub/HB01.png',
+  'background/hub/HB14摆渡人养成页背景.png': 'assets/backgrounds/hub/HB14.png',
+  'ui/hub/display/HB02标准信物收藏架.png': 'assets/ui/hub/HB02.png',
+  'ui/hub/display/HB08收藏分类标题底纹.png': 'assets/ui/hub/HB08.png',
+  'ui/hub/nacigation/HB03收藏架右翻页箭头.png': 'assets/ui/hub/HB03.png',
+  'ui/hub/nacigation/HB16通用返回按钮.png': 'assets/ui/hub/HB16.png',
+  'ui/hub/buttons/HB05主功能按钮底板.png': 'assets/ui/hub/HB05.png',
+  'ui/hub/buttons/HB06次级功能按钮底板.png': 'assets/ui/hub/HB06.png',
+  'ui/hub/buttons/HB18墨绿圆形主按钮.png': 'assets/ui/hub/buttons/ferry_primary_button.png',
+  'ui/hub/icons/HB09未解锁标记.png': 'assets/ui/hub/HB09.png',
+  'ui/hub/icons/HB10设置图标.png': 'assets/ui/hub/HB10.png',
+  'ui/hub/panels/HB07信物详情面板.png': 'assets/ui/hub/HB07.png',
+  'ui/hub/characters/HB11摆渡人选择卡底板.png': 'assets/ui/hub/HB11.png',
+  'ui/hub/characters/HB15通用养成节点按钮.png': 'assets/ui/hub/HB15.png',
+  'ui/hub/stages/HB17条目底框.png': 'assets/ui/hub/stages/stage_entry_panel.png',
+  'ui/resources/RS01铜钱.png': 'assets/ui/resources/RS01.png',
+  'ui/resources/RS02魂火.png': 'assets/ui/resources/RS02.png',
 };
+const hubCharacterSourceDirectory = resolve(root, '资源图源文件', 'ui', 'hub', 'characters');
+try {
+  const hubCharacterSources = await readdir(hubCharacterSourceDirectory);
+  const infoPanel = hubCharacterSources.find(name => name.startsWith('HB19'));
+  if (infoPanel) files[`ui/hub/characters/${infoPanel}`] = 'assets/ui/hub/characters/info_panel_9slice.png';
+} catch {
+  // HB19 is optional until the character information panels are used.
+}
 const menuSourceDirectory = resolve(root, '资源图源文件', 'background', 'menu');
 try {
   const menuSources = await readdir(menuSourceDirectory);

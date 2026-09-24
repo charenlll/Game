@@ -45,7 +45,7 @@ export class RunController {
     }
   };
 
-  constructor(private readonly root: HTMLElement, seed: number, characterID = 'feichuan') {
+  constructor(private readonly root: HTMLElement, seed: number, characterID = 'feichuan', private readonly onReturnToMenu?: () => void) {
     this.state = createRun(characterID, seed);
     this.root.addEventListener('click', this.onClick);
     this.startBattle();
@@ -70,6 +70,7 @@ export class RunController {
       battleID: `run-${this.state.Seed}-encounter-${this.state.CurrentEncounter}`,
       characterID: this.state.SelectedCharacterID,
       deck: this.state.RunDeck,
+      onReturnToMenu: this.onReturnToMenu,
       onComplete: result => void this.onBattleComplete(result),
     });
   }

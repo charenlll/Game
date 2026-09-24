@@ -20,23 +20,78 @@ test('Logo素材无法加载时显示文字标题占位', async ({ page }) => {
   await expect(page.locator('.menu-logo h1')).toHaveText('夜渡');
 });
 
-test('主菜单在标准、低分辨率、宽屏和矮屏中保持舞台布局', async ({ page }) => {
-  for (const size of [{ width: 1600, height: 900 }, { width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 2560, height: 1080 }, { width: 932, height: 430 }]) {
+test('主菜单按1600×800逻辑画布在常见横屏尺寸中居中且元素不漂移', async ({ page }) => {
+  for (const size of [{ width: 1600, height: 800 }, { width: 1600, height: 900 }, { width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 1920, height: 1200 }, { width: 2560, height: 1080 }, { width: 932, height: 430 }]) {
     await page.setViewportSize(size);
     if (!await page.locator('.main-menu-screen').count()) await page.goto('/?seed=42');
+    const expectedScale = Math.min(size.width / 1600, size.height / 800);
+    await page.waitForFunction(({ width, height }) => {
+      const surface = document.querySelector<HTMLElement>('.menu-safe-viewport');
+      if (!surface) return false;
+      const scale = Math.min(width / 1600, height / 800);
+      const rect = surface.getBoundingClientRect();
+      return Math.abs(rect.left - (width - 1600 * scale) / 2) < 1 && Math.abs(rect.top - (height - 800 * scale) / 2) < 1;
+    }, size);
     const layout = await page.evaluate(() => {
-      const stage = document.querySelector<HTMLElement>('.game-stage')!;
-      const scale = Number(stage.dataset.scale);
+      const surface = document.querySelector<HTMLElement>('.menu-safe-viewport')!;
+      const scale = Number(surface.dataset.scale);
       const rect = (selector: string) => document.querySelector(selector)!.getBoundingClientRect();
-      const stageRect = stage.getBoundingClientRect();
-      const logical = (r: DOMRect) => ({ x: (r.left - stageRect.left) / scale, y: (r.top - stageRect.top) / scale, width: r.width / scale, height: r.height / scale });
-      return { logo: logical(rect('.menu-logo')), start: logical(rect('.menu-start-button')), settings: logical(rect('.menu-secondary')), version: logical(rect('.menu-version')) };
+      const surfaceRect = surface.getBoundingClientRect();
+      const logical = (r: DOMRect) => ({ x: (r.left - surfaceRect.left) / scale, y: (r.top - surfaceRect.top) / scale, width: r.width / scale, height: r.height / scale });
+      return { scale, surface: [surfaceRect.left, surfaceRect.top, surfaceRect.width, surfaceRect.height], logo: logical(rect('.menu-logo')), start: logical(rect('.menu-start-button')), settings: logical(rect('.menu-secondary')), version: logical(rect('.menu-version')) };
     });
+    expect(layout.scale).toBeCloseTo(expectedScale, 4);
+    expect(layout.surface[0]).toBeCloseTo((size.width - 1600 * expectedScale) / 2, 0);
+    expect(layout.surface[1]).toBeCloseTo((size.height - 800 * expectedScale) / 2, 0);
+    expect(layout.surface[2]).toBeCloseTo(1600 * expectedScale, 0);
+    expect(layout.surface[3]).toBeCloseTo(800 * expectedScale, 0);
     expect(layout.logo.x + layout.logo.width / 2).toBeCloseTo(800, 0);
     expect(layout.start.x + layout.start.width / 2).toBeCloseTo(800, 0);
     expect(layout.settings.x + layout.settings.width / 2).toBeCloseTo(800, 0);
-    expect(layout.version.y + layout.version.height).toBeCloseTo(876, 0);
+    expect(layout.version.y + layout.version.height).toBeCloseTo(776, 0);
   }
+});
+
+test('主菜单设置弹窗的遮罩铺满实际屏幕且弹窗按钮在各尺寸中可见', async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 800 });
+  await page.goto('/?seed=42');
+  await page.locator('.menu-secondary').click();
+  const backdrop = page.locator('.menu-settings-backdrop');
+  const dialog = page.getByRole('dialog', { name: '设置' });
+  await expect(dialog).toBeVisible();
+
+  for (const size of [{ width: 1600, height: 800 }, { width: 1600, height: 900 }, { width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 1920, height: 1200 }, { width: 2560, height: 1080 }, { width: 932, height: 430 }]) {
+    await page.setViewportSize(size);
+    const expectedScale = Math.min(size.width / 1600, size.height / 800);
+    await expect.poll(() => page.locator('.menu-safe-viewport').getAttribute('data-scale')).toBe(String(expectedScale));
+    const bounds = await page.evaluate(() => {
+      const backdrop = document.querySelector<HTMLElement>('.menu-settings-backdrop')!.getBoundingClientRect();
+      const dialog = document.querySelector<HTMLElement>('.menu-settings')!.getBoundingClientRect();
+      const button = document.querySelector<HTMLElement>('.menu-settings-close')!.getBoundingClientRect();
+      return { backdrop: [backdrop.left, backdrop.top, backdrop.width, backdrop.height], dialog: [dialog.left, dialog.top, dialog.right, dialog.bottom], button: [button.left, button.top, button.right, button.bottom] };
+    });
+    expect(bounds.backdrop).toEqual([0, 0, size.width, size.height]);
+    expect((bounds.dialog[0] + bounds.dialog[2]) / 2).toBeCloseTo(size.width / 2, 0);
+    expect((bounds.dialog[1] + bounds.dialog[3]) / 2).toBeCloseTo(size.height / 2, 0);
+    expect(bounds.dialog[0]).toBeGreaterThanOrEqual(0);
+    expect(bounds.dialog[1]).toBeGreaterThanOrEqual(0);
+    expect(bounds.dialog[2]).toBeLessThanOrEqual(size.width);
+    expect(bounds.dialog[3]).toBeLessThanOrEqual(size.height);
+    expect(bounds.dialog[2] - bounds.dialog[0]).toBeCloseTo(650 * expectedScale, 0);
+    expect(bounds.dialog[3] - bounds.dialog[1]).toBeCloseTo(300 * expectedScale, 0);
+    expect(bounds.button[0]).toBeGreaterThanOrEqual(bounds.dialog[0]);
+    expect(bounds.button[1]).toBeGreaterThanOrEqual(bounds.dialog[1]);
+    expect(bounds.button[2]).toBeLessThanOrEqual(bounds.dialog[2]);
+    expect(bounds.button[3]).toBeLessThanOrEqual(bounds.dialog[3]);
+  }
+});
+
+test('主菜单竖屏显示横屏提示且弹窗层不会穿透提示', async ({ page }) => {
+  await page.goto('/?seed=42');
+  await page.setViewportSize({ width: 430, height: 932 });
+  await expect(page.locator('.viewport-rotate')).toBeVisible();
+  await expect(page.locator('.menu-secondary')).toBeHidden();
+  await expect(page.locator('.menu-settings-backdrop')).toHaveCount(0);
 });
 
 test('设置显示最小占位并可返回，开始游戏进入序章', async ({ page }) => {

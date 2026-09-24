@@ -437,8 +437,8 @@ test('第六夜未化解时延迟显示渡魂未竟并保留未释然亡魂', as
 
 test('抽牌动画中重新开始会清除旧队列并恢复新对局输入', async ({ page }) => {
   await page.goto('/?seed=42&test-run=1');
-  await page.getByRole('button', { name: '打开菜单' }).click();
-  await page.getByRole('button', { name: '重试相同牌序' }).click();
+  await page.locator('button[data-action="menu"]').click();
+  await page.locator('[role="dialog"] [data-action="restart"]').click();
   await expect(page.locator('.flow-card-back')).toHaveCount(0);
   await expect(page.locator('.hand > .card')).toHaveCount(5);
   await expect(page.locator('.hand > .card').first()).toBeEnabled();
