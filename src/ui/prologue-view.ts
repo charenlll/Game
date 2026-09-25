@@ -20,6 +20,7 @@ import { CONTENT_VERSION } from '../data/content-version';
 
 export interface PrologueActions {
   returnToMenu(): void;
+  returnFromBattleToMenu(): void;
   completed(): void;
 }
 
@@ -224,6 +225,7 @@ export class PrologueController {
       backgroundPath: backgrounds[encounterID === 'battle1' ? 'road' : 'shallows'],
       soulArtState: encounterID === 'finalBattle' ? 'hesitant' : 'normal',
       releaseOnlyVictory: true,
+      onReturnToMenu: () => this.actions.returnFromBattleToMenu(),
       ...(snapshot ? { snapshot: toBattleRuntimeSnapshot(snapshot) } : {}),
       onCheckpoint: state => this.checkpoint('battle', state),
       onComplete: result => void this.onBattleComplete(encounterID, result, this.battleView?.state),

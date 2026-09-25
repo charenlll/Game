@@ -19,8 +19,9 @@ else {
   const viewport = createGameViewport(app);
   const showMainMenu = !(import.meta.env.DEV && new URLSearchParams(location.search).has('test-run'));
   const flow = new GameFlow(viewport.stage, seed, showMainMenu);
-  if (import.meta.env.DEV) (globalThis as typeof globalThis & { __nightFerryDebug?: { finishBattle(result: 'won' | 'lost'): void; state(): unknown } }).__nightFerryDebug = {
+  if (import.meta.env.DEV) (globalThis as typeof globalThis & { __nightFerryDebug?: { finishBattle(result: 'won' | 'lost'): void; returnToMenu(): void; state(): unknown } }).__nightFerryDebug = {
     finishBattle: result => flow.debugFinishBattle(result),
+    returnToMenu: () => flow.debugReturnToMenu(),
     state: () => flow.debugState(),
   };
 }

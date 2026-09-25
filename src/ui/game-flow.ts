@@ -26,6 +26,12 @@ export class GameFlow {
     else this.run?.debugFinishBattle(result);
   }
 
+  debugReturnToMenu(): void {
+    if (this.prologue) this.showMainMenu();
+    else if (this.run && this.prologueCompleted) this.showHub();
+    else this.showMainMenu();
+  }
+
   debugState(): unknown {
     return this.prologue ? this.prologue.debugState() : this.run ? structuredClone(this.run.state) : null;
   }
@@ -68,6 +74,7 @@ export class GameFlow {
     this.prologue?.destroy();
     this.prologue = new PrologueController(this.stage, this.seed, {
       returnToMenu: () => this.prologueCompleted ? this.showHub() : this.showMainMenu(),
+      returnFromBattleToMenu: () => this.showMainMenu(),
       completed: () => { this.prologueCompleted = true; },
     }, this.sessions, resume);
   }
