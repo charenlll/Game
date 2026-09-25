@@ -2,14 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { Battle } from '../src/core/battle';
 import { completePrologue, createPrologueState, resolveChildRelease } from '../src/core/prologue-state';
 import { prologueBattleEncounters, prologueBeats } from '../src/data/chapters/prologue';
+import { textForKey } from '../src/data/locales/text-catalog';
 
 describe('序章《初见》剧本与战斗配置', () => {
   it('包含旁白、角色对白、三场战斗节点和结尾信物段落', () => {
     expect(new Set(prologueBeats.map(beat => beat.id)).size).toBe(prologueBeats.length);
-    expect(prologueBeats.some(beat => beat.speaker === 'narrator' && beat.text.includes('水声很近'))).toBe(true);
+    expect(prologueBeats.some(beat => beat.speaker === 'narrator' && beat.textKey && textForKey(beat.textKey).includes('水声很近'))).toBe(true);
     expect(prologueBeats.filter(beat => beat.transition).map(beat => beat.transition)).toEqual(['battle1', 'battle2', 'finalBattle']);
-    expect(prologueBeats.some(beat => beat.text === '以后的我啊。')).toBe(true);
-    expect(prologueBeats.at(-1)).toMatchObject({ id: 'chapter-end', ending: true, text: '——序·初见，完。' });
+    expect(prologueBeats.some(beat => beat.textKey && textForKey(beat.textKey) === '以后的我啊。')).toBe(true);
+    expect(prologueBeats.at(-1)).toMatchObject({ id: 'chapter-end', ending: true, textKey: 'prologue.chapter-end' });
+    expect(textForKey(prologueBeats.at(-1)!.textKey!)).toBe('——序·初见，完。');
   });
 
   it('三场战斗执念逐场提升，最终战保留1点供剧情完成渡魂', () => {
@@ -17,7 +19,7 @@ describe('序章《初见》剧本与战斗配置', () => {
     expect([prologueBattleEncounters.battle1, prologueBattleEncounters.battle2, prologueBattleEncounters.finalBattle].map(encounter => encounter.VictoryObsession)).toEqual([0, 0, 1]);
   });
 
-  it('信物托付前不能释放亡魂，释放后才能领取并保存章节完成状态', () => {
+  it('信物托付前不能释放亡魂，释放后才能标记章节完成', () => {
     const state = createPrologueState(prologueBeats[0].id);
     expect(resolveChildRelease(state)).toBe(false);
     state.storyFlags.boat_entrusted = true;

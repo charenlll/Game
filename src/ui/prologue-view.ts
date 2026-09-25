@@ -3,13 +3,20 @@ import { cardDatabase } from '../core/card-database';
 import type { BattleState } from '../core/types';
 import { Assets } from '../core/asset-manifest';
 import { prologueBattleEncounters, prologueBeats, prologueBeatById, type PrologueBackground, type PrologueTransition, type StoryBeat } from '../data/chapters/prologue';
-import { completePrologue, createPrologueState, enterStoryBeat, resolveChildRelease, type PrologueState } from '../core/prologue-state';
+import { getChapterDefinition } from '../data/chapters/chapter-catalog';
+import { completePrologue, createPrologueState, resolveChildRelease, restorePrologueState, type PrologueFlag, type PrologueState } from '../core/prologue-state';
+import { encounterResultNodeId, enterCommands, nextChapterNodeId } from '../core/chapters/chapter-runtime';
 import sceneArt from '../data/scene-art.json';
+import { textForKey } from '../data/locales/text-catalog';
 import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view';
 import { BattleView } from './game-view';
 import { primaryButton } from './ui-components';
 import { renderFerryTraceLayer } from './ferry-traces';
 import type { RunState } from '../core/run';
+import type { SessionCoordinator } from '../app/session/session-coordinator';
+import type { ActiveSessionSnapshot, BattleSnapshot } from '../infrastructure/save/save-schema';
+import type { BattleRuntimeSnapshot } from '../core/battle';
+import { CONTENT_VERSION } from '../data/content-version';
 
 export interface PrologueActions {
   returnToMenu(): void;
@@ -19,11 +26,16 @@ export interface PrologueActions {
 type EncounterID = keyof typeof prologueBattleEncounters;
 type PrologueScreen = 'story' | 'battle' | 'reward' | 'retry' | 'keepsake';
 const backgrounds: Record<PrologueBackground, string> = Assets.prologue.backgrounds;
+const prologueChapter = getChapterDefinition('prologue');
 const speakerName: Record<StoryBeat['speaker'], string> = { narrator: '', player: '你', feichuan: '绯川', child: '孩子' };
 const cardArtPaths = [Assets.cards.frame, Assets.cards.feichuanFrame, Assets.cards.back, ...Object.values(Assets.prologue.child), Assets.prologue.woodenBoat];
 
+function toBattleRuntimeSnapshot(snapshot: BattleSnapshot): BattleRuntimeSnapshot {
+  return { state: snapshot.state, encounterConfig: snapshot.encounterConfig, turnIndex: snapshot.turnIndex, nextInstanceNumber: snapshot.nextInstanceNumber };
+}
+
 export class PrologueController {
-  readonly state: PrologueState = createPrologueState(prologueBeats[0].id);
+  readonly state: PrologueState;
   private readonly runState: RunState;
   private readonly viewport: HTMLElement | null;
   private screen: PrologueScreen = 'story';
@@ -36,6 +48,7 @@ export class PrologueController {
   private visibleText = '';
   private skipConfirmation = false;
   private readonly completedBattles = new Set<EncounterID>();
+  private appliedSessionEventIds = new Set<string>();
 
   private readonly onClick = (event: MouseEvent): void => {
     const target = event.target instanceof Element ? event.target : null;
@@ -61,6 +74,7 @@ export class PrologueController {
     if (action === 'select-reward' && actionTarget?.dataset.card) {
       this.selectedReward = actionTarget.dataset.card;
       this.renderReward();
+      this.checkpoint('reward');
       return;
     }
     if (action === 'claim-reward' && this.selectedReward) {
@@ -71,7 +85,10 @@ export class PrologueController {
       this.runState.Status = 'battle';
       this.selectedReward = null;
       this.rewards = [];
-      this.showNextAfterTransition('battle1');
+      const rewardNode = prologueChapter.nodes['reward-prologue-battle1'];
+      const nextId = rewardNode?.kind === 'reward' ? nextChapterNodeId(prologueChapter, rewardNode.id) : null;
+      if (!nextId) throw new Error('序章奖励节点缺少后续剧情。');
+      this.showBeat(nextId);
       return;
     }
     if (action === 'retry-battle' && this.currentEncounter) {
@@ -84,6 +101,7 @@ export class PrologueController {
     }
     if (action === 'acquire-keepsake') {
       if (completePrologue(this.state)) {
+        if (!this.sessions.completeChapter(prologueChapter.grants.prologue_complete!)) return;
         this.actions.completed();
         this.actions.returnToMenu();
       }
@@ -96,11 +114,32 @@ export class PrologueController {
     }
   };
 
-  constructor(private readonly root: HTMLElement, seed: number, private readonly actions: PrologueActions) {
-    this.runState = createRun('feichuan', seed);
+  constructor(private readonly root: HTMLElement, seed: number, private readonly actions: PrologueActions, private readonly sessions: SessionCoordinator, resume?: ActiveSessionSnapshot) {
+    const firstBeatId = prologueBeats[0]!.id;
+    const chapter = sessions.snapshot.campaign.chapters.prologue;
+    const resumeFlags: Partial<Record<PrologueFlag, true>> = {};
+    for (const [flag, enabled] of Object.entries(chapter?.flags ?? {})) if (enabled) resumeFlags[flag as PrologueFlag] = true;
+    this.state = resume?.mode === 'chapter' && resume.chapterId === 'prologue'
+      ? restorePrologueState(chapter?.currentNodeId ?? firstBeatId, resumeFlags, typeof chapter?.variables.childObsession === 'number' ? chapter.variables.childObsession : 40, chapter?.status === 'complete')
+      : createPrologueState(firstBeatId);
+    this.runState = resume?.mode === 'chapter' && resume.chapterId === 'prologue' && resume.runState
+      ? structuredClone(resume.runState)
+      : createRun('feichuan', seed);
+    this.currentEncounter = resume?.encounterId && resume.encounterId in prologueBattleEncounters ? resume.encounterId as EncounterID : null;
+    this.battleAttempt = resume?.battleAttempt ?? 0;
+    this.rewards = resume?.offeredRewardIds ?? [];
+    this.selectedReward = resume?.selectedRewardId ?? null;
+    this.appliedSessionEventIds = new Set(resume?.appliedSessionEventIds ?? []);
+    if (!resume) sessions.startPrologue(firstBeatId, this.runState);
     this.viewport = root.closest<HTMLElement>('.game-viewport');
     this.root.addEventListener('click', this.onClick);
-    this.showBeat(prologueBeats[0].id);
+    if (resume?.screen === 'battle' || resume?.screen === 'battle_result') {
+      if (!this.currentEncounter || !resume.battle) throw new Error('序章战斗存档缺少遭遇或战斗快照。');
+      this.startBattle(this.currentEncounter, false, resume.battle);
+    } else if (resume?.screen === 'reward') void this.preloadRewardImages().then(() => this.renderReward());
+    else if (resume?.screen === 'retry' && this.currentEncounter) this.renderRetry(this.currentEncounter);
+    else if (resume?.screen === 'keepsake') this.showKeepsake();
+    else this.showBeat(this.state.currentBeatId);
   }
 
   destroy(): void {
@@ -135,9 +174,8 @@ export class PrologueController {
       this.showKeepsake();
       return;
     }
-    const index = prologueBeats.findIndex(item => item.id === beat.id);
-    const next = prologueBeats[index + 1];
-    if (next) this.showBeat(next.id);
+    const nextId = nextChapterNodeId(prologueChapter, beat.id);
+    if (nextId) this.showBeat(nextId);
   }
 
   private handleTransition(transition: PrologueTransition): void {
@@ -158,10 +196,11 @@ export class PrologueController {
     this.setStoryBlack(true);
     this.applyStoryBeat(beat);
     this.renderStory(beat);
-    this.startTyping(beat.text);
+    this.startTyping(beat.textKey ? textForKey(beat.textKey) : '');
+    this.checkpoint('story');
   }
 
-  private startBattle(encounterID: EncounterID, retry = false): void {
+  private startBattle(encounterID: EncounterID, retry = false, snapshot?: BattleSnapshot): void {
     if (retry) {
       this.battleAttempt++;
       this.completedBattles.delete(encounterID);
@@ -172,9 +211,9 @@ export class PrologueController {
     this.setStoryBlack(false);
     const config = prologueBattleEncounters[encounterID];
     const encounter = { ...config };
-    this.state.childObsession = encounter.StartingObsession ?? this.state.childObsession;
+    if (!snapshot) this.state.childObsession = encounter.StartingObsession ?? this.state.childObsession;
     const encounterNumber = encounterID === 'battle1' ? 1 : encounterID === 'battle2' ? 2 : 3;
-    const seed = (this.runState.Seed + Math.imul(encounterNumber, 0x6d2b79f5) + Math.imul(this.battleAttempt, 0x9e3779b9)) >>> 0;
+    const seed = snapshot?.state.Seed ?? ((this.runState.Seed + Math.imul(encounterNumber, 0x6d2b79f5) + Math.imul(this.battleAttempt, 0x9e3779b9)) >>> 0);
     this.battleView?.destroy();
     this.battleView = new BattleView(this.root, {
       seed,
@@ -185,18 +224,24 @@ export class PrologueController {
       backgroundPath: backgrounds[encounterID === 'battle1' ? 'road' : 'shallows'],
       soulArtState: encounterID === 'finalBattle' ? 'hesitant' : 'normal',
       releaseOnlyVictory: true,
+      ...(snapshot ? { snapshot: toBattleRuntimeSnapshot(snapshot) } : {}),
+      onCheckpoint: state => this.checkpoint('battle', state),
       onComplete: result => void this.onBattleComplete(encounterID, result, this.battleView?.state),
     });
   }
 
   private async onBattleComplete(encounterID: EncounterID, result: 'won' | 'lost', battle?: Readonly<BattleState>): Promise<void> {
     if (this.currentEncounter !== encounterID || this.screen !== 'battle' || this.completedBattles.has(encounterID)) return;
+    const eventId = `prologue-battle:${this.runState.Seed}:${encounterID}:${this.battleAttempt}:${result}`;
+    if (this.appliedSessionEventIds.has(eventId)) return;
     this.completedBattles.add(encounterID);
+    this.appliedSessionEventIds.add(eventId);
     this.battleView?.destroy();
     this.battleView = null;
     if (result === 'lost') {
       this.screen = 'retry';
       this.renderRetry(encounterID);
+      this.checkpoint('retry');
       return;
     }
     this.state.childObsession = battle?.Obsession ?? prologueBattleEncounters[encounterID].VictoryObsession ?? 0;
@@ -206,6 +251,7 @@ export class PrologueController {
       this.runState.Status = 'reward';
       this.rewards = generateRewards(this.runState);
       this.selectedReward = null;
+      this.checkpoint('reward');
       await this.preloadRewardImages();
       this.screen = 'reward';
       this.renderReward();
@@ -255,17 +301,18 @@ export class PrologueController {
   private renderStory(beat: StoryBeat): void {
     const childReleased = this.state.storyFlags.child_released === true;
     const childSource = childReleased ? Assets.prologue.child.released : Assets.prologue.child.normal;
-    const showChild = this.state.storyFlags.met_child === true && !beat.text.includes('身影彻底消失');
+    const showChild = this.state.storyFlags.met_child === true && beat.id !== 'beat-0645';
     const showFeichuan = this.state.storyFlags.met_feichuan === true;
     const childActive = beat.speaker === 'child';
     const feichuanActive = beat.speaker === 'feichuan';
     const traceUnlocked = this.state.storyFlags.wooden_boat_trace_unlocked === true;
-    const showProp = !traceUnlocked && (beat.prop === 'woodenBoat' || (this.state.storyFlags.boat_found === true && this.isAfterBoatFound(beat.id)));
+    const showProp = !traceUnlocked && (beat.prop === 'woodenBoat' || this.state.storyFlags.boat_found === true);
     const prop = showProp ? `<img class="story-prop" src="${assetURL(Assets.prologue.woodenBoat)}" alt="小木船" draggable="false">` : '';
     const speaker = beat.speaker === 'narrator' ? '' : `<span class="story-speaker">${speakerName[beat.speaker]}</span>`;
     const skipButton = !beat.transition && !beat.ending
       ? `<button class="story-skip-trigger" data-prologue-action="open-skip-confirmation" aria-label="跳过当前剧情">跳过剧情</button>` : '';
     const skipModal = this.skipConfirmation ? `<div class="skip-confirm-backdrop"><section class="skip-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="skip-confirm-title"><h2 id="skip-confirm-title">跳过剧情？</h2><p>将跳过接下来的对白，直到下一场战斗或章节信物页。</p><div class="skip-confirm-actions">${primaryButton('跳过', 'confirm-skip-story', false, 'skip-confirm-primary')}${primaryButton('继续观看', 'cancel-skip-confirmation', false, 'skip-confirm-secondary')}</div></section></div>` : '';
+    const text = beat.textKey ? textForKey(beat.textKey) : '';
     this.root.innerHTML = `<main class="prologue-scene is-story-black" data-testid="prologue-scene" data-beat-id="${beat.id}" aria-label="序章剧情">
       ${skipButton}
       ${showChild ? `<img class="story-character story-child ${childActive ? 'is-active' : ''} ${childReleased ? 'story-released' : ''}" data-testid="story-child" src="${assetURL(childSource)}" alt="孩子" draggable="false">` : ''}
@@ -273,7 +320,7 @@ export class PrologueController {
       ${prop}
       ${traceUnlocked ? renderFerryTraceLayer(this.state.storyFlags) : ''}
       <section class="story-dialogue" data-testid="story-dialogue" aria-live="polite">${speaker}<p class="story-text">${esc(this.visibleText)}</p></section>
-      <span class="story-continue" aria-hidden="true">${this.visibleText === beat.text ? '点击继续' : '点击显示全文'}</span>
+      <span class="story-continue" aria-hidden="true">${this.visibleText === text ? '点击继续' : '点击显示全文'}</span>
       ${skipModal}
     </main>`;
     for (const [selector, action] of [['.story-skip-trigger', 'open-skip-confirmation'], ['.skip-confirm-primary', 'confirm-skip-story'], ['.skip-confirm-secondary', 'cancel-skip-confirmation']] as const) {
@@ -287,7 +334,8 @@ export class PrologueController {
   }
 
   private currentText(): string {
-    return prologueBeatById.get(this.state.currentBeatId)?.text ?? '';
+    const textKey = prologueBeatById.get(this.state.currentBeatId)?.textKey;
+    return textKey ? textForKey(textKey) : '';
   }
 
   private startTyping(text: string): void {
@@ -320,52 +368,60 @@ export class PrologueController {
   }
 
   private showNextAfterTransition(transition: PrologueTransition): void {
-    const markerIndex = prologueBeats.findIndex(beat => beat.transition === transition);
-    if (markerIndex < 0) throw new Error(`序章缺少战斗转场节点：${transition}`);
-    const next = prologueBeats.slice(markerIndex + 1).find(beat => !beat.transition);
-    if (!next) throw new Error(`序章战斗转场后缺少剧情节点：${transition}`);
-    this.showBeat(next.id);
+    const encounterId = `transition-${transition}`;
+    const nextId = encounterResultNodeId(prologueChapter, encounterId, 'victory');
+    if (!nextId) throw new Error(`序章缺少战斗胜利后的节点：${transition}`);
+    const nextNode = prologueChapter.nodes[nextId];
+    if (nextNode?.kind === 'reward') {
+      this.screen = 'reward';
+      this.checkpoint('reward');
+      void this.preloadRewardImages().then(() => this.renderReward());
+      return;
+    }
+    this.showBeat(nextId);
   }
 
   private applyStoryBeat(beat: StoryBeat): void {
-    if (beat.speaker === 'feichuan' || beat.text.includes('赤狐少年')) this.state.storyFlags.met_feichuan = true;
-    if (beat.speaker === 'child' || beat.text.includes('一个孩子沿着岸边跑来')) this.state.storyFlags.met_child = true;
-    if (beat.text === '以后的我啊。') this.state.storyFlags.boat_entrusted = true;
     if (beat.id === 'beat-0618') resolveChildRelease(this.state);
-    enterStoryBeat(this.state, beat);
+    const node = prologueChapter.nodes[beat.id];
+    const flags = Object.fromEntries(Object.entries(this.state.storyFlags).filter((entry): entry is [string, true] => entry[1] === true));
+    const entered = enterCommands({
+      chapterId: 'prologue', currentNodeId: beat.id, flags, variables: { childObsession: this.state.childObsession }, status: 'in_progress',
+    }, node?.kind === 'story' ? node.onEnter : []);
+    this.state.currentBeatId = beat.id;
+    this.state.storyFlags = entered.flags as Partial<Record<PrologueFlag, true>>;
   }
 
   private fastForwardStory(): void {
     this.skipConfirmation = false;
     this.clearTyping();
-    let index = prologueBeats.findIndex(beat => beat.id === this.state.currentBeatId);
-    while (index >= 0 && index + 1 < prologueBeats.length) {
-      const next = prologueBeats[index + 1];
-      if (next.transition) {
-        this.state.currentBeatId = next.id;
-        this.applyStoryBeat(next);
-        this.handleTransition(next.transition);
+    let cursor = this.state.currentBeatId;
+    while (true) {
+      const nextId = nextChapterNodeId(prologueChapter, cursor);
+      if (!nextId) return;
+      const node = prologueChapter.nodes[nextId];
+      const beat = prologueBeatById.get(nextId);
+      if (node?.kind === 'encounter') {
+        if (!beat?.transition) throw new Error(`遭遇节点缺少序章转场配置：${nextId}`);
+        this.applyStoryBeat(beat);
+        this.handleTransition(beat.transition);
         return;
       }
-      if (next.ending) {
-        this.state.currentBeatId = next.id;
-        this.applyStoryBeat(next);
+      if (node?.kind === 'chapter_end') {
+        if (beat) this.applyStoryBeat(beat);
         this.showKeepsake();
         return;
       }
-      this.applyStoryBeat(next);
-      index++;
+      if (node?.kind === 'reward') {
+        this.screen = 'reward';
+        this.checkpoint('reward');
+        void this.preloadRewardImages().then(() => this.renderReward());
+        return;
+      }
+      if (node?.kind !== 'story' || !beat) return;
+      this.applyStoryBeat(beat);
+      cursor = nextId;
     }
-    const beat = prologueBeats[index];
-    if (beat) {
-      this.visibleText = beat.text;
-      this.renderStory(beat);
-    }
-  }
-
-  private isAfterBoatFound(beatID: string): boolean {
-    const boatIndex = prologueBeats.findIndex(beat => beat.setFlags?.includes('boat_found'));
-    return boatIndex >= 0 && prologueBeats.findIndex(beat => beat.id === beatID) >= boatIndex;
   }
 
   private showKeepsake(): void {
@@ -374,5 +430,36 @@ export class PrologueController {
     this.root.innerHTML = `<main class="prologue-keepsake" data-testid="prologue-keepsake"><img class="keepsake-art" src="${assetURL(Assets.prologue.woodenBoat)}" alt="小木船"><h1>小木船</h1>${primaryButton('获取信物', 'acquire-keepsake', false, 'prologue-keepsake-button')}</main>`;
     const button = this.root.querySelector<HTMLElement>('.prologue-keepsake-button');
     if (button) button.dataset.prologueAction = 'acquire-keepsake';
+    this.checkpoint('keepsake');
+  }
+
+  private checkpoint(screen: PrologueScreen, battle?: BattleRuntimeSnapshot): void {
+    this.screen = screen;
+    const active: ActiveSessionSnapshot = {
+      mode: 'chapter', chapterId: 'prologue', runState: structuredClone(this.runState), screen,
+      appliedSessionEventIds: [...this.appliedSessionEventIds],
+      ...(this.currentEncounter ? { encounterId: this.currentEncounter } : {}),
+      ...(this.battleAttempt > 0 ? { battleAttempt: this.battleAttempt } : {}),
+      ...(battle && this.currentEncounter ? {
+        battle: {
+          snapshotVersion: 1,
+          contentVersion: CONTENT_VERSION,
+          encounterId: this.currentEncounter,
+          state: battle.state,
+          encounterConfig: battle.encounterConfig,
+          turnIndex: battle.turnIndex,
+          nextInstanceNumber: battle.nextInstanceNumber,
+        },
+      } : {}),
+      ...(screen === 'reward' ? {
+        offeredRewardIds: [...this.rewards],
+        ...(this.selectedReward ? { selectedRewardId: this.selectedReward } : {}),
+      } : {}),
+    };
+    this.sessions.checkpoint(active, {
+      chapterId: 'prologue', currentNodeId: this.state.currentBeatId,
+      flags: Object.fromEntries(Object.entries(this.state.storyFlags).filter((entry): entry is [string, true] => entry[1] === true)),
+      variables: { childObsession: this.state.childObsession }, status: 'in_progress',
+    });
   }
 }

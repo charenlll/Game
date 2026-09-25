@@ -1,5 +1,5 @@
 import { Assets } from '../core/asset-manifest';
-import type { PrologueFlag } from '../data/chapters/prologue';
+import type { PrologueFlag } from '../core/prologue-state';
 import { assetURL } from './card-view';
 
 interface FerryTraceDefinition {

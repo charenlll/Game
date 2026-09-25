@@ -1,4 +1,4 @@
-import { Battle, discardCount, endTurnDiscardCount, selectionCount } from '../core/battle';
+import { Battle, discardCount, endTurnDiscardCount, selectionCount, type BattleRuntimeSnapshot } from '../core/battle';
 import { getCard, getCharacter, getSoul } from '../core/content';
 import { cardDatabase } from '../core/card-database';
 import { Assets } from '../core/asset-manifest';
@@ -21,6 +21,8 @@ export interface BattleViewOptions {
   characterID?: string;
   deck?: readonly string[];
   encounter?: BattleEncounterConfig;
+  snapshot?: BattleRuntimeSnapshot;
+  onCheckpoint?: (snapshot: BattleRuntimeSnapshot) => void;
   backgroundPath?: string;
   soulArtState?: 'normal' | 'hesitant';
   skipVictoryPresentation?: boolean;
@@ -63,7 +65,10 @@ export class BattleView {
     const param = new URLSearchParams(location.search).get('seed');
     const querySeed = param === null ? NaN : Number(param);
     const seed = options.seed ?? (Number.isInteger(querySeed) && querySeed >= 0 && querySeed <= 0xFFFFFFFF ? querySeed : freshSeed());
-    this.battle = new Battle(seed, options.battleID, options.characterID, options.deck, options.encounter);
+    this.battle = options.snapshot
+      ? Battle.restore(options.snapshot)
+      : new Battle(seed, options.battleID, options.characterID, options.deck, options.encounter);
+    this.flowLocked = options.snapshot ? options.snapshot.state.Status !== 'playing' : true;
     this.feedback = new BattleFeedback(root);
     this.popupLayer = root.closest('.game-viewport')?.querySelector<HTMLElement>('.viewport-overlay') ?? root;
     this.popupLayer.addEventListener('click', this.onClick);
@@ -76,7 +81,10 @@ export class BattleView {
     this.resizeObserver = new ResizeObserver(() => fitCardText(root));
     this.resizeObserver.observe(root);
     this.render();
-    void this.runInitialDraw();
+    this.saveCheckpoint();
+    if (!options.snapshot) void this.runInitialDraw();
+    else if (this.battle.state.Status === 'won') void this.handleVictory(this.feedback.token());
+    else if (this.battle.state.Status === 'lost') void this.runFailure(this.feedback.token());
   }
 
   get state(): Readonly<BattleState> { return this.battle.state; }
@@ -256,6 +264,11 @@ export class BattleView {
     return card ? selectionCount(card) : 0;
   }
 
+  private saveCheckpoint(): void {
+    try { this.options.onCheckpoint?.(this.battle.createSnapshot()); }
+    catch (error) { console.error('战斗检查点保存失败', error); }
+  }
+
   private async runInitialDraw(): Promise<void> {
     const token = this.feedback.token();
     await this.feedback.draw(this.battle.state.Hand.map(card => card.InstanceID), token);
@@ -289,6 +302,7 @@ export class BattleView {
     const definition = getCard(card.DefinitionID);
     const result = this.battle.play(id, discards);
     if (!result.Ok) { this.notice = result.Message; return; }
+    this.saveCheckpoint();
     const reduction = beforeObsession - this.battle.state.Obsession;
     const lightDelta = this.battle.state.Light - beforeLight;
     const selectedDiscards = discardCount(card) > 0 ? discards : [];
@@ -334,6 +348,7 @@ export class BattleView {
     this.endTurnLocked = true; this.intentResolving = true; this.flowLocked = true;
     const result = this.battle.endTurn(discardIDs);
     if (!result.Ok) { this.endTurnLocked = false; this.intentResolving = false; this.flowLocked = false; return; }
+    this.saveCheckpoint();
     const retained = new Set([...beforeHand].filter(id => !discardIDs.includes(id)));
     const added = state.Hand.filter(card => !retained.has(card.InstanceID));
     const intentBurden = intent.IntentID === 'intent_burden' ? added.filter(card => card.DefinitionID === 'burden_002').map(card => card.InstanceID) : [];

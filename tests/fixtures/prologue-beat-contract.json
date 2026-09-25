@@ -1,0 +1,4145 @@
+{
+  "version": 1,
+  "chapterId": "prologue",
+  "beats": [
+    {
+      "id": "beat-0001",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0001"
+    },
+    {
+      "id": "beat-0002",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0002"
+    },
+    {
+      "id": "beat-0003",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0003"
+    },
+    {
+      "id": "beat-0004",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0004"
+    },
+    {
+      "id": "beat-0005",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0005",
+      "setFlags": [
+        "met_feichuan"
+      ]
+    },
+    {
+      "id": "beat-0006",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0006"
+    },
+    {
+      "id": "beat-0007",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0007"
+    },
+    {
+      "id": "beat-0008",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0008"
+    },
+    {
+      "id": "beat-0009",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0009"
+    },
+    {
+      "id": "beat-0010",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0010"
+    },
+    {
+      "id": "beat-0011",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0011"
+    },
+    {
+      "id": "beat-0012",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0012"
+    },
+    {
+      "id": "beat-0013",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0013"
+    },
+    {
+      "id": "beat-0014",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0014"
+    },
+    {
+      "id": "beat-0015",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0015"
+    },
+    {
+      "id": "beat-0016",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0016"
+    },
+    {
+      "id": "beat-0017",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0017"
+    },
+    {
+      "id": "beat-0018",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0018"
+    },
+    {
+      "id": "beat-0019",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0019"
+    },
+    {
+      "id": "beat-0020",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0020"
+    },
+    {
+      "id": "beat-0021",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0021"
+    },
+    {
+      "id": "beat-0022",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0022"
+    },
+    {
+      "id": "beat-0023",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0023"
+    },
+    {
+      "id": "beat-0024",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0024"
+    },
+    {
+      "id": "beat-0025",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0025"
+    },
+    {
+      "id": "beat-0026",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0026"
+    },
+    {
+      "id": "beat-0027",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0027"
+    },
+    {
+      "id": "beat-0028",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0028"
+    },
+    {
+      "id": "beat-0029",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0029"
+    },
+    {
+      "id": "beat-0030",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0030"
+    },
+    {
+      "id": "beat-0031",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0031"
+    },
+    {
+      "id": "beat-0032",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0032"
+    },
+    {
+      "id": "beat-0033",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0033"
+    },
+    {
+      "id": "beat-0034",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0034"
+    },
+    {
+      "id": "beat-0035",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0035"
+    },
+    {
+      "id": "beat-0036",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0036"
+    },
+    {
+      "id": "beat-0037",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0037"
+    },
+    {
+      "id": "beat-0038",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0038"
+    },
+    {
+      "id": "beat-0039",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0039"
+    },
+    {
+      "id": "beat-0040",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0040"
+    },
+    {
+      "id": "beat-0041",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0041"
+    },
+    {
+      "id": "beat-0042",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0042"
+    },
+    {
+      "id": "beat-0043",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0043"
+    },
+    {
+      "id": "beat-0044",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0044"
+    },
+    {
+      "id": "beat-0045",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0045"
+    },
+    {
+      "id": "beat-0046",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0046"
+    },
+    {
+      "id": "beat-0047",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0047"
+    },
+    {
+      "id": "beat-0048",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0048",
+      "setFlags": [
+        "met_child"
+      ]
+    },
+    {
+      "id": "beat-0049",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0049"
+    },
+    {
+      "id": "beat-0050",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0050"
+    },
+    {
+      "id": "beat-0051",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0051"
+    },
+    {
+      "id": "beat-0052",
+      "background": "ferry",
+      "speaker": "child",
+      "setFlags": [
+        "met_child"
+      ],
+      "textKey": "prologue.beat-0052"
+    },
+    {
+      "id": "beat-0053",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0053"
+    },
+    {
+      "id": "beat-0054",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0054"
+    },
+    {
+      "id": "beat-0055",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0055"
+    },
+    {
+      "id": "beat-0056",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0056"
+    },
+    {
+      "id": "beat-0057",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0057"
+    },
+    {
+      "id": "beat-0058",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0058"
+    },
+    {
+      "id": "beat-0059",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0059"
+    },
+    {
+      "id": "beat-0060",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0060"
+    },
+    {
+      "id": "beat-0061",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0061"
+    },
+    {
+      "id": "beat-0062",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0062"
+    },
+    {
+      "id": "beat-0063",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0063"
+    },
+    {
+      "id": "beat-0064",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0064"
+    },
+    {
+      "id": "beat-0065",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0065"
+    },
+    {
+      "id": "beat-0066",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0066"
+    },
+    {
+      "id": "beat-0067",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0067"
+    },
+    {
+      "id": "beat-0068",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0068"
+    },
+    {
+      "id": "beat-0069",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0069"
+    },
+    {
+      "id": "beat-0070",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0070"
+    },
+    {
+      "id": "beat-0071",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0071"
+    },
+    {
+      "id": "beat-0072",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0072"
+    },
+    {
+      "id": "beat-0073",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0073"
+    },
+    {
+      "id": "beat-0074",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0074"
+    },
+    {
+      "id": "beat-0075",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0075"
+    },
+    {
+      "id": "beat-0076",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0076"
+    },
+    {
+      "id": "beat-0077",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0077"
+    },
+    {
+      "id": "beat-0078",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0078"
+    },
+    {
+      "id": "beat-0079",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0079"
+    },
+    {
+      "id": "beat-0080",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0080"
+    },
+    {
+      "id": "beat-0081",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0081"
+    },
+    {
+      "id": "beat-0082",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0082"
+    },
+    {
+      "id": "beat-0083",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0083"
+    },
+    {
+      "id": "beat-0084",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0084"
+    },
+    {
+      "id": "beat-0085",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0085"
+    },
+    {
+      "id": "beat-0086",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0086"
+    },
+    {
+      "id": "beat-0087",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0087"
+    },
+    {
+      "id": "beat-0088",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0088"
+    },
+    {
+      "id": "beat-0089",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0089"
+    },
+    {
+      "id": "beat-0090",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0090"
+    },
+    {
+      "id": "beat-0091",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0091"
+    },
+    {
+      "id": "beat-0092",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0092"
+    },
+    {
+      "id": "beat-0093",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0093"
+    },
+    {
+      "id": "beat-0094",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0094"
+    },
+    {
+      "id": "beat-0095",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0095"
+    },
+    {
+      "id": "beat-0096",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0096"
+    },
+    {
+      "id": "beat-0097",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0097"
+    },
+    {
+      "id": "beat-0098",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0098"
+    },
+    {
+      "id": "beat-0099",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0099"
+    },
+    {
+      "id": "beat-0100",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0100"
+    },
+    {
+      "id": "beat-0101",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0101"
+    },
+    {
+      "id": "beat-0102",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0102"
+    },
+    {
+      "id": "beat-0103",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0103"
+    },
+    {
+      "id": "beat-0104",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0104"
+    },
+    {
+      "id": "beat-0105",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0105"
+    },
+    {
+      "id": "beat-0106",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0106"
+    },
+    {
+      "id": "beat-0107",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0107"
+    },
+    {
+      "id": "beat-0108",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0108"
+    },
+    {
+      "id": "beat-0109",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0109"
+    },
+    {
+      "id": "beat-0110",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0110"
+    },
+    {
+      "id": "beat-0111",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0111"
+    },
+    {
+      "id": "beat-0112",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0112"
+    },
+    {
+      "id": "beat-0113",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0113"
+    },
+    {
+      "id": "beat-0114",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0114"
+    },
+    {
+      "id": "beat-0115",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0115"
+    },
+    {
+      "id": "beat-0116",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0116"
+    },
+    {
+      "id": "beat-0117",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0117"
+    },
+    {
+      "id": "beat-0118",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0118"
+    },
+    {
+      "id": "beat-0119",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0119"
+    },
+    {
+      "id": "beat-0120",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0120"
+    },
+    {
+      "id": "beat-0121",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0121"
+    },
+    {
+      "id": "beat-0122",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0122"
+    },
+    {
+      "id": "beat-0123",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0123"
+    },
+    {
+      "id": "beat-0124",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0124"
+    },
+    {
+      "id": "beat-0125",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0125"
+    },
+    {
+      "id": "beat-0126",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0126"
+    },
+    {
+      "id": "beat-0127",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0127"
+    },
+    {
+      "id": "beat-0128",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0128"
+    },
+    {
+      "id": "beat-0129",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0129"
+    },
+    {
+      "id": "beat-0130",
+      "background": "ferry",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0130"
+    },
+    {
+      "id": "beat-0131",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0131"
+    },
+    {
+      "id": "beat-0132",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0132"
+    },
+    {
+      "id": "beat-0133",
+      "background": "ferry",
+      "speaker": "player",
+      "textKey": "prologue.beat-0133"
+    },
+    {
+      "id": "beat-0134",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0134"
+    },
+    {
+      "id": "beat-0135",
+      "background": "ferry",
+      "speaker": "child",
+      "textKey": "prologue.beat-0135"
+    },
+    {
+      "id": "beat-0136",
+      "background": "ferry",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0136"
+    },
+    {
+      "id": "beat-0137",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0137"
+    },
+    {
+      "id": "beat-0138",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0138"
+    },
+    {
+      "id": "beat-0139",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0139"
+    },
+    {
+      "id": "beat-0140",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0140"
+    },
+    {
+      "id": "beat-0141",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0141"
+    },
+    {
+      "id": "beat-0142",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0142"
+    },
+    {
+      "id": "beat-0143",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0143"
+    },
+    {
+      "id": "beat-0144",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0144"
+    },
+    {
+      "id": "beat-0145",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0145"
+    },
+    {
+      "id": "beat-0146",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0146"
+    },
+    {
+      "id": "beat-0147",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0147"
+    },
+    {
+      "id": "beat-0148",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0148"
+    },
+    {
+      "id": "beat-0149",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0149"
+    },
+    {
+      "id": "beat-0150",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0150"
+    },
+    {
+      "id": "beat-0151",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0151"
+    },
+    {
+      "id": "beat-0152",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0152"
+    },
+    {
+      "id": "beat-0153",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0153"
+    },
+    {
+      "id": "beat-0154",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0154"
+    },
+    {
+      "id": "beat-0155",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0155"
+    },
+    {
+      "id": "beat-0156",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0156"
+    },
+    {
+      "id": "beat-0157",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0157"
+    },
+    {
+      "id": "beat-0158",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0158"
+    },
+    {
+      "id": "beat-0159",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0159"
+    },
+    {
+      "id": "beat-0160",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0160"
+    },
+    {
+      "id": "beat-0161",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0161"
+    },
+    {
+      "id": "beat-0162",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0162"
+    },
+    {
+      "id": "beat-0163",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0163"
+    },
+    {
+      "id": "beat-0164",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0164"
+    },
+    {
+      "id": "beat-0165",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0165"
+    },
+    {
+      "id": "beat-0166",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0166"
+    },
+    {
+      "id": "beat-0167",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0167"
+    },
+    {
+      "id": "beat-0168",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0168"
+    },
+    {
+      "id": "beat-0169",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0169"
+    },
+    {
+      "id": "beat-0170",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0170"
+    },
+    {
+      "id": "beat-0171",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0171"
+    },
+    {
+      "id": "beat-0172",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0172"
+    },
+    {
+      "id": "beat-0173",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0173"
+    },
+    {
+      "id": "beat-0174",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0174"
+    },
+    {
+      "id": "beat-0175",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0175"
+    },
+    {
+      "id": "beat-0176",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0176"
+    },
+    {
+      "id": "beat-0177",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0177"
+    },
+    {
+      "id": "beat-0178",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0178"
+    },
+    {
+      "id": "beat-0179",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0179"
+    },
+    {
+      "id": "beat-0180",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0180"
+    },
+    {
+      "id": "beat-0181",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0181"
+    },
+    {
+      "id": "beat-0182",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0182"
+    },
+    {
+      "id": "beat-0183",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0183"
+    },
+    {
+      "id": "beat-0184",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0184"
+    },
+    {
+      "id": "beat-0185",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0185"
+    },
+    {
+      "id": "beat-0186",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0186"
+    },
+    {
+      "id": "beat-0187",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0187"
+    },
+    {
+      "id": "beat-0188",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0188"
+    },
+    {
+      "id": "beat-0189",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0189"
+    },
+    {
+      "id": "beat-0190",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0190"
+    },
+    {
+      "id": "beat-0191",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0191"
+    },
+    {
+      "id": "beat-0192",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0192"
+    },
+    {
+      "id": "beat-0193",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0193"
+    },
+    {
+      "id": "beat-0194",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0194"
+    },
+    {
+      "id": "beat-0195",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0195"
+    },
+    {
+      "id": "transition-battle1",
+      "background": "road",
+      "speaker": "narrator",
+      "transition": "battle1"
+    },
+    {
+      "id": "beat-0197",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0197"
+    },
+    {
+      "id": "beat-0198",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0198"
+    },
+    {
+      "id": "beat-0199",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0199"
+    },
+    {
+      "id": "beat-0200",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0200"
+    },
+    {
+      "id": "beat-0201",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0201"
+    },
+    {
+      "id": "beat-0202",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0202"
+    },
+    {
+      "id": "beat-0203",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0203"
+    },
+    {
+      "id": "beat-0204",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0204"
+    },
+    {
+      "id": "beat-0205",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0205"
+    },
+    {
+      "id": "beat-0206",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0206"
+    },
+    {
+      "id": "beat-0207",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0207"
+    },
+    {
+      "id": "beat-0208",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0208"
+    },
+    {
+      "id": "beat-0209",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0209"
+    },
+    {
+      "id": "beat-0210",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0210"
+    },
+    {
+      "id": "beat-0211",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0211"
+    },
+    {
+      "id": "beat-0212",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0212"
+    },
+    {
+      "id": "beat-0213",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0213"
+    },
+    {
+      "id": "beat-0214",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0214"
+    },
+    {
+      "id": "beat-0215",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0215"
+    },
+    {
+      "id": "beat-0216",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0216"
+    },
+    {
+      "id": "beat-0217",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0217"
+    },
+    {
+      "id": "beat-0218",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0218"
+    },
+    {
+      "id": "beat-0219",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0219"
+    },
+    {
+      "id": "beat-0220",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0220"
+    },
+    {
+      "id": "beat-0221",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0221"
+    },
+    {
+      "id": "beat-0222",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0222"
+    },
+    {
+      "id": "beat-0223",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0223"
+    },
+    {
+      "id": "beat-0224",
+      "background": "road",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0224"
+    },
+    {
+      "id": "beat-0225",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0225"
+    },
+    {
+      "id": "beat-0226",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0226"
+    },
+    {
+      "id": "beat-0227",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0227"
+    },
+    {
+      "id": "beat-0228",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0228"
+    },
+    {
+      "id": "beat-0229",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0229"
+    },
+    {
+      "id": "beat-0230",
+      "background": "road",
+      "speaker": "player",
+      "textKey": "prologue.beat-0230"
+    },
+    {
+      "id": "beat-0231",
+      "background": "road",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0231"
+    },
+    {
+      "id": "beat-0232",
+      "background": "road",
+      "speaker": "child",
+      "textKey": "prologue.beat-0232"
+    },
+    {
+      "id": "beat-0233",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0233"
+    },
+    {
+      "id": "beat-0234",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0234"
+    },
+    {
+      "id": "beat-0235",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0235"
+    },
+    {
+      "id": "beat-0236",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0236"
+    },
+    {
+      "id": "beat-0237",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0237"
+    },
+    {
+      "id": "beat-0238",
+      "background": "shallows",
+      "speaker": "child",
+      "prop": "woodenBoat",
+      "setFlags": [
+        "boat_found"
+      ],
+      "textKey": "prologue.beat-0238"
+    },
+    {
+      "id": "beat-0239",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0239"
+    },
+    {
+      "id": "beat-0240",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0240"
+    },
+    {
+      "id": "beat-0241",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0241"
+    },
+    {
+      "id": "beat-0242",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0242"
+    },
+    {
+      "id": "beat-0243",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0243"
+    },
+    {
+      "id": "beat-0244",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0244"
+    },
+    {
+      "id": "beat-0245",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0245"
+    },
+    {
+      "id": "beat-0246",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0246"
+    },
+    {
+      "id": "beat-0247",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0247"
+    },
+    {
+      "id": "beat-0248",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0248"
+    },
+    {
+      "id": "beat-0249",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0249"
+    },
+    {
+      "id": "beat-0250",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0250"
+    },
+    {
+      "id": "beat-0251",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0251"
+    },
+    {
+      "id": "beat-0252",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0252"
+    },
+    {
+      "id": "beat-0253",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0253"
+    },
+    {
+      "id": "beat-0254",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0254"
+    },
+    {
+      "id": "beat-0255",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0255"
+    },
+    {
+      "id": "beat-0256",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0256"
+    },
+    {
+      "id": "beat-0257",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0257"
+    },
+    {
+      "id": "beat-0258",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0258"
+    },
+    {
+      "id": "beat-0259",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0259"
+    },
+    {
+      "id": "beat-0260",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0260"
+    },
+    {
+      "id": "beat-0261",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0261"
+    },
+    {
+      "id": "beat-0262",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0262"
+    },
+    {
+      "id": "beat-0263",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0263"
+    },
+    {
+      "id": "beat-0264",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0264"
+    },
+    {
+      "id": "beat-0265",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0265"
+    },
+    {
+      "id": "beat-0266",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0266"
+    },
+    {
+      "id": "beat-0267",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0267"
+    },
+    {
+      "id": "beat-0268",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0268"
+    },
+    {
+      "id": "beat-0269",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0269"
+    },
+    {
+      "id": "beat-0270",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0270"
+    },
+    {
+      "id": "beat-0271",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0271"
+    },
+    {
+      "id": "beat-0272",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0272"
+    },
+    {
+      "id": "beat-0273",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0273"
+    },
+    {
+      "id": "beat-0274",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0274"
+    },
+    {
+      "id": "beat-0275",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0275"
+    },
+    {
+      "id": "beat-0276",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0276"
+    },
+    {
+      "id": "beat-0277",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0277"
+    },
+    {
+      "id": "beat-0278",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0278"
+    },
+    {
+      "id": "beat-0279",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0279"
+    },
+    {
+      "id": "beat-0280",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0280"
+    },
+    {
+      "id": "beat-0281",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0281"
+    },
+    {
+      "id": "beat-0282",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0282"
+    },
+    {
+      "id": "beat-0283",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0283"
+    },
+    {
+      "id": "beat-0284",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0284"
+    },
+    {
+      "id": "beat-0285",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0285"
+    },
+    {
+      "id": "beat-0286",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0286"
+    },
+    {
+      "id": "beat-0287",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0287"
+    },
+    {
+      "id": "beat-0288",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0288"
+    },
+    {
+      "id": "beat-0289",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0289"
+    },
+    {
+      "id": "beat-0290",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0290"
+    },
+    {
+      "id": "beat-0291",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0291"
+    },
+    {
+      "id": "beat-0292",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0292"
+    },
+    {
+      "id": "beat-0293",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0293"
+    },
+    {
+      "id": "beat-0294",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0294"
+    },
+    {
+      "id": "beat-0295",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0295"
+    },
+    {
+      "id": "beat-0296",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0296"
+    },
+    {
+      "id": "beat-0297",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0297"
+    },
+    {
+      "id": "beat-0298",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0298"
+    },
+    {
+      "id": "beat-0299",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0299"
+    },
+    {
+      "id": "beat-0300",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0300"
+    },
+    {
+      "id": "beat-0301",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0301"
+    },
+    {
+      "id": "beat-0302",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0302"
+    },
+    {
+      "id": "beat-0303",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0303"
+    },
+    {
+      "id": "beat-0304",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0304"
+    },
+    {
+      "id": "beat-0305",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0305"
+    },
+    {
+      "id": "beat-0306",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0306"
+    },
+    {
+      "id": "beat-0307",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0307"
+    },
+    {
+      "id": "beat-0308",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0308"
+    },
+    {
+      "id": "beat-0309",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0309"
+    },
+    {
+      "id": "beat-0310",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0310"
+    },
+    {
+      "id": "beat-0311",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0311"
+    },
+    {
+      "id": "beat-0312",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0312"
+    },
+    {
+      "id": "beat-0313",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0313"
+    },
+    {
+      "id": "beat-0314",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0314"
+    },
+    {
+      "id": "beat-0315",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0315"
+    },
+    {
+      "id": "beat-0316",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0316"
+    },
+    {
+      "id": "beat-0317",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0317"
+    },
+    {
+      "id": "beat-0318",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0318"
+    },
+    {
+      "id": "beat-0319",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0319"
+    },
+    {
+      "id": "beat-0320",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0320"
+    },
+    {
+      "id": "beat-0321",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0321"
+    },
+    {
+      "id": "beat-0322",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0322"
+    },
+    {
+      "id": "beat-0323",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0323"
+    },
+    {
+      "id": "beat-0324",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0324"
+    },
+    {
+      "id": "beat-0325",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0325"
+    },
+    {
+      "id": "transition-battle2",
+      "background": "shallows",
+      "speaker": "narrator",
+      "transition": "battle2"
+    },
+    {
+      "id": "beat-0327",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0327"
+    },
+    {
+      "id": "beat-0328",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0328"
+    },
+    {
+      "id": "beat-0329",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0329"
+    },
+    {
+      "id": "beat-0330",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0330"
+    },
+    {
+      "id": "beat-0331",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0331"
+    },
+    {
+      "id": "beat-0332",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0332"
+    },
+    {
+      "id": "beat-0333",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0333"
+    },
+    {
+      "id": "beat-0334",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0334"
+    },
+    {
+      "id": "beat-0335",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0335"
+    },
+    {
+      "id": "beat-0336",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0336"
+    },
+    {
+      "id": "beat-0337",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0337"
+    },
+    {
+      "id": "beat-0338",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0338"
+    },
+    {
+      "id": "beat-0339",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0339"
+    },
+    {
+      "id": "beat-0340",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0340"
+    },
+    {
+      "id": "beat-0341",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0341"
+    },
+    {
+      "id": "beat-0342",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0342"
+    },
+    {
+      "id": "beat-0343",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0343"
+    },
+    {
+      "id": "beat-0344",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0344"
+    },
+    {
+      "id": "beat-0345",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0345"
+    },
+    {
+      "id": "beat-0346",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0346"
+    },
+    {
+      "id": "beat-0347",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0347"
+    },
+    {
+      "id": "beat-0348",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0348"
+    },
+    {
+      "id": "beat-0349",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0349"
+    },
+    {
+      "id": "beat-0350",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0350"
+    },
+    {
+      "id": "beat-0351",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0351"
+    },
+    {
+      "id": "beat-0352",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0352"
+    },
+    {
+      "id": "beat-0353",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0353"
+    },
+    {
+      "id": "beat-0354",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0354"
+    },
+    {
+      "id": "beat-0355",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0355"
+    },
+    {
+      "id": "beat-0356",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0356"
+    },
+    {
+      "id": "beat-0357",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0357"
+    },
+    {
+      "id": "beat-0358",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0358"
+    },
+    {
+      "id": "beat-0359",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0359"
+    },
+    {
+      "id": "beat-0360",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0360"
+    },
+    {
+      "id": "beat-0361",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0361"
+    },
+    {
+      "id": "beat-0362",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0362"
+    },
+    {
+      "id": "beat-0363",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0363"
+    },
+    {
+      "id": "beat-0364",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0364"
+    },
+    {
+      "id": "beat-0365",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0365"
+    },
+    {
+      "id": "beat-0366",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0366"
+    },
+    {
+      "id": "beat-0367",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0367"
+    },
+    {
+      "id": "beat-0368",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0368"
+    },
+    {
+      "id": "beat-0369",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0369"
+    },
+    {
+      "id": "beat-0370",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0370"
+    },
+    {
+      "id": "beat-0371",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0371"
+    },
+    {
+      "id": "beat-0372",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0372"
+    },
+    {
+      "id": "beat-0373",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0373"
+    },
+    {
+      "id": "beat-0374",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0374"
+    },
+    {
+      "id": "beat-0375",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0375"
+    },
+    {
+      "id": "beat-0376",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0376"
+    },
+    {
+      "id": "beat-0377",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0377"
+    },
+    {
+      "id": "beat-0378",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0378"
+    },
+    {
+      "id": "beat-0379",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0379"
+    },
+    {
+      "id": "beat-0380",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0380"
+    },
+    {
+      "id": "beat-0381",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0381"
+    },
+    {
+      "id": "beat-0382",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0382"
+    },
+    {
+      "id": "beat-0383",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0383"
+    },
+    {
+      "id": "beat-0384",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0384"
+    },
+    {
+      "id": "beat-0385",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0385"
+    },
+    {
+      "id": "beat-0386",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0386"
+    },
+    {
+      "id": "beat-0387",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0387"
+    },
+    {
+      "id": "beat-0388",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0388"
+    },
+    {
+      "id": "beat-0389",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0389"
+    },
+    {
+      "id": "beat-0390",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0390"
+    },
+    {
+      "id": "beat-0391",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0391"
+    },
+    {
+      "id": "beat-0392",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0392"
+    },
+    {
+      "id": "beat-0393",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0393"
+    },
+    {
+      "id": "beat-0394",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0394"
+    },
+    {
+      "id": "beat-0395",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0395"
+    },
+    {
+      "id": "beat-0396",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0396"
+    },
+    {
+      "id": "beat-0397",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0397"
+    },
+    {
+      "id": "beat-0398",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0398"
+    },
+    {
+      "id": "beat-0399",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0399"
+    },
+    {
+      "id": "beat-0400",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0400"
+    },
+    {
+      "id": "beat-0401",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0401"
+    },
+    {
+      "id": "beat-0402",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0402"
+    },
+    {
+      "id": "beat-0403",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0403"
+    },
+    {
+      "id": "beat-0404",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0404"
+    },
+    {
+      "id": "beat-0405",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0405"
+    },
+    {
+      "id": "beat-0406",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0406"
+    },
+    {
+      "id": "beat-0407",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0407"
+    },
+    {
+      "id": "beat-0408",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0408"
+    },
+    {
+      "id": "beat-0409",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0409"
+    },
+    {
+      "id": "beat-0410",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0410"
+    },
+    {
+      "id": "beat-0411",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0411"
+    },
+    {
+      "id": "beat-0412",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0412"
+    },
+    {
+      "id": "beat-0413",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0413"
+    },
+    {
+      "id": "beat-0414",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0414"
+    },
+    {
+      "id": "beat-0415",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0415"
+    },
+    {
+      "id": "beat-0416",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0416"
+    },
+    {
+      "id": "beat-0417",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0417"
+    },
+    {
+      "id": "beat-0418",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0418"
+    },
+    {
+      "id": "beat-0419",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0419"
+    },
+    {
+      "id": "beat-0420",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0420"
+    },
+    {
+      "id": "beat-0421",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0421"
+    },
+    {
+      "id": "beat-0422",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0422"
+    },
+    {
+      "id": "beat-0423",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0423"
+    },
+    {
+      "id": "beat-0424",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0424"
+    },
+    {
+      "id": "beat-0425",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0425"
+    },
+    {
+      "id": "beat-0426",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0426"
+    },
+    {
+      "id": "beat-0427",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0427"
+    },
+    {
+      "id": "beat-0428",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0428"
+    },
+    {
+      "id": "beat-0429",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0429"
+    },
+    {
+      "id": "beat-0430",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0430"
+    },
+    {
+      "id": "beat-0431",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0431"
+    },
+    {
+      "id": "beat-0432",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0432"
+    },
+    {
+      "id": "beat-0433",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0433"
+    },
+    {
+      "id": "beat-0434",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0434"
+    },
+    {
+      "id": "beat-0435",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0435"
+    },
+    {
+      "id": "beat-0436",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0436"
+    },
+    {
+      "id": "beat-0437",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0437"
+    },
+    {
+      "id": "beat-0438",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0438"
+    },
+    {
+      "id": "beat-0439",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0439"
+    },
+    {
+      "id": "beat-0440",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0440"
+    },
+    {
+      "id": "beat-0441",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0441"
+    },
+    {
+      "id": "beat-0442",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0442"
+    },
+    {
+      "id": "beat-0443",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0443"
+    },
+    {
+      "id": "beat-0444",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0444"
+    },
+    {
+      "id": "beat-0445",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0445"
+    },
+    {
+      "id": "beat-0446",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0446"
+    },
+    {
+      "id": "beat-0447",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0447"
+    },
+    {
+      "id": "beat-0448",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0448"
+    },
+    {
+      "id": "beat-0449",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0449"
+    },
+    {
+      "id": "beat-0450",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0450"
+    },
+    {
+      "id": "beat-0451",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0451"
+    },
+    {
+      "id": "beat-0452",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0452"
+    },
+    {
+      "id": "beat-0453",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0453"
+    },
+    {
+      "id": "beat-0454",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0454"
+    },
+    {
+      "id": "beat-0455",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0455"
+    },
+    {
+      "id": "beat-0456",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0456"
+    },
+    {
+      "id": "beat-0457",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0457"
+    },
+    {
+      "id": "beat-0458",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0458"
+    },
+    {
+      "id": "beat-0459",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0459"
+    },
+    {
+      "id": "beat-0460",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0460"
+    },
+    {
+      "id": "beat-0461",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0461"
+    },
+    {
+      "id": "beat-0462",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0462"
+    },
+    {
+      "id": "beat-0463",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0463"
+    },
+    {
+      "id": "beat-0464",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0464"
+    },
+    {
+      "id": "beat-0465",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0465"
+    },
+    {
+      "id": "beat-0466",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0466"
+    },
+    {
+      "id": "beat-0467",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0467"
+    },
+    {
+      "id": "beat-0468",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0468"
+    },
+    {
+      "id": "beat-0469",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0469"
+    },
+    {
+      "id": "beat-0470",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0470"
+    },
+    {
+      "id": "beat-0471",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0471"
+    },
+    {
+      "id": "beat-0472",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0472"
+    },
+    {
+      "id": "beat-0473",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0473"
+    },
+    {
+      "id": "beat-0474",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0474"
+    },
+    {
+      "id": "beat-0475",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0475"
+    },
+    {
+      "id": "beat-0476",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0476"
+    },
+    {
+      "id": "beat-0477",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0477"
+    },
+    {
+      "id": "beat-0478",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0478"
+    },
+    {
+      "id": "beat-0479",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0479"
+    },
+    {
+      "id": "beat-0480",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0480"
+    },
+    {
+      "id": "beat-0481",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0481"
+    },
+    {
+      "id": "beat-0482",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0482"
+    },
+    {
+      "id": "beat-0483",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0483"
+    },
+    {
+      "id": "beat-0484",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0484"
+    },
+    {
+      "id": "beat-0485",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0485"
+    },
+    {
+      "id": "beat-0486",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0486"
+    },
+    {
+      "id": "beat-0487",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0487"
+    },
+    {
+      "id": "beat-0488",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0488"
+    },
+    {
+      "id": "beat-0489",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0489"
+    },
+    {
+      "id": "beat-0490",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0490"
+    },
+    {
+      "id": "beat-0491",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0491"
+    },
+    {
+      "id": "beat-0492",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0492"
+    },
+    {
+      "id": "beat-0493",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0493"
+    },
+    {
+      "id": "beat-0494",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0494"
+    },
+    {
+      "id": "beat-0495",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0495"
+    },
+    {
+      "id": "beat-0496",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0496"
+    },
+    {
+      "id": "beat-0497",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0497"
+    },
+    {
+      "id": "beat-0498",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0498"
+    },
+    {
+      "id": "beat-0499",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0499"
+    },
+    {
+      "id": "beat-0500",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0500"
+    },
+    {
+      "id": "beat-0501",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0501"
+    },
+    {
+      "id": "beat-0502",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0502"
+    },
+    {
+      "id": "beat-0503",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0503"
+    },
+    {
+      "id": "beat-0504",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0504"
+    },
+    {
+      "id": "beat-0505",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0505"
+    },
+    {
+      "id": "beat-0506",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0506"
+    },
+    {
+      "id": "beat-0507",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0507"
+    },
+    {
+      "id": "beat-0508",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0508"
+    },
+    {
+      "id": "beat-0509",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0509"
+    },
+    {
+      "id": "beat-0510",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0510"
+    },
+    {
+      "id": "beat-0511",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0511"
+    },
+    {
+      "id": "beat-0512",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0512"
+    },
+    {
+      "id": "beat-0513",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0513"
+    },
+    {
+      "id": "beat-0514",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0514"
+    },
+    {
+      "id": "beat-0515",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0515"
+    },
+    {
+      "id": "beat-0516",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0516"
+    },
+    {
+      "id": "beat-0517",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0517"
+    },
+    {
+      "id": "beat-0518",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0518"
+    },
+    {
+      "id": "beat-0519",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0519"
+    },
+    {
+      "id": "beat-0520",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0520"
+    },
+    {
+      "id": "beat-0521",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0521"
+    },
+    {
+      "id": "beat-0522",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0522"
+    },
+    {
+      "id": "beat-0523",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0523"
+    },
+    {
+      "id": "beat-0524",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0524"
+    },
+    {
+      "id": "beat-0525",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0525"
+    },
+    {
+      "id": "beat-0526",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0526"
+    },
+    {
+      "id": "beat-0527",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0527"
+    },
+    {
+      "id": "beat-0528",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0528"
+    },
+    {
+      "id": "beat-0529",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0529"
+    },
+    {
+      "id": "beat-0530",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0530"
+    },
+    {
+      "id": "beat-0531",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0531"
+    },
+    {
+      "id": "beat-0532",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0532"
+    },
+    {
+      "id": "beat-0533",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0533"
+    },
+    {
+      "id": "beat-0534",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0534"
+    },
+    {
+      "id": "beat-0535",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0535"
+    },
+    {
+      "id": "transition-finalBattle",
+      "background": "shallows",
+      "speaker": "narrator",
+      "transition": "finalBattle"
+    },
+    {
+      "id": "beat-0537",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0537"
+    },
+    {
+      "id": "beat-0538",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0538"
+    },
+    {
+      "id": "beat-0539",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0539"
+    },
+    {
+      "id": "beat-0540",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0540"
+    },
+    {
+      "id": "beat-0541",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0541"
+    },
+    {
+      "id": "beat-0542",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0542"
+    },
+    {
+      "id": "beat-0543",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0543"
+    },
+    {
+      "id": "beat-0544",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0544"
+    },
+    {
+      "id": "beat-0545",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0545"
+    },
+    {
+      "id": "beat-0546",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0546"
+    },
+    {
+      "id": "beat-0547",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0547"
+    },
+    {
+      "id": "beat-0548",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0548"
+    },
+    {
+      "id": "beat-0549",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0549"
+    },
+    {
+      "id": "beat-0550",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0550"
+    },
+    {
+      "id": "beat-0551",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0551"
+    },
+    {
+      "id": "beat-0552",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0552"
+    },
+    {
+      "id": "beat-0553",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0553"
+    },
+    {
+      "id": "beat-0554",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0554"
+    },
+    {
+      "id": "beat-0555",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0555"
+    },
+    {
+      "id": "beat-0556",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0556"
+    },
+    {
+      "id": "beat-0557",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0557"
+    },
+    {
+      "id": "beat-0558",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0558"
+    },
+    {
+      "id": "beat-0559",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0559"
+    },
+    {
+      "id": "beat-0560",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0560"
+    },
+    {
+      "id": "beat-0561",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0561"
+    },
+    {
+      "id": "beat-0562",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0562"
+    },
+    {
+      "id": "beat-0563",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0563"
+    },
+    {
+      "id": "beat-0564",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0564"
+    },
+    {
+      "id": "beat-0565",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0565"
+    },
+    {
+      "id": "beat-0566",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0566"
+    },
+    {
+      "id": "beat-0567",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0567"
+    },
+    {
+      "id": "beat-0568",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0568"
+    },
+    {
+      "id": "beat-0569",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0569"
+    },
+    {
+      "id": "beat-0570",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0570"
+    },
+    {
+      "id": "beat-0571",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0571"
+    },
+    {
+      "id": "beat-0572",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0572"
+    },
+    {
+      "id": "beat-0573",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0573"
+    },
+    {
+      "id": "beat-0574",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0574"
+    },
+    {
+      "id": "beat-0575",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0575"
+    },
+    {
+      "id": "beat-0576",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0576"
+    },
+    {
+      "id": "beat-0577",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0577"
+    },
+    {
+      "id": "beat-0578",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0578"
+    },
+    {
+      "id": "beat-0579",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0579"
+    },
+    {
+      "id": "beat-0580",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0580"
+    },
+    {
+      "id": "beat-0581",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0581"
+    },
+    {
+      "id": "beat-0582",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0582"
+    },
+    {
+      "id": "beat-0583",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0583"
+    },
+    {
+      "id": "beat-0584",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0584"
+    },
+    {
+      "id": "beat-0585",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0585"
+    },
+    {
+      "id": "beat-0586",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0586"
+    },
+    {
+      "id": "beat-0587",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0587"
+    },
+    {
+      "id": "beat-0588",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0588"
+    },
+    {
+      "id": "beat-0589",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0589"
+    },
+    {
+      "id": "beat-0590",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0590"
+    },
+    {
+      "id": "beat-0591",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0591"
+    },
+    {
+      "id": "beat-0592",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0592"
+    },
+    {
+      "id": "beat-0593",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0593"
+    },
+    {
+      "id": "beat-0594",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0594"
+    },
+    {
+      "id": "beat-0595",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0595"
+    },
+    {
+      "id": "beat-0596",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0596"
+    },
+    {
+      "id": "beat-0597",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0597"
+    },
+    {
+      "id": "beat-0598",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0598"
+    },
+    {
+      "id": "beat-0599",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0599"
+    },
+    {
+      "id": "beat-0600",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0600"
+    },
+    {
+      "id": "beat-0601",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0601"
+    },
+    {
+      "id": "beat-0602",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0602"
+    },
+    {
+      "id": "beat-0603",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0603"
+    },
+    {
+      "id": "beat-0604",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0604"
+    },
+    {
+      "id": "beat-0605",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0605"
+    },
+    {
+      "id": "beat-0606",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0606"
+    },
+    {
+      "id": "beat-0607",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0607",
+      "setFlags": [
+        "boat_entrusted"
+      ]
+    },
+    {
+      "id": "beat-0608",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0608"
+    },
+    {
+      "id": "beat-0609",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0609"
+    },
+    {
+      "id": "beat-0610",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0610"
+    },
+    {
+      "id": "beat-0611",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0611"
+    },
+    {
+      "id": "beat-0612",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0612"
+    },
+    {
+      "id": "beat-0613",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0613"
+    },
+    {
+      "id": "beat-0614",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0614"
+    },
+    {
+      "id": "beat-0615",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0615"
+    },
+    {
+      "id": "beat-0616",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0616"
+    },
+    {
+      "id": "beat-0617",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0617"
+    },
+    {
+      "id": "beat-0618",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0618"
+    },
+    {
+      "id": "beat-0619",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0619"
+    },
+    {
+      "id": "beat-0620",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0620"
+    },
+    {
+      "id": "beat-0621",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0621"
+    },
+    {
+      "id": "beat-0622",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0622"
+    },
+    {
+      "id": "beat-0623",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0623"
+    },
+    {
+      "id": "beat-0624",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0624"
+    },
+    {
+      "id": "beat-0625",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0625"
+    },
+    {
+      "id": "beat-0626",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0626"
+    },
+    {
+      "id": "beat-0627",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0627"
+    },
+    {
+      "id": "beat-0628",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0628"
+    },
+    {
+      "id": "beat-0629",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0629"
+    },
+    {
+      "id": "beat-0630",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0630"
+    },
+    {
+      "id": "beat-0631",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0631"
+    },
+    {
+      "id": "beat-0632",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0632"
+    },
+    {
+      "id": "beat-0633",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0633"
+    },
+    {
+      "id": "beat-0634",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0634"
+    },
+    {
+      "id": "beat-0635",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0635"
+    },
+    {
+      "id": "beat-0636",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0636"
+    },
+    {
+      "id": "beat-0637",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0637"
+    },
+    {
+      "id": "beat-0638",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0638"
+    },
+    {
+      "id": "beat-0639",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0639"
+    },
+    {
+      "id": "beat-0640",
+      "background": "shallows",
+      "speaker": "child",
+      "textKey": "prologue.beat-0640"
+    },
+    {
+      "id": "beat-0641",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0641"
+    },
+    {
+      "id": "beat-0642",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0642"
+    },
+    {
+      "id": "beat-0643",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0643"
+    },
+    {
+      "id": "beat-0644",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0644"
+    },
+    {
+      "id": "beat-0645",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0645"
+    },
+    {
+      "id": "beat-0646",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0646"
+    },
+    {
+      "id": "beat-0647",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0647"
+    },
+    {
+      "id": "beat-0648",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0648"
+    },
+    {
+      "id": "beat-0649",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0649"
+    },
+    {
+      "id": "beat-0650",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0650"
+    },
+    {
+      "id": "beat-0651",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0651"
+    },
+    {
+      "id": "beat-0652",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0652"
+    },
+    {
+      "id": "beat-0653",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0653"
+    },
+    {
+      "id": "beat-0654",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0654"
+    },
+    {
+      "id": "beat-0655",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0655"
+    },
+    {
+      "id": "beat-0656",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0656"
+    },
+    {
+      "id": "beat-0657",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0657"
+    },
+    {
+      "id": "beat-0658",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0658"
+    },
+    {
+      "id": "beat-0659",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0659"
+    },
+    {
+      "id": "beat-0660",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0660"
+    },
+    {
+      "id": "beat-0661",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0661"
+    },
+    {
+      "id": "beat-0662",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0662"
+    },
+    {
+      "id": "beat-0663",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0663"
+    },
+    {
+      "id": "beat-0664",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0664"
+    },
+    {
+      "id": "beat-0665",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0665"
+    },
+    {
+      "id": "beat-0666",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0666"
+    },
+    {
+      "id": "beat-0667",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0667"
+    },
+    {
+      "id": "beat-0668",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0668"
+    },
+    {
+      "id": "beat-0669",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0669"
+    },
+    {
+      "id": "beat-0670",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0670"
+    },
+    {
+      "id": "beat-0671",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0671"
+    },
+    {
+      "id": "beat-0672",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0672"
+    },
+    {
+      "id": "beat-0673",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0673"
+    },
+    {
+      "id": "beat-0674",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0674"
+    },
+    {
+      "id": "beat-0675",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0675"
+    },
+    {
+      "id": "beat-0676",
+      "background": "shallows",
+      "speaker": "player",
+      "textKey": "prologue.beat-0676"
+    },
+    {
+      "id": "beat-0677",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0677"
+    },
+    {
+      "id": "beat-0678",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0678"
+    },
+    {
+      "id": "beat-0679",
+      "background": "shallows",
+      "speaker": "feichuan",
+      "textKey": "prologue.beat-0679"
+    },
+    {
+      "id": "beat-0680",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0680"
+    },
+    {
+      "id": "beat-0681",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0681"
+    },
+    {
+      "id": "beat-0682",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0682"
+    },
+    {
+      "id": "beat-0683",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0683"
+    },
+    {
+      "id": "beat-0684",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0684"
+    },
+    {
+      "id": "beat-0685",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0685"
+    },
+    {
+      "id": "beat-0686",
+      "background": "shallows",
+      "speaker": "narrator",
+      "textKey": "prologue.beat-0686"
+    },
+    {
+      "id": "chapter-end",
+      "background": "shallows",
+      "speaker": "narrator",
+      "ending": true,
+      "textKey": "prologue.chapter-end"
+    }
+  ]
+}

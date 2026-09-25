@@ -4,9 +4,13 @@ import { assetURL } from './card-view';
 const DESIGN_WIDTH = 2560;
 const DESIGN_HEIGHT = 1440;
 const BOTTOM_FOREGROUND_SCALE = 1.12;
-const FOG_ALPHA = 0.21;
-const FOG_ALPHA_BREATH = 0.015;
+const FOG_ALPHA = 0.26;
+const FOG_ALPHA_BREATH = 0.008;
 const FOG_BREATH_PERIOD = 24;
+// The supplied 1983×793 fog texture has usable mist in its lower ~386 px.
+// That crop maps almost exactly to the requested 2560×500 ground band.
+const FOG_GROUND_TOP = 940;
+const FOG_SOURCE_BAND_HEIGHT = 386;
 const FOG_DRIFT_DISTANCE = 18;
 const FOG_DRIFT_PERIOD = 110;
 const ATLAS_WIDTH = 1254;
@@ -434,10 +438,15 @@ export class HubEnvironment {
     const drift = reducedMotion ? 0 : Math.sin((this.elapsed / FOG_DRIFT_PERIOD) * Math.PI * 2) * FOG_DRIFT_DISTANCE;
     const breathing = reducedMotion ? 0 : Math.sin((this.elapsed / FOG_BREATH_PERIOD) * Math.PI * 2) * FOG_ALPHA_BREATH;
     const width = DESIGN_WIDTH;
-    const height = width * this.groundFog.naturalHeight / this.groundFog.naturalWidth;
+    const sourceHeight = Math.min(FOG_SOURCE_BAND_HEIGHT, this.groundFog.naturalHeight);
+    const sourceTop = this.groundFog.naturalHeight - sourceHeight;
+    const height = width * sourceHeight / this.groundFog.naturalWidth;
     ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, FOG_GROUND_TOP, DESIGN_WIDTH, height);
+    ctx.clip();
     ctx.globalAlpha = FOG_ALPHA + breathing;
-    ctx.drawImage(this.groundFog, drift, DESIGN_HEIGHT - height, width, height);
+    ctx.drawImage(this.groundFog, 0, sourceTop, this.groundFog.naturalWidth, sourceHeight, drift, FOG_GROUND_TOP, width, height);
     ctx.restore();
   }
 }

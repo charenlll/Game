@@ -1,12 +1,18 @@
 import { Assets } from '../core/asset-manifest';
 import { cardDatabase, type CardData } from '../core/card-database';
 import { getTrait } from '../core/traits';
-import { loadPrologueProgress, savePrologueProgress, type FerrymanId, type ProloguePersistentState } from '../core/prologue-state';
+import type { ProloguePersistentState } from '../core/prologue-state';
+import type { FerrymanId } from '../core/profile/profile-types';
 import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view';
 import { applyHubInfoPanelContentRects, CardPreviewPopup, FerrymanSelectorDrawer, ferryButton, fitHubButtonLabels, hb19PanelStyle, HubInfoPanel, HubTypography, MementoDetailPopup, type HubFerrymanData, type MementoData } from './hub-components';
 import { HubEnvironment } from './hub-environment';
 
-export interface HubActions { startPrologue(): void; returnToMenu(): void; }
+export interface HubActions {
+  startPrologue(): void;
+  returnToMenu(): void;
+  ferrymanProgress(): ProloguePersistentState;
+  selectFerryman(id: FerrymanId): boolean;
+}
 
 type HubPage = 'hub' | 'collection' | 'stage-select' | 'growth';
 type Category = 'prologue' | 'world' | 'emotion' | 'life' | 'years' | 'ferry';
@@ -83,7 +89,7 @@ export class HubController {
 
   constructor(private readonly root: HTMLElement, private readonly actions: HubActions) {
     this.popupHost = root.closest('.game-viewport')?.querySelector<HTMLElement>('.viewport-overlay') ?? root;
-    this.selectedFerryman = loadPrologueProgress().currentFerrymanId;
+    this.selectedFerryman = actions.ferrymanProgress().currentFerrymanId;
     this.root.addEventListener('click', this.onClick);
     if (this.popupHost !== this.root) this.popupHost.addEventListener('click', this.onClick);
     this.render();
@@ -103,10 +109,10 @@ export class HubController {
     if (!id) return;
     const data = ferrymen.find(person => person.id === id);
     if (!data) return;
-    const progress = loadPrologueProgress();
+    const progress = this.actions.ferrymanProgress();
     if (!progress.unlockedFerrymen[id]) { this.showToast('尚未解锁'); return; }
+    if (!this.actions.selectFerryman(id)) { this.showToast('摆渡人选择未能保存'); return; }
     this.selectedFerryman = id;
-    savePrologueProgress({ currentFerrymanId: id });
     this.drawerOpen = false;
     this.render();
   }
@@ -119,7 +125,7 @@ export class HubController {
   }
 
   private render(): void {
-    const progress = loadPrologueProgress();
+    const progress = this.actions.ferrymanProgress();
     const current = ferrymen.find(entry => entry.id === this.selectedFerryman) ?? ferrymen[0]!;
     const layer = this.page === 'hub' ? this.renderHub(progress, current)
       : this.page === 'collection' ? this.renderCollection(progress)

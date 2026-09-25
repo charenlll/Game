@@ -1,5 +1,6 @@
 import type { CardData } from '../core/card-database';
-import type { FerrymanId, ProloguePersistentState } from '../core/prologue-state';
+import type { ProloguePersistentState } from '../core/prologue-state';
+import type { FerrymanId } from '../core/profile/profile-types';
 import { Assets } from '../core/asset-manifest';
 import { assetURL, CardView, escapeHTML as esc } from './card-view';
 

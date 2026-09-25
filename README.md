@@ -73,3 +73,8 @@ npm.cmd run test:browser
 ## 核心叙事文档
 
 - [最高剧情方向与叙事闭环](docs/narrative-vision.md)：后续篇章、亡魂故事、角色养成和玩法叙事结合的最高参考。
+
+## 工程规范
+
+- [架构与内容生产规范 v1](docs/architecture-and-content-standards-v1.md)：系统边界、状态与存档生命周期、内容/资源校验、UI样式和测试发布要求。
+- [第一篇章开发前架构准备方案（阶段 A–C 已实施）](docs/first-chapter-architecture-implementation-plan.md)：章节/存档边界、序章 textKey 迁移、战斗恢复实现与阶段 D 开发门槛。

@@ -181,7 +181,7 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   expect(drawerAvatarGeometry.every(avatar => Math.abs(avatar.width - avatar.height) < 1)).toBe(true);
   await page.locator('.ferryman-drawer [data-ferryman="moyu"]').click();
   await expect(page.locator('.hub-toast')).toHaveText('尚未解锁');
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.prologue.v1')!).currentFerrymanId ?? 'feichuan')).toBe('feichuan');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.save')!).profile.ferrymen.currentId)).toBe('feichuan');
   await page.locator('.ferryman-drawer-close').click();
 
   await page.locator('.hub-character').click();

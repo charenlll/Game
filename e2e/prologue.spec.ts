@@ -89,12 +89,16 @@ test('完成整章后先展示黑屏信物，点击获取才保存并进入驿�
   await expect(page.getByTestId('prologue-keepsake')).toBeVisible();
   await expect(page.getByRole('button', { name: '获取信物' })).toBeVisible();
   await expect(page.locator('.game-viewport')).toHaveClass(/prologue-story-black/);
-  expect(await page.evaluate(() => localStorage.getItem('night-ferry.prologue.v1'))).toBeNull();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.save')!).campaign.chapters.prologue.status)).not.toBe('complete');
 
   await page.getByRole('button', { name: '获取信物' }).click();
   await expect(page.locator('.hub-screen')).toBeVisible();
   await expect(page.locator('.hub-memento-slot')).toBeVisible();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.prologue.v1')!).prologue_complete)).toBe(true);
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.save')!));
+  expect(saved.campaign.chapters.prologue.status).toBe('complete');
+  expect(saved.profile.mementoIds).toContain('prologue_wooden_boat');
+  expect(saved.appliedGrantIds).toContain('prologue_complete');
+  expect(saved.activeSession).toBeNull();
 });
 
 test('连续剧情可通过右上角按钮确认跳过并进入下一场战斗', async ({ page }) => {

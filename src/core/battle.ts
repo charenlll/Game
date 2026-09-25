@@ -6,6 +6,13 @@ import { BattleConfig, randomIntent, resolveIntent } from './intents';
 import { getTrait, onLightGained, resetTurnTraitState } from './traits';
 import type { ActionResult, BattleEncounterConfig, BattleState, CardInstance } from './types';
 
+export interface BattleRuntimeSnapshot {
+  state: BattleState;
+  encounterConfig: BattleEncounterConfig;
+  turnIndex: number;
+  nextInstanceNumber: number;
+}
+
 export function getCost(card: CardInstance, turn: number, runtimeModifier = 0): number {
   return Math.max(0, getCard(card.DefinitionID).Cost + runtimeModifier + card.CostModifiers.filter(mod => mod.ExpiresAtTurn >= turn).reduce((sum, mod) => sum + mod.Amount, 0));
 }
@@ -30,7 +37,7 @@ export class Battle {
   private turnIndex = 0;
   private readonly encounter: Required<Pick<BattleEncounterConfig, 'SoulID' | 'StartingObsession' | 'VictoryObsession' | 'MaxRounds' | 'InitialDraw' | 'CardsPerTurn' | 'HandSize' | 'BaseLight'>> & BattleEncounterConfig;
 
-  constructor(seed: number, battleID = `battle-${seed}`, characterID = character.CharacterID, deckOverride?: readonly string[], encounter: BattleEncounterConfig = {}) {
+  constructor(seed: number, battleID = `battle-${seed}`, characterID = character.CharacterID, deckOverride?: readonly string[], encounter: BattleEncounterConfig = {}, snapshot?: BattleRuntimeSnapshot) {
     const selectedCharacter = getCharacter(characterID);
     const selectedSoul = getSoul(encounter.SoulID ?? soul.SoulID);
     const startingObsession = encounter.StartingObsession ?? selectedSoul.Obsession;
@@ -49,6 +56,14 @@ export class Battle {
     };
     if (!Number.isInteger(this.encounter.MaxRounds) || this.encounter.MaxRounds < 1) throw new Error('战斗回合配置无效');
     if (this.encounter.IntentPool && !this.encounter.IntentPool.length) throw new Error('Intent池不能为空');
+    if (snapshot) {
+      if (snapshot.state.BattleID !== battleID || snapshot.state.CharacterID !== selectedCharacter.CharacterID || snapshot.state.SoulID !== selectedSoul.SoulID) throw new Error('战斗快照与遭遇配置不匹配');
+      if (!Number.isSafeInteger(snapshot.turnIndex) || snapshot.turnIndex < 0 || !Number.isSafeInteger(snapshot.nextInstanceNumber) || snapshot.nextInstanceNumber < 1) throw new Error('战斗快照游标无效');
+      this.state = structuredClone(snapshot.state);
+      this.turnIndex = snapshot.turnIndex;
+      this.nextInstanceNumber = snapshot.nextInstanceNumber;
+      return;
+    }
     const selectedDeck = deckOverride ? [...deckOverride] : [...buildStartingDeck(selectedCharacter)];
     if (!selectedDeck.length) throw new Error('战斗牌组不能为空');
     selectedDeck.forEach(getCard);
@@ -67,6 +82,20 @@ export class Battle {
     this.nextInstanceNumber = this.state.DrawPile.length + 1;
     shuffle(this.state.DrawPile, this.state);
     this.startTurn();
+  }
+
+  static restore(snapshot: BattleRuntimeSnapshot): Battle {
+    return new Battle(snapshot.state.Seed, snapshot.state.BattleID, snapshot.state.CharacterID, [], snapshot.encounterConfig, snapshot);
+  }
+
+  createSnapshot(): BattleRuntimeSnapshot {
+    if (this.busy || (this.state.Phase !== 'PLAYER_TURN' && this.state.Phase !== 'RESULT')) throw new Error('只能在完整规则动作提交后保存战斗快照');
+    return {
+      state: structuredClone(this.state),
+      encounterConfig: structuredClone(this.encounter),
+      turnIndex: this.turnIndex,
+      nextInstanceNumber: this.nextInstanceNumber,
+    };
   }
 
   cost(card: CardInstance): number {

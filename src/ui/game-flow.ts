@@ -1,8 +1,10 @@
 import { RunController } from './run-view';
 import { MainMenu } from './main-menu';
 import { PrologueController } from './prologue-view';
-import { loadPrologueProgress } from '../core/prologue-state';
 import { HubController } from './hub-view';
+import { SessionCoordinator } from '../app/session/session-coordinator';
+import { createBrowserSaveRepository } from '../infrastructure/save/local-save-repository';
+import type { ActiveSessionSnapshot } from '../infrastructure/save/save-schema';
 
 export class GameFlow {
   private prologueCompleted = false;
@@ -10,10 +12,12 @@ export class GameFlow {
   private mainMenu: MainMenu | null = null;
   private run: RunController | null = null;
   private hub: HubController | null = null;
+  private readonly sessions = SessionCoordinator.open(createBrowserSaveRepository());
 
   constructor(private readonly stage: HTMLElement, private readonly seed: number, showMainMenu = true) {
-    this.prologueCompleted = loadPrologueProgress().prologue_complete;
-    if (showMainMenu) this.showMainMenu();
+    this.prologueCompleted = this.sessions.snapshot.campaign.chapters.prologue?.status === 'complete';
+    if (showMainMenu && this.sessions.snapshot.activeSession) this.resumeSession(this.sessions.snapshot.activeSession);
+    else if (showMainMenu) this.showMainMenu();
     else this.startRun();
   }
 
@@ -54,7 +58,7 @@ export class GameFlow {
     this.showHub();
   }
 
-  private startPrologue(): void {
+  private startPrologue(resume?: ActiveSessionSnapshot): void {
     this.run?.destroy();
     this.run = null;
     this.hub?.destroy();
@@ -65,7 +69,7 @@ export class GameFlow {
     this.prologue = new PrologueController(this.stage, this.seed, {
       returnToMenu: () => this.prologueCompleted ? this.showHub() : this.showMainMenu(),
       completed: () => { this.prologueCompleted = true; },
-    });
+    }, this.sessions, resume);
   }
 
   private showHub(): void {
@@ -79,12 +83,20 @@ export class GameFlow {
     this.hub = new HubController(this.stage, {
       startPrologue: () => this.startPrologue(),
       returnToMenu: () => this.showMainMenu(),
+      ferrymanProgress: () => this.sessions.ferrymanProgress(),
+      selectFerryman: id => this.sessions.setCurrentFerryman(id),
     });
   }
 
-  private startRun(): void {
+  private startRun(resume?: ActiveSessionSnapshot): void {
     this.run?.destroy();
-    const seed = this.run ? crypto.getRandomValues(new Uint32Array(1))[0] : this.seed;
-    this.run = new RunController(this.stage, seed, 'feichuan', this.prologueCompleted ? () => this.showHub() : undefined);
+    const seed = resume?.runState?.Seed ?? (this.run ? crypto.getRandomValues(new Uint32Array(1))[0] : this.seed);
+    this.run = new RunController(this.stage, seed, resume?.runState?.SelectedCharacterID ?? this.sessions.snapshot.profile.ferrymen.currentId, this.prologueCompleted ? () => this.showHub() : undefined, this.sessions, resume);
+  }
+
+  private resumeSession(session: ActiveSessionSnapshot): void {
+    if (session.mode === 'chapter' && session.chapterId === 'prologue') this.startPrologue(session);
+    else if (session.mode === 'free_run') this.startRun(session);
+    else this.showMainMenu();
   }
 }

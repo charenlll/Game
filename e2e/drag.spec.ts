@@ -421,6 +421,7 @@ test('杂念从Intent进入手牌并支付1灯火进入消耗牌堆', async ({ p
 });
 
 test('第六夜未化解时延迟显示渡魂未竟并保留未释然亡魂', async ({ page }) => {
+  test.setTimeout(45000); // 六轮战斗按正式演出时长逐轮结算，默认超时偶尔早于结尾提示。
   await page.goto('/?seed=42&test-run=1');
   for (let turn = 2; turn <= 6; turn++) {
     await endTurn(page);
