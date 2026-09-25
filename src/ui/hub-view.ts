@@ -4,6 +4,7 @@ import { getTrait } from '../core/traits';
 import { loadPrologueProgress, savePrologueProgress, type FerrymanId, type ProloguePersistentState } from '../core/prologue-state';
 import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view';
 import { applyHubInfoPanelContentRects, CardPreviewPopup, FerrymanSelectorDrawer, ferryButton, fitHubButtonLabels, hb19PanelStyle, HubInfoPanel, HubTypography, MementoDetailPopup, type HubFerrymanData, type MementoData } from './hub-components';
+import { HubEnvironment } from './hub-environment';
 
 export interface HubActions { startPrologue(): void; returnToMenu(): void; }
 
@@ -49,6 +50,7 @@ export class HubController {
   private toast = '';
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly popupHost: HTMLElement;
+  private readonly environment = new HubEnvironment();
 
   private readonly onClick = (event: MouseEvent): void => {
     const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-hub-action]') : null;
@@ -88,6 +90,7 @@ export class HubController {
   }
 
   destroy(): void {
+    this.environment.destroy();
     this.root.removeEventListener('click', this.onClick);
     if (this.popupHost !== this.root) {
       this.popupHost.removeEventListener('click', this.onClick);
@@ -124,6 +127,8 @@ export class HubController {
           : this.renderGrowth(current);
     const hasPopup = this.drawerOpen || this.settingsOpen || !!this.detailMementoId || !!this.previewCard;
     this.root.innerHTML = `<div class="hub-safe-viewport">${layer}${!hasPopup && this.toast ? `<div class="hub-toast" role="status">${esc(this.toast)}</div>` : ''}</div>`;
+    if (this.page === 'hub') this.environment.mount(this.root);
+    else this.environment.suspend();
     this.popupHost.querySelector('.hub-popup-layer')?.remove();
     if (hasPopup) {
       const closeAction = this.previewCard ? 'close-card-preview'
@@ -155,21 +160,20 @@ export class HubController {
   }
 
   private renderFerrymanSwitch(current: HubFerrymanData): string {
-    return `<button class="hub-current-ferryman" data-hub-action="open-ferryman-drawer" aria-label="切换摆渡人，当前${esc(current.name)}">
-      <img class="hub-current-avatar" src="${assetURL(current.avatar)}" alt=""><span class="hub-switch-sr-only">${esc(current.name)}，点击选择摆渡人</span>
-    </button>`;
+    return FerrymanSelectorDrawer.renderCurrent(current);
   }
 
   private renderHub(progress: ProloguePersistentState, current: HubFerrymanData): string {
     const trace = mementos.filter(item => item.category === 'prologue').map(item => this.renderSlot(item, progress)).join('');
     return `<main class="hub-screen hub-home" aria-label="驿站">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
-      <header class="hub-title"><img class="hub-title-frame" src="${assetURL(Assets.hub.category)}" alt=""><h1>渡魂驿站</h1></header>${this.renderResources(progress)}
+      ${this.renderResources(progress)}
       <button class="hub-settings" data-hub-action="settings" aria-label="设置"><img src="${assetURL(Assets.hub.settings)}" alt=""></button>
+      <div class="hub-home-focus-layer" aria-hidden="true"></div>
       <section class="hub-shelf-area"><img class="hub-shelf" src="${assetURL(Assets.hub.shelf)}" alt="信物收藏架">${trace}</section>
       <button class="hub-character" data-hub-action="open-growth" aria-label="查看${esc(current.name)}"><img src="${assetURL(current.portrait)}" alt="${esc(current.name)}"></button>
       <div class="hub-home-actions">
-        ${ferryButton('open-stages', '选择渡魂', 'primary', 'hub-primary-action')}
+        ${ferryButton('open-stages', '渡魂', 'primary', 'hub-primary-action')}
         <div class="hub-secondary-actions">${ferryButton('open-collection', '信物录', 'secondary')}${ferryButton('coming-soon', '牌录', 'secondary')}${ferryButton('coming-soon', '渡魂记录', 'secondary')}</div>
       </div>
       ${FerrymanSelectorDrawer.renderCurrent(current)}
@@ -182,7 +186,6 @@ export class HubController {
     return `<main class="hub-screen hub-collection-screen" aria-label="信物录">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
-      <h1 class="hub-page-title"><img class="hub-title-frame" src="${assetURL(Assets.hub.category)}" alt=""><span>信物录</span></h1>
       <section class="hub-shelf-area hub-collection-shelf"><img class="hub-shelf" src="${assetURL(Assets.hub.shelf)}" alt="">
         ${items}
         <button class="hub-page-arrow previous" data-hub-action="collection-prev" aria-label="上一类"><img src="${assetURL(Assets.hub.arrow)}" alt=""></button>
@@ -200,7 +203,6 @@ export class HubController {
     return `<main class="hub-screen hub-stage-screen" aria-label="渡魂">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
-      <h1 class="hub-page-title"><img class="hub-title-frame" src="${assetURL(Assets.hub.category)}" alt=""><span>渡魂</span></h1>
       <section class="hub-stage-list">
         <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>序｜初见</h2><p>在无名渡口，遇见第一位无法离开的亡魂。</p><small>已完成 · 可再次进入</small></div><button class="hub-stage-button hub-stage-button--replay" data-hub-action="replay-prologue">再次渡魂</button></article>
         <article class="hub-stage-entry is-unavailable" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>世｜见天地</h2><p>新的相遇仍在前方。</p><small>尚未开放</small></div><button class="hub-stage-button is-muted" data-hub-action="locked-chapter" disabled>尚未开放</button></article>
@@ -214,18 +216,17 @@ export class HubController {
       const card = cardDatabase.get(id);
       return `<div class="growth-card-slot growth-card-slot--${index + 1}">
         <button class="growth-card" data-hub-action="preview-card" data-card-id="${esc(card.id)}" aria-label="预览卡牌：${esc(card.name)}"><span class="growth-card-face">${CardView.render(card)}</span></button>
-        <span class="growth-card-name">${esc(card.name)}</span></div>`;
+      </div>`;
     }).join('');
-    const header = HubInfoPanel(`<div class="growth-header-identity growth-safe-content"><h1>${esc(current.name)}</h1><span>${esc(current.role)}</span></div>`, 'growth-header', '角色身份');
-    const overview = HubInfoPanel(`<div class="growth-overview-copy growth-safe-content"><h2>摆渡人特性</h2><p class="growth-intro">${esc(current.intro)}</p></div>`, 'growth-overview', '摆渡人特性总览');
+    const header = `<header class="growth-header" aria-label="角色身份"><div class="growth-header-identity"><h1>${esc(current.name)}</h1><span>${esc(current.role)}</span></div></header>`;
     const traits = `<div class="growth-trait-panels">${HubInfoPanel(`<div class="growth-trait-copy growth-safe-content"><h2>善贾</h2><p>${esc(trait.description)}</p></div>`, 'growth-trait growth-trait--merchant', '善贾')}${HubInfoPanel(`<div class="growth-trait-copy growth-safe-content"><h2>后续特性</h2><p>尚未开放</p></div>`, 'growth-trait growth-trait--locked', '后续特性')}</div>`;
-    const exclusiveCards = HubInfoPanel(`<div class="growth-card-content growth-safe-content"><h2 class="growth-module-title">专属卡牌</h2><div class="growth-card-divider"></div><div class="growth-card-row"><div class="growth-card-track">${cards}</div></div></div>`, 'growth-exclusive-cards', '专属卡牌');
+    const exclusiveCards = `<section class="growth-exclusive-cards" aria-label="摆渡人卡牌"><div class="growth-card-content"><div class="growth-card-row"><div class="growth-card-track">${cards}</div></div><p class="growth-more-cards">更多卡牌<br>未解锁</p></div></section>`;
     const growth = HubInfoPanel(`<div class="growth-node-content growth-safe-content"><h2>成长</h2><span>尚未开放</span></div><button class="growth-panel-action" data-hub-action="growth-node" aria-label="成长：尚未开放"></button>`, 'growth-node-panel', '成长');
     return `<main class="hub-screen growth-screen" aria-label="摆渡人养成页">
       <img class="growth-background" src="${assetURL(Assets.hub.growthBackground)}" alt="" draggable="false">
       <button class="growth-back" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
       <img class="growth-portrait" src="${assetURL(current.portrait)}" alt="${esc(current.name)}">
-      <section class="growth-info-layout" aria-label="摆渡人资料">${header}${overview}${traits}${exclusiveCards}${growth}</section>
+      <section class="growth-info-layout" aria-label="摆渡人资料">${header}${traits}${exclusiveCards}${growth}</section>
       <div class="growth-bottom-row">${this.renderFerrymanSwitch(current)}</div>
     </main>`;
   }

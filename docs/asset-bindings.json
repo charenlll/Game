@@ -374,8 +374,8 @@
     {
         "source":  "background/hub/HB14摆渡人养成页背景.png",
         "destination":  "assets/backgrounds/hub/HB14.png",
-        "bytes":  2646355,
-        "sha256":  "94c05c6f19aebf4b02df2116173b0969faead3376b891e777e517390b0ae17c3"
+        "bytes":  2523573,
+        "sha256":  "cb446bddc68c8f896c7baa06429e08b0422a351e1c1bf1175342dcfd7c7bdfdb"
     },
     {
         "source":  "ui/hub/display/HB02标准信物收藏架.png",
@@ -414,6 +414,12 @@
         "sha256":  "d8fdae94bf9f0b0ae058bb029b966f09c99ed9204f5128de0f38bce252426ea9"
     },
     {
+        "source":  "ui/hub/buttons/HB18墨绿圆形主按钮.png",
+        "destination":  "assets/ui/hub/buttons/ferry_primary_button.png",
+        "bytes":  1944004,
+        "sha256":  "617d7892cf8d2680fd1842380a8a9a606cac63d59ad280870888e5c030c25420"
+    },
+    {
         "source":  "ui/hub/icons/HB09未解锁标记.png",
         "destination":  "assets/ui/hub/HB09.png",
         "bytes":  745526,
@@ -444,6 +450,12 @@
         "sha256":  "0ab5ebcef4e5d0626ec9b853fe37d2b13417c0f89d05f0100b9f7b8017104e29"
     },
     {
+        "source":  "ui/hub/stages/HB17条目底框.png",
+        "destination":  "assets/ui/hub/stages/stage_entry_panel.png",
+        "bytes":  1489793,
+        "sha256":  "109c6741418dfb2cf316d39af8270dc9fef6d69b294fc214aebab986d6a1fb6c"
+    },
+    {
         "source":  "ui/resources/RS01铜钱.png",
         "destination":  "assets/ui/resources/RS01.png",
         "bytes":  1453237,
@@ -454,6 +466,12 @@
         "destination":  "assets/ui/resources/RS02.png",
         "bytes":  885629,
         "sha256":  "fc2ddd1974c768f252e1746b3e07ecdf6a398f483f3562d9d4fdf20a1986e796"
+    },
+    {
+        "source":  "ui/hub/characters/HB19九宫格底板.png",
+        "destination":  "assets/ui/hub/characters/info_panel_9slice.png",
+        "bytes":  2614421,
+        "sha256":  "a5aa666045b99663cf20be87dc7877f652753ef6e30d2c24c4ad8174e831caf8"
     },
     {
         "source":  "background/menu/BA06主页背景.png",
@@ -468,21 +486,33 @@
         "sha256":  "e90548675ec7d0329d4bc4765dfca1f4dc429ee551c26a7e84e66dab242b9d5f"
     },
     {
-        "source":  "ui/hub/stages/HB17条目底框.png",
-        "destination":  "assets/ui/hub/stages/stage_entry_panel.png",
-        "bytes":  1264088,
-        "sha256":  "102f47902c82680859e458e8289d1221dc31218aa0bb2aa6b8d341f0353c7c61"
+        "source":  "background/hub/HBFX01顶部近景.png",
+        "destination":  "assets/hub/foreground/HBFX01_top_foreground.png",
+        "bytes":  1038895,
+        "sha256":  "c1b1ffae7f6bb68f50479326e04a9e62e82fce3a0c7ac37e0e586499f9486f91"
     },
     {
-        "source":  "ui/hub/buttons/HB18墨绿圆形主按钮.png",
-        "destination":  "assets/ui/hub/buttons/ferry_primary_button.png",
-        "bytes":  1944004,
-        "sha256":  "617d7892cf8d2680fd1842380a8a9a606cac63d59ad280870888e5c030c25420"
+        "source":  "background/hub/HBFX02底部近景.png",
+        "destination":  "assets/hub/foreground/HBFX02_bottom_foreground.png",
+        "bytes":  1012271,
+        "sha256":  "b780b5e0eefceb52f0e91f8de0edf55f25cf7298f9ac3a4810968bd8f9ad82d9"
     },
     {
-        "source":  "ui/hub/characters/HB19九宫格底板.png",
-        "destination":  "assets/ui/hub/characters/info_panel_9slice.png",
-        "bytes":  2614421,
-        "sha256":  "a5aa666045b99663cf20be87dc7877f652753ef6e30d2c24c4ad8174e831caf8"
+        "source":  "background/hub/HBFX03通用光晕.png",
+        "destination":  "assets/hub/effects/HBFX03_ambient_glow.png",
+        "bytes":  1381690,
+        "sha256":  "71fe90d7ddf1639cb465e38ed365cc934da0d01952f29ed32c9d2d0cca66f9e5"
+    },
+    {
+        "source":  "background/hub/HBFX04环境粒子.png",
+        "destination":  "assets/hub/effects/HBFX04_particle_atlas.png",
+        "bytes":  424456,
+        "sha256":  "509a61ca365282933b6ccbf6acf445513734d7508ca026955db1f510521b0729"
+    },
+    {
+        "source":  "background/hub/HBFX05地面雾气.png",
+        "destination":  "assets/hub/effects/HBFX05_ground_fog.png",
+        "bytes":  636712,
+        "sha256":  "8f7d33ecdb4a6e111ac058cba4a854ee1882adbcb9599db7c12b36d26450e01b"
     }
 ]

@@ -70,9 +70,11 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await waitForHubCanvas(page, size);
 
     for (const selector of [
-      '.hub-title', '.hub-resources', '.hub-settings', '.hub-shelf-area', '.hub-character',
+      '.hub-resources', '.hub-settings', '.hub-shelf-area', '.hub-character',
       '.hub-character img', '.hub-primary-action', '.hub-secondary-actions', '.hub-current-ferryman',
     ]) await expectVisibleInsideViewport(page.locator(selector), size.width, size.height);
+    for (const button of await page.locator('.hub-secondary-actions .hub-asset-button').all()) await expectVisibleInsideViewport(button, size.width, size.height);
+    await expect(page.locator('.hub-home .hub-title')).toHaveCount(0);
 
     if (index === 0) await capture(page, testInfo, 'hub-home-1600x800');
 
@@ -121,7 +123,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await expect(page.getByRole('dialog', { name: '信物详情' })).toHaveCount(0);
 
     await page.getByRole('button', { name: '返回' }).click();
-    await page.getByRole('button', { name: '选择渡魂' }).click();
+    await page.getByRole('button', { name: '渡魂', exact: true }).click();
     for (const entry of await page.locator('.hub-stage-entry').all()) await expectVisibleInsideViewport(entry, size.width, size.height);
     for (const button of await page.locator('.hub-stage-button').all()) await expectVisibleInsideViewport(button, size.width, size.height);
     if (index === 0 || index === reviewSizes.length - 1) await capture(page, testInfo, `hub-stage-select-${size.width}x${size.height}`);
@@ -129,7 +131,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
 
     await page.locator('.hub-character').click();
     await expect(page.locator('.growth-screen')).toBeVisible();
-    for (const selector of ['.growth-portrait', '.growth-header', '.growth-overview', '.growth-trait--merchant', '.growth-trait--locked', '.growth-exclusive-cards', '.growth-node-panel', '.growth-bottom-row']) {
+    for (const selector of ['.growth-portrait', '.growth-header', '.growth-trait--merchant', '.growth-trait--locked', '.growth-exclusive-cards', '.growth-more-cards', '.growth-node-panel', '.growth-bottom-row']) {
       await expectVisibleInsideViewport(page.locator(selector), size.width, size.height);
     }
     if (index === 0 || index === reviewSizes.length - 1) await capture(page, testInfo, `hub-growth-${size.width}x${size.height}`);
@@ -138,7 +140,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await expectVisibleInsideViewport(page.locator('.hub-popup-viewport-backdrop'), size.width, size.height);
     await expectVisibleInsideViewport(page.locator('.card-preview-popup'), size.width, size.height);
     if (index === 0 || index === reviewSizes.length - 1) await capture(page, testInfo, `hub-card-preview-${size.width}x${size.height}`);
-    await page.locator('.hub-popup-close').click();
+    await page.locator('.hub-popup-scrim').click({ position: { x: 30, y: 30 } });
     await page.getByRole('button', { name: '返回' }).click();
     await expect(page.locator('.hub-home')).toBeVisible();
   }

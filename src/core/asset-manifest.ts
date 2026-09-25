@@ -8,6 +8,13 @@ export const Assets = Object.freeze({
     growthNode: 'assets/ui/hub/HB15.png', back: 'assets/ui/hub/HB16.png',
     infoPanel: 'assets/ui/hub/characters/info_panel_9slice.png',
     stageEntry: 'assets/ui/hub/stages/stage_entry_panel.png', ferryPrimaryButton: 'assets/ui/hub/buttons/ferry_primary_button.png',
+    environment: {
+      topForeground: 'assets/hub/foreground/HBFX01_top_foreground.png',
+      bottomForeground: 'assets/hub/foreground/HBFX02_bottom_foreground.png',
+      groundFog: 'assets/hub/effects/HBFX05_ground_fog.png',
+      ambientGlow: 'assets/hub/effects/HBFX03_ambient_glow.png',
+      particleAtlas: 'assets/hub/effects/HBFX04_particle_atlas.png',
+    },
   },
   resources: { copper: 'assets/ui/resources/RS01.png', soulFlame: 'assets/ui/resources/RS02.png' },
   ferrymen: {

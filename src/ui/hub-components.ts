@@ -72,8 +72,8 @@ export interface HubFerrymanData {
 
 export const ferryButton = (action: string, label: string, size: 'primary' | 'secondary' | 'stage', extra = ''): string => {
   const asset = size === 'primary' ? Assets.hub.ferryPrimaryButton : Assets.hub.secondaryButton;
-  const baseFont = size === 'primary' ? 28 : size === 'secondary' ? 27 : 18;
-  const minFont = size === 'primary' ? 26 : size === 'secondary' ? 22.5 : 15;
+  const baseFont = size === 'primary' ? 28 : size === 'secondary' ? 19 : 18;
+  const minFont = size === 'primary' ? 26 : size === 'secondary' ? 16 : 15;
   return `<button class="hub-asset-button hub-asset-button--${size} ${extra}" data-hub-action="${esc(action)}" data-fit-label data-base-font="${baseFont}" data-min-font="${minFont}">
     <img class="hub-button-art" src="${assetURL(asset)}" alt=""><span class="hub-button-tint" aria-hidden="true"></span>
     <span class="hub-button-content">${esc(label)}</span></button>`;
@@ -117,7 +117,6 @@ export class FerrymanSelectorDrawer {
 export class CardPreviewPopup {
   static render(card: CardData): string {
     return `<div class="hub-popup-scrim" data-hub-action="close-card-preview"><section class="card-preview-popup" role="dialog" aria-modal="true" aria-labelledby="card-preview-title" data-hub-action="stop-popup-close">
-      <button class="hub-popup-close" data-hub-action="close-card-preview" aria-label="关闭卡牌预览">×</button>
       <div class="card-preview-art">${CardView.render(card)}</div><div class="card-preview-name" id="card-preview-title">${esc(card.name)}</div>
     </section></div>`;
   }

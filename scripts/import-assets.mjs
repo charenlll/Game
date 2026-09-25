@@ -101,6 +101,23 @@ try {
 } catch {
   // Menu artwork is optional during development; the menu has a text logo fallback.
 }
+const hubBackgroundDirectory = resolve(dirname(menuSourceDirectory), 'hub');
+try {
+  const hubEnvironmentSources = await readdir(hubBackgroundDirectory);
+  const environmentAssets = [
+    ['HBFX01', 'assets/hub/foreground/HBFX01_top_foreground.png'],
+    ['HBFX02', 'assets/hub/foreground/HBFX02_bottom_foreground.png'],
+    ['HBFX03', 'assets/hub/effects/HBFX03_ambient_glow.png'],
+    ['HBFX04', 'assets/hub/effects/HBFX04_particle_atlas.png'],
+    ['HBFX05', 'assets/hub/effects/HBFX05_ground_fog.png'],
+  ];
+  for (const [prefix, destination] of environmentAssets) {
+    const source = hubEnvironmentSources.find(name => name.startsWith(prefix));
+    if (source) files[`background/hub/${source}`] = destination;
+  }
+} catch {
+  // Environmental foreground/effect artwork is optional until the hub enhancement is enabled.
+}
 const report = [];
 for (const [source, destination] of Object.entries(files)) {
   const from = resolve(root, '资源图源文件', source);
@@ -111,5 +128,6 @@ for (const [source, destination] of Object.entries(files)) {
   if (!original.equals(copied)) throw new Error(`素材复制校验失败：${source}`);
   report.push({ source, destination, bytes: copied.length, sha256: createHash('sha256').update(copied).digest('hex') });
 }
-await writeFile(resolve(root, 'docs/asset-bindings.json'), JSON.stringify(report, null, 2) + '\n');
+const formattedReport = JSON.stringify(report, null, 4).replace(/": /g, '":  ');
+await writeFile(resolve(root, 'docs/asset-bindings.json'), formattedReport + '\n');
 console.log(`已按明确文件名映射复制并校验 ${report.length} 个素材；未解码、修改或视觉识别图片。`);
