@@ -86,8 +86,8 @@
     {
         "source":  "ferrymen/feichuan/CH01绯川标准立绘.png",
         "destination":  "assets/characters/CH01.png",
-        "bytes":  2030191,
-        "sha256":  "b8acb1851fef1bab8b336067db7c552003e0da858077ea70a75cffdad7c47e4c"
+        "bytes":  1531608,
+        "sha256":  "77666cf587b513c6d2c56e21a5333216e0040aa3e4d44eed3cda4d618a9d3e1b"
     },
     {
         "source":  "ferrymen/moyu/CH02墨羽标准立绘.png",
@@ -104,8 +104,8 @@
     {
         "source":  "ferrymen/feichuan/AV01绯川头像.png",
         "destination":  "assets/characters/AV01.png",
-        "bytes":  2294167,
-        "sha256":  "9b36a19bc7fbfd2d2da7d0ee5ea8625d6a5f26a6d90e89c0d55abaaa099f85b7"
+        "bytes":  2242529,
+        "sha256":  "03b8b235129e42553abc285730839d2aba5ea98da72f7029a681c593c09f85d3"
     },
     {
         "source":  "ferrymen/moyu/AV02墨羽头像.png",
@@ -536,7 +536,7 @@
     {
         "source":  "ferrymen/feichuan/CHH01绯川标准立绘.png",
         "destination":  "assets/characters/hub/CHH01_feichuan.png",
-        "bytes":  1949696,
-        "sha256":  "e991a786ff35764c7926aacdc21be86eabb6293fc9d0e9b1eea46b975095740b"
+        "bytes":  2115468,
+        "sha256":  "0b56486be099f8aba81e4dd566ce6b039e7a979af6d64196b030dfd9abb2e700"
     }
 ]
