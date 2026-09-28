@@ -17,9 +17,12 @@ export interface BattleSnapshot {
   nextInstanceNumber: number;
 }
 
+export type ChapterEntrySource = 'main_menu' | 'hub';
+
 export interface ActiveSessionSnapshot {
   mode: 'chapter' | 'free_run';
   chapterId?: string;
+  entrySource?: ChapterEntrySource;
   runState?: RunState;
   screen: 'story' | 'battle' | 'battle_result' | 'reward' | 'result' | 'keepsake' | 'retry';
   battle?: BattleSnapshot;
@@ -112,6 +115,7 @@ export function isActiveSession(value: unknown): value is ActiveSessionSnapshot 
   if (!['story', 'battle', 'battle_result', 'reward', 'result', 'keepsake', 'retry'].includes(String(value.screen))) return false;
   if (!isStringArray(value.appliedSessionEventIds)) return false;
   if (value.chapterId !== undefined && typeof value.chapterId !== 'string') return false;
+  if (value.entrySource !== undefined && value.entrySource !== 'main_menu' && value.entrySource !== 'hub') return false;
   if (value.runState !== undefined && !isRunState(value.runState)) return false;
   if (value.battle !== undefined && !isBattleSnapshot(value.battle)) return false;
   if (value.encounterId !== undefined && typeof value.encounterId !== 'string') return false;

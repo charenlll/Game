@@ -4,10 +4,11 @@ import { PrologueController } from './prologue-view';
 import { HubController } from './hub-view';
 import { SessionCoordinator } from '../app/session/session-coordinator';
 import { createBrowserSaveRepository } from '../infrastructure/save/local-save-repository';
-import type { ActiveSessionSnapshot } from '../infrastructure/save/save-schema';
+import type { ActiveSessionSnapshot, ChapterEntrySource } from '../infrastructure/save/save-schema';
 
 export class GameFlow {
   private prologueCompleted = false;
+  private prologueEntrySource: ChapterEntrySource = 'main_menu';
   private prologue: PrologueController | null = null;
   private mainMenu: MainMenu | null = null;
   private run: RunController | null = null;
@@ -15,7 +16,8 @@ export class GameFlow {
   private readonly sessions = SessionCoordinator.open(createBrowserSaveRepository());
 
   constructor(private readonly stage: HTMLElement, private readonly seed: number, showMainMenu = true) {
-    this.prologueCompleted = this.sessions.snapshot.campaign.chapters.prologue?.status === 'complete';
+    const save = this.sessions.snapshot;
+    this.prologueCompleted = save.campaign.chapters.prologue?.status === 'complete' || save.profile.mementoIds.includes('prologue_wooden_boat');
     if (showMainMenu && this.sessions.snapshot.activeSession) this.resumeSession(this.sessions.snapshot.activeSession);
     else if (showMainMenu) this.showMainMenu();
     else this.startRun();
@@ -27,7 +29,7 @@ export class GameFlow {
   }
 
   debugReturnToMenu(): void {
-    if (this.prologue) this.showMainMenu();
+    if (this.prologue) this.returnFromPrologue();
     else if (this.run && this.prologueCompleted) this.showHub();
     else this.showMainMenu();
   }
@@ -58,13 +60,14 @@ export class GameFlow {
     this.mainMenu?.destroy();
     this.mainMenu = null;
     if (!this.prologueCompleted) {
-      this.startPrologue();
+      this.startPrologue('main_menu');
       return;
     }
     this.showHub();
   }
 
-  private startPrologue(resume?: ActiveSessionSnapshot): void {
+  private startPrologue(entrySource: ChapterEntrySource, resume?: ActiveSessionSnapshot): void {
+    this.prologueEntrySource = entrySource;
     this.run?.destroy();
     this.run = null;
     this.hub?.destroy();
@@ -74,9 +77,14 @@ export class GameFlow {
     this.prologue?.destroy();
     this.prologue = new PrologueController(this.stage, this.seed, {
       returnToMenu: () => this.prologueCompleted ? this.showHub() : this.showMainMenu(),
-      returnFromBattleToMenu: () => this.showMainMenu(),
+      returnFromBattleToMenu: () => this.returnFromPrologue(),
       completed: () => { this.prologueCompleted = true; },
-    }, this.sessions, resume);
+    }, this.sessions, entrySource, resume);
+  }
+
+  private returnFromPrologue(): void {
+    if (this.prologueEntrySource === 'hub') this.showHub();
+    else this.showMainMenu();
   }
 
   private showHub(): void {
@@ -88,7 +96,7 @@ export class GameFlow {
     this.mainMenu = null;
     this.hub?.destroy();
     this.hub = new HubController(this.stage, {
-      startPrologue: () => this.startPrologue(),
+      startPrologue: () => this.startPrologue('hub'),
       returnToMenu: () => this.showMainMenu(),
       ferrymanProgress: () => this.sessions.ferrymanProgress(),
       selectFerryman: id => this.sessions.setCurrentFerryman(id),
@@ -102,7 +110,7 @@ export class GameFlow {
   }
 
   private resumeSession(session: ActiveSessionSnapshot): void {
-    if (session.mode === 'chapter' && session.chapterId === 'prologue') this.startPrologue(session);
+    if (session.mode === 'chapter' && session.chapterId === 'prologue') this.startPrologue(session.entrySource ?? (this.prologueCompleted ? 'hub' : 'main_menu'), session);
     else if (session.mode === 'free_run') this.startRun(session);
     else this.showMainMenu();
   }

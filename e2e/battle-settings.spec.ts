@@ -78,6 +78,37 @@ test('序章对局中的 F12 控制台入口可返回开始游戏菜单', async 
   await expect(page.locator('.hub-screen')).toHaveCount(0);
 });
 
+test('从驿站选择渡魂重玩序章，重载后仍返回驿站', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({
+      prologue_complete: true,
+      wooden_boat_trace_unlocked: true,
+      currentFerrymanId: 'feichuan',
+      unlockedFerrymen: { feichuan: true },
+      copper: 0,
+      soulFlame: 0,
+    }));
+  });
+  await page.goto('/?seed=42');
+  await page.locator('.menu-start-button').click();
+  await page.getByRole('button', { name: '渡魂', exact: true }).click();
+  await page.getByRole('button', { name: '再次渡魂' }).click();
+  await advanceToBeat(page, 'transition-battle1');
+  await page.locator('.prologue-scene').click();
+  await expect(page.locator('.game')).toBeVisible();
+
+  const save = await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.save')!));
+  expect(save.activeSession.entrySource).toBe('hub');
+  expect(save.campaign.chapters.prologue.status).toBe('complete');
+
+  await page.reload();
+  await expect(page.locator('.game')).toBeVisible();
+  await page.locator('button[data-action="menu"]').click();
+  await page.locator('[role="dialog"] [data-action="return-menu"]').click();
+  await expect(page.locator('.hub-screen')).toBeVisible();
+  await expect(page.locator('.main-menu-screen')).toHaveCount(0);
+});
+
 test('序章完成后的战斗可以从设置返回驿站主页', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({

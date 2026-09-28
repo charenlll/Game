@@ -2,7 +2,7 @@ import type { ChapterProgress } from '../../core/campaign/campaign-types';
 import type { FerrymanId } from '../../core/profile/profile-types';
 import type { RunState } from '../../core/run';
 import { applyGrant, type ProgressionGrant } from '../../core/progression/grants';
-import { createDefaultSaveGame, type ActiveSessionSnapshot, type SaveGameV1 } from '../../infrastructure/save/save-schema';
+import { createDefaultSaveGame, type ActiveSessionSnapshot, type ChapterEntrySource, type SaveGameV1 } from '../../infrastructure/save/save-schema';
 import { LocalSaveRepository } from '../../infrastructure/save/local-save-repository';
 
 export interface ChapterCheckpoint {
@@ -36,6 +36,7 @@ export class SessionCoordinator {
 
   ferrymanProgress(): { currentFerrymanId: FerrymanId; unlockedFerrymen: Partial<Record<FerrymanId, true>>; copper: number; soulFlame: number; prologue_complete: boolean; wooden_boat_trace_unlocked: boolean } {
     const chapter = this.save.campaign.chapters.prologue;
+    const prologueCompleted = chapter?.status === 'complete' || this.save.profile.mementoIds.includes('prologue_wooden_boat');
     const unlockedFerrymen: Partial<Record<FerrymanId, true>> = {};
     for (const id of this.save.profile.ferrymen.unlockedIds) unlockedFerrymen[id] = true;
     return {
@@ -43,7 +44,7 @@ export class SessionCoordinator {
       unlockedFerrymen,
       copper: this.save.profile.currencies.copper,
       soulFlame: this.save.profile.currencies.soulFlame,
-      prologue_complete: chapter?.status === 'complete',
+      prologue_complete: prologueCompleted,
       wooden_boat_trace_unlocked: this.save.profile.mementoIds.includes('prologue_wooden_boat'),
     };
   }
@@ -69,14 +70,15 @@ export class SessionCoordinator {
     });
   }
 
-  startPrologue(firstNodeId: string, runState: RunState): void {
+  startPrologue(firstNodeId: string, runState: RunState, entrySource: ChapterEntrySource): void {
     const current = this.save.campaign.chapters.prologue;
+    const previouslyComplete = current?.status === 'complete' || this.save.profile.mementoIds.includes('prologue_wooden_boat');
     const chapter: ChapterCheckpoint = {
       chapterId: 'prologue', currentNodeId: firstNodeId,
-      flags: current?.status === 'complete' ? {} : structuredClone(current?.flags ?? {}),
-      variables: { childObsession: 40 }, status: 'in_progress',
+      flags: previouslyComplete ? {} : structuredClone(current?.flags ?? {}),
+      variables: { childObsession: 40 }, status: previouslyComplete ? 'complete' : 'in_progress',
     };
-    this.checkpoint({ mode: 'chapter', chapterId: 'prologue', runState: structuredClone(runState), screen: 'story', appliedSessionEventIds: [] }, chapter);
+    this.checkpoint({ mode: 'chapter', chapterId: 'prologue', entrySource, runState: structuredClone(runState), screen: 'story', appliedSessionEventIds: [] }, chapter);
   }
 
   completeChapter(grant: ProgressionGrant): boolean {

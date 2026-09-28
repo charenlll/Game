@@ -14,7 +14,7 @@ import { primaryButton } from './ui-components';
 import { renderFerryTraceLayer } from './ferry-traces';
 import type { RunState } from '../core/run';
 import type { SessionCoordinator } from '../app/session/session-coordinator';
-import type { ActiveSessionSnapshot, BattleSnapshot } from '../infrastructure/save/save-schema';
+import type { ActiveSessionSnapshot, BattleSnapshot, ChapterEntrySource } from '../infrastructure/save/save-schema';
 import type { BattleRuntimeSnapshot } from '../core/battle';
 import { CONTENT_VERSION } from '../data/content-version';
 
@@ -97,7 +97,7 @@ export class PrologueController {
       return;
     }
     if (action === 'return-menu') {
-      this.actions.returnToMenu();
+      this.actions.returnFromBattleToMenu();
       return;
     }
     if (action === 'acquire-keepsake') {
@@ -115,7 +115,7 @@ export class PrologueController {
     }
   };
 
-  constructor(private readonly root: HTMLElement, seed: number, private readonly actions: PrologueActions, private readonly sessions: SessionCoordinator, resume?: ActiveSessionSnapshot) {
+  constructor(private readonly root: HTMLElement, seed: number, private readonly actions: PrologueActions, private readonly sessions: SessionCoordinator, private readonly entrySource: ChapterEntrySource, resume?: ActiveSessionSnapshot) {
     const firstBeatId = prologueBeats[0]!.id;
     const chapter = sessions.snapshot.campaign.chapters.prologue;
     const resumeFlags: Partial<Record<PrologueFlag, true>> = {};
@@ -131,7 +131,7 @@ export class PrologueController {
     this.rewards = resume?.offeredRewardIds ?? [];
     this.selectedReward = resume?.selectedRewardId ?? null;
     this.appliedSessionEventIds = new Set(resume?.appliedSessionEventIds ?? []);
-    if (!resume) sessions.startPrologue(firstBeatId, this.runState);
+    if (!resume) sessions.startPrologue(firstBeatId, this.runState, entrySource);
     this.viewport = root.closest<HTMLElement>('.game-viewport');
     this.root.addEventListener('click', this.onClick);
     if (resume?.screen === 'battle' || resume?.screen === 'battle_result') {
@@ -438,7 +438,7 @@ export class PrologueController {
   private checkpoint(screen: PrologueScreen, battle?: BattleRuntimeSnapshot): void {
     this.screen = screen;
     const active: ActiveSessionSnapshot = {
-      mode: 'chapter', chapterId: 'prologue', runState: structuredClone(this.runState), screen,
+      mode: 'chapter', chapterId: 'prologue', entrySource: this.entrySource, runState: structuredClone(this.runState), screen,
       appliedSessionEventIds: [...this.appliedSessionEventIds],
       ...(this.currentEncounter ? { encounterId: this.currentEncounter } : {}),
       ...(this.battleAttempt > 0 ? { battleAttempt: this.battleAttempt } : {}),
@@ -461,7 +461,7 @@ export class PrologueController {
     this.sessions.checkpoint(active, {
       chapterId: 'prologue', currentNodeId: this.state.currentBeatId,
       flags: Object.fromEntries(Object.entries(this.state.storyFlags).filter((entry): entry is [string, true] => entry[1] === true)),
-      variables: { childObsession: this.state.childObsession }, status: 'in_progress',
+      variables: { childObsession: this.state.childObsession }, status: this.entrySource === 'hub' ? 'complete' : 'in_progress',
     });
   }
 }
