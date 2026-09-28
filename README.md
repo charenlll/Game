@@ -1,6 +1,6 @@
-# 夜渡 — Phase 2C 浏览器原型
+# 渡魂 — 浏览器游戏工程
 
-中国古风幻想、治愈向卡牌 Roguelite 原型。当前版本面向手机横屏，已经完成单场战斗、角色专属牌与特性、三场 Run、战后奖励和 Run Result 的最小闭环。
+中国古风幻想、治愈向卡牌 Roguelite 工程。当前可体验序章《初见》的剧情与三场战斗、驿站主界面、信物录、摆渡人页面及普通对局。第一篇章仍待开发。
 
 ## 运行
 
@@ -27,7 +27,7 @@ npm.cmd run dev -- --port 5173
 
 当前角色为绯川，起始牌组由12张通用牌加3张绯川专属牌组成。战斗特性“善贾”在每回合第一次实际获得灯火后激活，使下一张成功打出的普通牌费用-1，最低为0。
 
-当前3场遭遇暂时复用同一亡魂和战斗配置。不同亡魂、路线节点、局外成长和永久存档尚未实现。
+序章使用独立剧情和三场逐步变化的战斗，完成后解锁驿站。普通对局与序章的返回入口不同：序章首次进入时返回开始菜单，从驿站重玩序章时返回驿站；后续对局返回驿站。养成页已有展示结构，尚未开放的成长节点仍不可用。存档使用版本化结构，战斗中进度可恢复；主动返回菜单会结束当前对局。
 
 ## 素材更新
 
@@ -37,13 +37,14 @@ npm.cmd run dev -- --port 5173
 npm.cmd run assets:import
 ```
 
-导入脚本按明确文件名复制并进行字节校验，不修改源素材。卡牌显示测试场景为 `http://127.0.0.1:5173/?card-test`。
+导入脚本按明确文件名复制并进行字节校验，不修改源素材。驿站当前渡魂按钮使用 `public/assets/ui/hub/buttons/ferry_primary_button1.png`；旧 HB18 素材不再覆盖它。人物主视觉仍使用静态 CHH01，视频动态立绘尚未接入。卡牌显示测试场景为 `http://127.0.0.1:5173/?card-test`。
 
 ## 验证
 
 ```powershell
 npm.cmd run build
 npm.cmd test
+npm.cmd run validate:content
 npm.cmd run test:browser
 ```
 
@@ -51,6 +52,7 @@ npm.cmd run test:browser
 - `tests/`：核心规则单元测试。
 - `e2e/`：拖拽、动画、UI、Run流程浏览器测试。
 - `artifacts/`：浏览器测试临时产物，不提交Git。
+- 驿站 UI 以 1600×800 为布局基准；[适配与层级规则](docs/hub-ui-layout-rules.md)记录其他横屏尺寸和弹窗的验收矩阵。
 
 ## 配置入口
 
@@ -77,4 +79,5 @@ npm.cmd run test:browser
 ## 工程规范
 
 - [架构与内容生产规范 v1](docs/architecture-and-content-standards-v1.md)：系统边界、状态与存档生命周期、内容/资源校验、UI样式和测试发布要求。
+- [驿站 UI 适配与层级规则](docs/hub-ui-layout-rules.md)：1600×800 基准、环境美术坐标、弹窗和多视口验收。
 - [第一篇章开发前架构准备方案（阶段 A–C 已实施）](docs/first-chapter-architecture-implementation-plan.md)：章节/存档边界、序章 textKey 迁移、战斗恢复实现与阶段 D 开发门槛。

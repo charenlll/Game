@@ -57,6 +57,7 @@ export class SessionCoordinator {
   checkpoint(activeSession: ActiveSessionSnapshot, chapter?: ChapterCheckpoint): boolean {
     return this.commit(next => {
       next.activeSession = structuredClone(activeSession);
+      delete next.launchDestination;
       if (chapter) {
         next.campaign.chapters[chapter.chapterId] = {
           chapterId: chapter.chapterId,
@@ -93,12 +94,17 @@ export class SessionCoordinator {
       next.campaign = structuredClone(result.state.campaign);
       next.appliedGrantIds = [...result.state.appliedGrantIds];
       next.activeSession = null;
+      delete next.launchDestination;
       next.campaign.activeChapterId = undefined;
     });
   }
 
   clearSession(): boolean {
-    return this.commit(next => { next.activeSession = null; next.campaign.activeChapterId = undefined; });
+    return this.commit(next => { next.activeSession = null; next.campaign.activeChapterId = undefined; delete next.launchDestination; });
+  }
+
+  setLaunchDestination(destination: 'main_menu' | 'hub'): boolean {
+    return this.commit(next => { next.launchDestination = destination; });
   }
 
   private commit(change: (save: SaveGameV1) => void): boolean {

@@ -414,12 +414,6 @@
         "sha256":  "d8fdae94bf9f0b0ae058bb029b966f09c99ed9204f5128de0f38bce252426ea9"
     },
     {
-        "source":  "ui/hub/buttons/HB18墨绿圆形主按钮.png",
-        "destination":  "assets/ui/hub/buttons/ferry_primary_button.png",
-        "bytes":  1944004,
-        "sha256":  "617d7892cf8d2680fd1842380a8a9a606cac63d59ad280870888e5c030c25420"
-    },
-    {
         "source":  "ui/hub/icons/HB09未解锁标记.png",
         "destination":  "assets/ui/hub/HB09.png",
         "bytes":  745526,
@@ -513,6 +507,36 @@
         "source":  "background/hub/HBFX05地面雾气.png",
         "destination":  "assets/hub/effects/HBFX05_ground_fog.png",
         "bytes":  636712,
-        "sha256":  "8f7d33ecdb4a6e111ac058cba4a854ee1882adbcb9599db7c12b36d26450e01b"
+        "sha256":  "8f7d33ecdb4a6e111ac058cbaa4a854ee1882adbc9599db7c12b36d26450e01b"
+    },
+    {
+        "source":  "background/hub/HBFX09驿站名称底纹.png",
+        "destination":  "assets/ui/hub/decorations/HBFX09_hub_title_backplate.png",
+        "bytes":  1055420,
+        "sha256":  "21470bf54f66ffc1f3f61c5158db3c2756de8a01da349190e9860ef2426bd253"
+    },
+    {
+        "source":  "background/hub/HBFX10资源栏底纹.png",
+        "destination":  "assets/ui/hub/decorations/HBFX10_resource_backplate.png",
+        "bytes":  1044881,
+        "sha256":  "4ac19606f1ed1d4203ef2d33db4f4ad66a353401648d1b653e27119dd38e0b4c"
+    },
+    {
+        "source":  "background/hub/HBFX11渡魂按钮上方云纹.png",
+        "destination":  "assets/ui/hub/decorations/HBFX11_ferry_clouds.png",
+        "bytes":  1253971,
+        "sha256":  "af07a6e1a97ec8cab629fe75a3b221711e75933eebae48a873034424eff0458a"
+    },
+    {
+        "source":  "background/hub/HBFX12人物环境光融合层.png",
+        "destination":  "assets/effects/hub/HBFX12_character_ambient_light.png",
+        "bytes":  2119305,
+        "sha256":  "1e5e254a68a0baa0978c057cec0f2732b95418bd6e8c51189c200bdc85d33eab"
+    },
+    {
+        "source":  "ferrymen/feichuan/CHH01绯川标准立绘.png",
+        "destination":  "assets/characters/hub/CHH01_feichuan.png",
+        "bytes":  1949696,
+        "sha256":  "e991a786ff35764c7926aacdc21be86eabb6293fc9d0e9b1eea46b975095740b"
     }
 ]

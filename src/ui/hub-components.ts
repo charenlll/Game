@@ -71,12 +71,12 @@ export interface HubFerrymanData {
   role: string;
 }
 
-export const ferryButton = (action: string, label: string, size: 'primary' | 'secondary' | 'stage', extra = ''): string => {
+export const ferryButton = (action: string, label: string, size: 'primary' | 'secondary' | 'stage', extra = '', ornament = ''): string => {
   const asset = size === 'primary' ? Assets.hub.ferryPrimaryButton : Assets.hub.secondaryButton;
-  const baseFont = size === 'primary' ? 28 : size === 'secondary' ? 19 : 18;
-  const minFont = size === 'primary' ? 26 : size === 'secondary' ? 16 : 15;
-  return `<button class="hub-asset-button hub-asset-button--${size} ${extra}" data-hub-action="${esc(action)}" data-fit-label data-base-font="${baseFont}" data-min-font="${minFont}">
-    <img class="hub-button-art" src="${assetURL(asset)}" alt=""><span class="hub-button-tint" aria-hidden="true"></span>
+  const baseFont = size === 'primary' ? 38 : size === 'secondary' ? 19 : 18;
+  const minFont = size === 'primary' ? 36 : size === 'secondary' ? 16 : 15;
+  return `<button class="hub-asset-button hub-asset-button--${size} ${extra}" data-hub-action="${esc(action)}" aria-label="${esc(label)}" data-fit-label data-base-font="${baseFont}" data-min-font="${minFont}">
+    <img class="hub-button-art" src="${assetURL(asset)}" alt="">${ornament}<span class="hub-button-tint" aria-hidden="true"></span>
     <span class="hub-button-content">${esc(label)}</span></button>`;
 };
 
@@ -104,6 +104,15 @@ export class FerrymanSelectorDrawer {
 
   static renderCurrent(person: HubFerrymanData): string {
     return this.renderCard(person, true, true, 'open-ferryman-drawer', 'hub-current-ferryman hub-current-ferryman--banner');
+  }
+
+  static renderHomeCurrent(person: HubFerrymanData): string {
+    return `<button class="hub-current-ferryman hub-current-ferryman--status" data-hub-action="open-ferryman-drawer" data-ferryman="${person.id}" aria-label="当前摆渡人${esc(person.name)}，打开摆渡人选择">
+      <img class="hub-status-frame" src="${assetURL(Assets.hub.ferrymanCard)}" alt="">
+      <img class="hub-status-avatar" src="${assetURL(person.avatar)}" alt="">
+      <span class="hub-status-copy"><span class="hub-status-caption">当前摆渡人</span><strong class="hub-status-name">${esc(person.name)}</strong></span>
+      <span class="hub-status-arrow" aria-hidden="true">›</span>
+    </button>`;
   }
 
   private static renderCard(person: HubFerrymanData, unlocked: boolean, selected: boolean, action = 'select-ferryman', extraClass = ''): string {

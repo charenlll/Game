@@ -7,7 +7,11 @@ export const Assets = Object.freeze({
     locked: 'assets/ui/hub/HB09.png', settings: 'assets/ui/hub/HB10.png', ferrymanCard: 'assets/ui/hub/HB11.png',
     growthNode: 'assets/ui/hub/HB15.png', back: 'assets/ui/hub/HB16.png',
     infoPanel: 'assets/ui/hub/characters/info_panel_9slice.png',
-    stageEntry: 'assets/ui/hub/stages/stage_entry_panel.png', ferryPrimaryButton: 'assets/ui/hub/buttons/ferry_primary_button.png',
+    stageEntry: 'assets/ui/hub/stages/stage_entry_panel.png', ferryPrimaryButton: 'assets/ui/hub/buttons/ferry_primary_button1.png',
+    titleBackplate: 'assets/ui/hub/decorations/HBFX09_hub_title_backplate.png',
+    resourceBackplate: 'assets/ui/hub/decorations/HBFX10_resource_backplate.png',
+    ferryClouds: 'assets/ui/hub/decorations/HBFX11_ferry_clouds.png',
+    characterAmbient: 'assets/effects/hub/HBFX12_character_ambient_light.png',
     environment: {
       topForeground: 'assets/hub/foreground/HBFX01_top_foreground.png',
       bottomForeground: 'assets/hub/foreground/HBFX02_bottom_foreground.png',
@@ -18,7 +22,7 @@ export const Assets = Object.freeze({
   },
   resources: { copper: 'assets/ui/resources/RS01.png', soulFlame: 'assets/ui/resources/RS02.png' },
   ferrymen: {
-    feichuan: { portrait: 'assets/characters/CH01.png', avatar: 'assets/characters/AV01.png' },
+    feichuan: { portrait: 'assets/characters/CH01.png', hubPortrait: 'assets/characters/hub/CHH01_feichuan.png', avatar: 'assets/characters/AV01.png' },
     moyu: { portrait: 'assets/characters/CH02.png', avatar: 'assets/characters/AV02.png' },
     qinglan: { portrait: 'assets/characters/CH03.png', avatar: 'assets/characters/AV03.png' },
   },

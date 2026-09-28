@@ -6,6 +6,7 @@ import type { FerrymanId } from '../core/profile/profile-types';
 import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view';
 import { applyHubInfoPanelContentRects, CardPreviewPopup, FerrymanSelectorDrawer, ferryButton, fitHubButtonLabels, hb19PanelStyle, HubInfoPanel, HubTypography, MementoDetailPopup, type HubFerrymanData, type MementoData } from './hub-components';
 import { HubEnvironment } from './hub-environment';
+import { isOpaqueImagePixel } from './image-alpha-hit';
 
 export interface HubActions {
   startPrologue(): void;
@@ -58,8 +59,30 @@ export class HubController {
   private readonly popupHost: HTMLElement;
   private readonly environment = new HubEnvironment();
 
+  private isPortraitHit(event: MouseEvent | PointerEvent): boolean {
+    if (this.page !== 'hub' || this.drawerOpen || this.settingsOpen || this.detailMementoId || this.previewCard) return false;
+    const element = event.target instanceof Element ? event.target : null;
+    const action = element?.closest<HTMLElement>('[data-hub-action]')?.dataset.hubAction;
+    if ((action && action !== 'open-memento') || element?.closest('.hub-resources')) return false;
+    const portrait = this.root.querySelector<HTMLImageElement>('.hub-character .hub-portrait-image');
+    return !!portrait && isOpaqueImagePixel(portrait, event.clientX, event.clientY);
+  }
+
+  private readonly onPointerMove = (event: PointerEvent): void => {
+    if (event.pointerType !== 'mouse' || this.page !== 'hub') return;
+    const hit = this.isPortraitHit(event);
+    this.root.querySelector('.hub-character')?.classList.toggle('is-opaque-hover', hit);
+    this.root.querySelector('.hub-home')?.classList.toggle('hub-portrait-hot', hit);
+  };
+
+  private readonly onPointerLeave = (): void => {
+    this.root.querySelector('.hub-character')?.classList.remove('is-opaque-hover');
+    this.root.querySelector('.hub-home')?.classList.remove('hub-portrait-hot');
+  };
+
   private readonly onClick = (event: MouseEvent): void => {
     const target = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-hub-action]') : null;
+    if (event.detail > 0 && this.isPortraitHit(event)) { this.page = 'growth'; this.render(); return; }
     if (!target) return;
     const action = target.dataset.hubAction;
     if (action === 'settings') { this.settingsOpen = true; this.render(); }
@@ -75,7 +98,7 @@ export class HubController {
       const delta = action === 'collection-next' ? 1 : -1;
       this.categoryIndex = (this.categoryIndex + delta + categories.length) % categories.length;
       this.render();
-    } else if (action === 'open-memento') { this.detailMementoId = target.dataset.mementoId ?? null; this.render(); }
+    } else if (action === 'open-memento' && this.page === 'collection') { this.detailMementoId = target.dataset.mementoId ?? null; this.render(); }
     else if (action === 'close-memento-detail') { this.detailMementoId = null; this.render(); }
     else if (action === 'preview-card') {
       const id = target.dataset.cardId;
@@ -91,6 +114,8 @@ export class HubController {
     this.popupHost = root.closest('.game-viewport')?.querySelector<HTMLElement>('.viewport-overlay') ?? root;
     this.selectedFerryman = actions.ferrymanProgress().currentFerrymanId;
     this.root.addEventListener('click', this.onClick);
+    this.root.addEventListener('pointermove', this.onPointerMove);
+    this.root.addEventListener('pointerleave', this.onPointerLeave);
     if (this.popupHost !== this.root) this.popupHost.addEventListener('click', this.onClick);
     this.render();
   }
@@ -98,6 +123,8 @@ export class HubController {
   destroy(): void {
     this.environment.destroy();
     this.root.removeEventListener('click', this.onClick);
+    this.root.removeEventListener('pointermove', this.onPointerMove);
+    this.root.removeEventListener('pointerleave', this.onPointerLeave);
     if (this.popupHost !== this.root) {
       this.popupHost.removeEventListener('click', this.onClick);
       this.popupHost.querySelector('.hub-popup-layer')?.remove();
@@ -155,14 +182,14 @@ export class HubController {
   }
 
   private renderResources(progress: ProloguePersistentState): string {
-    return `<div class="hub-resources"><span><img src="${assetURL(Assets.resources.copper)}" alt="铜钱"><b>${progress.copper}</b></span><span><img src="${assetURL(Assets.resources.soulFlame)}" alt="魂火"><b>${progress.soulFlame}</b></span></div>`;
+    return `<div class="hub-resources"><img class="hub-resource-backplate" src="${assetURL(Assets.hub.resourceBackplate)}" alt=""><span class="hub-resource--copper"><img src="${assetURL(Assets.resources.copper)}" alt="铜钱"><b>${progress.copper}</b></span><span class="hub-resource--soul-flame"><img src="${assetURL(Assets.resources.soulFlame)}" alt="魂火"><b>${progress.soulFlame}</b></span></div>`;
   }
 
   private renderSlot(item: (typeof mementos)[number], progress: ProloguePersistentState): string {
     if (!showShelfMementos) return '';
     if (item.id === 'prologue_wooden_boat' && !progress.wooden_boat_trace_unlocked) return '';
-    const collectionClass = this.page === 'collection' ? ' collection-memento' : '';
-    return `<button class="hub-memento-slot${collectionClass}" style="${shelfSlotStyle(item.slot)}" data-hub-action="open-memento" data-memento-id="${esc(item.id)}" aria-label="查看信物：${esc(item.name)}"><img src="${assetURL(item.asset)}" alt="${esc(item.name)}"></button>`;
+    if (this.page !== 'collection') return `<span class="hub-memento-slot hub-memento-display" style="${shelfSlotStyle(item.slot)}"><img src="${assetURL(item.asset)}" alt="${esc(item.name)}"></span>`;
+    return `<button class="hub-memento-slot collection-memento" style="${shelfSlotStyle(item.slot)}" data-hub-action="open-memento" data-memento-id="${esc(item.id)}" aria-label="查看信物：${esc(item.name)}"><img src="${assetURL(item.asset)}" alt="${esc(item.name)}"></button>`;
   }
 
   private renderFerrymanSwitch(current: HubFerrymanData): string {
@@ -173,16 +200,22 @@ export class HubController {
     const trace = mementos.filter(item => item.category === 'prologue').map(item => this.renderSlot(item, progress)).join('');
     return `<main class="hub-screen hub-home" aria-label="驿站">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
+      <div class="hub-home-title"><img src="${assetURL(Assets.hub.titleBackplate)}" alt=""><h1>渡魂驿站</h1></div>
       ${this.renderResources(progress)}
       <button class="hub-settings" data-hub-action="settings" aria-label="设置"><img src="${assetURL(Assets.hub.settings)}" alt=""></button>
       <div class="hub-home-focus-layer" aria-hidden="true"></div>
       <section class="hub-shelf-area"><img class="hub-shelf" src="${assetURL(Assets.hub.shelf)}" alt="信物收藏架">${trace}</section>
-      <button class="hub-character" data-hub-action="open-growth" aria-label="查看${esc(current.name)}"><img src="${assetURL(current.portrait)}" alt="${esc(current.name)}"></button>
+      <button class="hub-character ${current.id === 'feichuan' ? 'hub-character--seated' : ''}" data-hub-action="open-growth" aria-label="查看${esc(current.name)}">
+        <img class="hub-character-ambient" src="${assetURL(Assets.hub.characterAmbient)}" alt="">
+        <img class="hub-portrait-image" src="${assetURL(current.id === 'feichuan' ? Assets.ferrymen.feichuan.hubPortrait : current.portrait)}" alt="${esc(current.name)}">
+      </button>
+      <div class="hub-ground-fog" aria-hidden="true"><div class="hub-ground-fog-track"><img src="${assetURL(Assets.hub.environment.groundFog)}" alt=""><img src="${assetURL(Assets.hub.environment.groundFog)}" alt=""></div></div>
+      <img class="hub-bottom-foreground-overlay" src="${assetURL(Assets.hub.environment.bottomForeground)}" alt="" aria-hidden="true">
       <div class="hub-home-actions">
-        ${ferryButton('open-stages', '渡魂', 'primary', 'hub-primary-action')}
+        ${ferryButton('open-stages', '渡魂', 'primary', 'hub-primary-action', `<span class="hub-ferry-reflection" aria-hidden="true"><img src="${assetURL(Assets.hub.ferryPrimaryButton)}" alt=""><span>渡魂</span></span><img class="hub-ferry-clouds" src="${assetURL(Assets.hub.ferryClouds)}" alt="">`)}
         <div class="hub-secondary-actions">${ferryButton('open-collection', '信物录', 'secondary')}${ferryButton('coming-soon', '牌录', 'secondary')}${ferryButton('coming-soon', '渡魂记录', 'secondary')}</div>
       </div>
-      ${FerrymanSelectorDrawer.renderCurrent(current)}
+      ${FerrymanSelectorDrawer.renderHomeCurrent(current)}
     </main>`;
   }
 

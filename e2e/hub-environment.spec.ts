@@ -9,6 +9,20 @@ test('驿站环境层按背景cover覆盖完整视口，并在页面离开、返
   await page.goto('/?seed=42');
   await page.locator('.menu-start-button').click();
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(1);
+  const hubLayers = await page.evaluate(() => {
+    const layer = (selector: string) => Number(getComputedStyle(document.querySelector(selector)!).zIndex);
+    return {
+      portrait: layer('.hub-character'), fog: layer('.hub-ground-fog'),
+      foreground: layer('.hub-bottom-foreground-overlay'), switcher: layer('.hub-current-ferryman--status'),
+      cloud: layer('.hub-primary-action .hub-ferry-clouds'), art: layer('.hub-primary-action .hub-button-art'),
+      text: layer('.hub-primary-action .hub-button-content'),
+    };
+  });
+  expect(hubLayers.portrait).toBeLessThan(hubLayers.fog);
+  expect(hubLayers.fog).toBeLessThan(hubLayers.foreground);
+  expect(hubLayers.foreground).toBeLessThan(hubLayers.switcher);
+  expect(hubLayers.art).toBeLessThan(hubLayers.cloud);
+  expect(hubLayers.cloud).toBeLessThan(hubLayers.text);
   await page.waitForTimeout(250);
 
   for (const size of [
@@ -86,7 +100,7 @@ test('驿站环境层按背景cover覆盖完整视口，并在页面离开、返
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(0);
   await page.getByRole('button', { name: '返回' }).click();
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(1);
-  await page.locator('.hub-character').click();
+  await page.locator('.hub-character').press('Enter');
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(0);
   await page.getByRole('button', { name: '返回' }).click();
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(1);

@@ -18,7 +18,9 @@ export class GameFlow {
   constructor(private readonly stage: HTMLElement, private readonly seed: number, showMainMenu = true) {
     const save = this.sessions.snapshot;
     this.prologueCompleted = save.campaign.chapters.prologue?.status === 'complete' || save.profile.mementoIds.includes('prologue_wooden_boat');
-    if (showMainMenu && this.sessions.snapshot.activeSession) this.resumeSession(this.sessions.snapshot.activeSession);
+    if (showMainMenu && save.launchDestination === 'main_menu') this.showMainMenu();
+    else if (showMainMenu && save.launchDestination === 'hub' && this.prologueCompleted) this.showHub();
+    else if (showMainMenu && save.activeSession) this.resumeSession(save.activeSession);
     else if (showMainMenu) this.showMainMenu();
     else this.startRun();
   }
@@ -30,8 +32,8 @@ export class GameFlow {
 
   debugReturnToMenu(): void {
     if (this.prologue) this.returnFromPrologue();
-    else if (this.run && this.prologueCompleted) this.showHub();
-    else this.showMainMenu();
+    else if (this.run && this.prologueCompleted) this.returnFromRun();
+    else { this.sessions.setLaunchDestination('main_menu'); this.showMainMenu(); }
   }
 
   debugState(): unknown {
@@ -83,8 +85,15 @@ export class GameFlow {
   }
 
   private returnFromPrologue(): void {
-    if (this.prologueEntrySource === 'hub') this.showHub();
+    const destination = this.prologueEntrySource === 'hub' ? 'hub' : 'main_menu';
+    this.sessions.setLaunchDestination(destination);
+    if (destination === 'hub') this.showHub();
     else this.showMainMenu();
+  }
+
+  private returnFromRun(): void {
+    this.sessions.setLaunchDestination('hub');
+    this.showHub();
   }
 
   private showHub(): void {
@@ -106,7 +115,7 @@ export class GameFlow {
   private startRun(resume?: ActiveSessionSnapshot): void {
     this.run?.destroy();
     const seed = resume?.runState?.Seed ?? (this.run ? crypto.getRandomValues(new Uint32Array(1))[0] : this.seed);
-    this.run = new RunController(this.stage, seed, resume?.runState?.SelectedCharacterID ?? this.sessions.snapshot.profile.ferrymen.currentId, this.prologueCompleted ? () => this.showHub() : undefined, this.sessions, resume);
+    this.run = new RunController(this.stage, seed, resume?.runState?.SelectedCharacterID ?? this.sessions.snapshot.profile.ferrymen.currentId, this.prologueCompleted ? () => this.returnFromRun() : undefined, this.sessions, resume);
   }
 
   private resumeSession(session: ActiveSessionSnapshot): void {

@@ -46,6 +46,7 @@ export interface SaveGameV1 {
   profile: ProfileState;
   campaign: CampaignState;
   activeSession: ActiveSessionSnapshot | null;
+  launchDestination?: 'main_menu' | 'hub';
   settings: UserSettings;
   appliedGrantIds: string[];
 }
@@ -106,6 +107,7 @@ export function isSaveGameV1(value: unknown): value is SaveGameV1 {
   for (const [id, chapter] of Object.entries(value.campaign.chapters)) if (!isChapterProgress(chapter, id)) return false;
   if (value.campaign.activeChapterId !== undefined && typeof value.campaign.activeChapterId !== 'string') return false;
   if (value.activeSession !== null && !isActiveSession(value.activeSession)) return false;
+  if (value.launchDestination !== undefined && value.launchDestination !== 'main_menu' && value.launchDestination !== 'hub') return false;
   if (!isRecord(value.settings) || typeof value.settings.language !== 'string' || typeof value.settings.reducedMotion !== 'boolean' || typeof value.settings.masterVolume !== 'number' || value.settings.masterVolume < 0 || value.settings.masterVolume > 1) return false;
   return isStringArray(value.appliedGrantIds);
 }

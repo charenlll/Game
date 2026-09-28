@@ -12,10 +12,18 @@
 .hub-title-frame{position:absolute;left:-10%;top:-10%;width:120%;height:120%;object-fit:contain;pointer-events:none}
 .hub-title h1,.hub-page-title{margin:0;color:var(--hub-primary);font:700 34px var(--serif);letter-spacing:5px}
 .hub-title h1{position:relative;z-index:1;display:grid;place-items:center;width:80%;height:64%;text-align:center;font-size:24px;letter-spacing:6px}
+.hub-home-title{position:absolute;z-index:30;left:48px;top:17px;width:320px;height:120px;pointer-events:none}
+.hub-home-title>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.hub-home-title h1{position:absolute;left:17%;top:20%;width:66%;height:43%;margin:0;display:grid;place-items:center;color:#eed9b0;font:700 27px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:5px;text-shadow:0 2px 3px #28160e;text-align:center}
 .hub-resources{position:absolute;z-index:30;left:1165px;top:20px;width:285px;height:65px;display:flex;align-items:center;justify-content:flex-end;gap:12px}
-.hub-resources>span{display:flex;align-items:center;justify-content:flex-end;gap:7px;min-width:110px;color:var(--hub-light);font-size:22px;font-weight:700;text-shadow:0 2px 5px #07151a}
-.hub-resources img{width:60px;height:60px;object-fit:contain}
-.hub-settings{position:absolute;z-index:40;left:1483px;top:10px;width:92px;height:88px;padding:0;border:0;background:transparent;cursor:pointer;transition:transform .15s ease,filter .15s ease}
+.hub-home .hub-resources{left:1160px;top:calc(-2% + 10px);width:320px;height:110px;justify-content:center;gap:4px;padding:0 27px;box-sizing:border-box}
+.hub-resource-backplate{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.hub-resources>span{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:7px;min-width:110px;color:var(--hub-light);font-size:18px;font-weight:700;text-shadow:0 2px 5px #07151a}
+.hub-resources>span img{width:40px;height:40px;object-fit:contain}
+/* Fine adjustment within HBFX10: each group moves independently of the backplate. */
+.hub-home .hub-resource--copper{left:-5%;top:2%}
+.hub-home .hub-resource--soul-flame{left:-6%;top:2%}
+.hub-settings{position:absolute;z-index:40;left:1483px;top:20px;width:92px;height:88px;padding:0;border:0;background:transparent;cursor:pointer;transition:transform .15s ease,filter .15s ease}
 .hub-settings:hover{transform:scale(1.06);filter:brightness(1.1)}
 .hub-settings img,.hub-back-button img,.growth-back img{width:100%;height:100%;object-fit:contain}
 
@@ -26,11 +34,18 @@
 .hub-shelf-area::before{content:"";position:absolute;z-index:1;inset:8% 7%;pointer-events:none;background:radial-gradient(ellipse 235px 110px at 40% 63%,rgba(255,240,211,.065),transparent 100%),radial-gradient(ellipse 205px 86px at 68% 45%,rgba(255,240,211,.045),transparent 100%);opacity:.9}
 .hub-shelf{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:contain;filter:brightness(1.05) contrast(1.04);pointer-events:none;transition:filter .24s ease-out}
 .hub-shelf-area:hover>.hub-shelf{filter:brightness(1.08) contrast(1.04)}
+.hub-home .hub-shelf{filter:brightness(.7) contrast(1.02)}
+.hub-home .hub-shelf-area:hover>.hub-shelf{filter:brightness(.7) contrast(1.02)}
+.hub-home .hub-shelf-area::before{opacity:.2}
+.hub-home .hub-home-focus-layer{opacity:.45}
+.hub-home:has(.hub-shelf-area:hover) .hub-home-focus-layer{opacity:.45}
 .hub-memento-slot{position:absolute;z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:0 0 8px;border:0;background:transparent;cursor:pointer}
 .hub-memento-slot::before{content:"";position:absolute;z-index:0;left:-34%;right:-34%;bottom:4px;height:78%;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 54%,rgba(255,240,216,.12),transparent 72%);transition:opacity .19s ease-out,filter .19s ease-out,transform .19s ease-out}
 .hub-memento-slot>img{position:relative;z-index:1;width:100%;height:100%;max-width:var(--item-max-width);max-height:var(--item-max-height);object-fit:contain;object-position:center bottom;filter:brightness(1.05) drop-shadow(0 4px 10px rgba(16,28,27,.24));transition:transform .19s ease-out,filter .19s ease-out}
 .hub-memento-slot:hover::before{opacity:.95;filter:blur(2px);transform:translateY(-3px)}
 .hub-memento-slot:hover>img{transform:translateY(-4px);filter:brightness(1.12) drop-shadow(0 6px 12px rgba(16,28,27,.32))}
+.hub-memento-display{pointer-events:none}
+.hub-memento-display>img{filter:brightness(.78) drop-shadow(0 4px 10px rgba(16,28,27,.24))}
 .hub-collection-shelf{left:385px;top:125px}
 .hub-page-arrow{position:absolute;z-index:35;top:265px;width:64px;height:64px;padding:0;border:0;background:transparent;cursor:pointer;transition:filter .16s ease,transform .16s ease}
 .hub-page-arrow img{width:100%;height:100%;object-fit:contain}
@@ -38,9 +53,26 @@
 .hub-page-arrow.next{right:6px}
 .hub-page-arrow:hover{filter:brightness(1.1);transform:scale(1.03)}
 
-.hub-character{position:absolute;z-index:20;left:1000px;top:72px;width:600px;height:728px;padding:0;border:0;background:transparent;cursor:pointer}
-.hub-character img{position:absolute;left:50%;bottom:24px;transform:translate(-50%,22px);transform-origin:50% 88%;animation:hub-ferryman-idle 5.6s ease-in-out infinite;will-change:transform;width:602px;height:720px;object-fit:contain;object-position:center bottom;transition:filter .16s ease}
-.hub-character:hover img{filter:brightness(1.08)}
+.hub-character{position:absolute;z-index:20;left:1000px;top:72px;width:600px;height:728px;padding:0;border:0;background:transparent;pointer-events:none}
+.hub-character--seated{left:450px;top:120px;width:808px;height:726px}
+.hub-character .hub-portrait-image{position:absolute;left:50%;bottom:24px;transform:translate(-50%,22px);transform-origin:50% 88%;animation:hub-ferryman-idle 5.6s ease-in-out infinite;will-change:transform;width:602px;height:720px;object-fit:contain;object-position:center bottom;pointer-events:none;transition:filter .16s ease}
+.hub-character--seated .hub-portrait-image{left:0;top:0;bottom:auto;width:100%;height:100%;object-fit:contain;object-position:center bottom;transform:translateY(2px);transform-origin:50% 100%;animation:hub-ferryman-seated-idle 6.4s ease-in-out infinite}
+.hub-character-ambient{display:none;position:absolute;z-index:-1;left:-4%;top:12%;width:108%;height:auto;object-fit:contain;opacity:.35;pointer-events:none}
+.hub-character--seated .hub-character-ambient{display:block;transform-origin:center;animation:hub-character-ambient-wave 9s ease-out infinite}
+@keyframes hub-character-ambient-wave{0%{transform:scale(.84);opacity:0}18%{transform:scale(.9);opacity:.34}55%{transform:scale(1.08);opacity:.3}100%{transform:scale(1.22);opacity:0}}
+.hub-character--seated .hub-portrait-image{z-index:1}
+/* Fog is above the portrait; the foreground and UI sit above the fog. */
+.hub-ground-fog{position:absolute;z-index:25;left:0;top:130px;width:1600px;height:640px;overflow:hidden;opacity:.5;pointer-events:none;animation:hub-ground-fog-wave 12s ease-in-out infinite}
+.hub-ground-fog-track{position:absolute;left:-1600px;top:0;width:3200px;height:640px;display:flex;animation:hub-ground-fog-flow 56s linear infinite}
+.hub-ground-fog-track img{display:block;flex:none;width:1600px;height:auto;align-self:flex-start;object-fit:contain;mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%)}
+.hub-bottom-foreground-overlay{position:absolute;z-index:27;left:-96px;top:210px;width:1792px;height:auto;object-fit:contain;pointer-events:none}
+@keyframes hub-ground-fog-flow{from{transform:translateX(0)}to{transform:translateX(1600px)}}
+@keyframes hub-ground-fog-wave{0%,100%{opacity:.42}50%{opacity:.58}}
+@keyframes hub-ferryman-seated-idle{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.004)}}
+.hub-home.hub-portrait-hot{cursor:pointer}
+.hub-character.is-opaque-hover .hub-portrait-image{filter:brightness(1.08)}
+.hub-home.hub-portrait-hot .hub-memento-slot:hover::before{opacity:0}
+.hub-home.hub-portrait-hot .hub-memento-slot:hover>img{transform:none;filter:brightness(1.05) drop-shadow(0 4px 10px rgba(16,28,27,.24))}
 @keyframes hub-ferryman-idle{0%,100%{transform:translate(-50%,22px) rotate(-.45deg)}50%{transform:translate(-50%,20px) rotate(.55deg)}}
 .hub-current-ferryman{position:absolute;z-index:45;left:1480px;top:710px;width:70px;height:70px;display:grid;place-items:center;padding:4px;border:1px solid #c8b579;border-radius:50%;background:linear-gradient(145deg,#173c42ed,#0b252ced);color:var(--hub-light);box-shadow:0 5px 16px #02101588;cursor:pointer;transition:filter .16s ease,transform .16s ease}
 .hub-current-ferryman:hover{filter:brightness(1.12);transform:translateY(-2px) scale(1.04)}
@@ -48,27 +80,48 @@
 .hub-switch-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .hub-home .hub-current-ferryman--banner{left:1148.8px;top:664px;width:302.4px;height:auto;max-height:174px;aspect-ratio:1983 / 793;display:block;place-items:initial;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--hub-primary)}
 .hub-home .hub-current-ferryman--banner:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.hub-home .hub-current-ferryman--status{left:1210px;top:648px;width:330px;height:132px;display:block;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;text-align:left;color:#f1e6cf;transition:filter .18s ease-out,transform .18s ease-out}
+.hub-status-frame{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.hub-home .hub-current-ferryman--status:hover{filter:brightness(1.1);transform:translateY(-3px)}
+.hub-home .hub-current-ferryman--status:active{filter:brightness(.94);transform:translateY(1px)}
+.hub-status-avatar{position:absolute;z-index:1;left:36px;top:24px;width:76px;height:76px;object-fit:cover;aspect-ratio:1;border-radius:50%;pointer-events:none}
+.hub-current-ferryman--status:hover .hub-status-avatar{border-color:rgba(215,222,210,.85)}
+.hub-status-copy{position:absolute;z-index:3;left:140px;top:42px;width:172px;height:52px;display:grid;grid-template-columns:76px 88px;align-items:center;column-gap:8px;white-space:nowrap}
+.hub-status-caption{font:700 14px "STKaiti","KaiTi",var(--serif);letter-spacing:1px;color:#715536;text-shadow:0 1px 0 #fff2d8,0 2px 3px #6b4a333b}
+.hub-status-name{font:700 26px "STKaiti","KaiTi",var(--serif);letter-spacing:3px;color:#493422;text-shadow:0 1px 0 #fff4d9,0 2px 3px #5b382d55}
+.hub-status-arrow{position:absolute;z-index:3;right:27px;top:45px;font:300 31px var(--serif);color:#755d40;opacity:.7}
 
 /* Image buttons keep their original aspect ratio. Their text shares a measured safe rect. */
 .hub-home-actions{position:absolute;inset:0;z-index:45;pointer-events:none}
+.hub-primary-action .hub-button-art{z-index:1}
+.hub-ferry-reflection{position:absolute;z-index:0;left:25%;top:calc(50% + 189px);width:210px;height:210px;display:block;opacity:.25;pointer-events:none;transform:scaleY(-.4);transform-origin:center top;mask-image:linear-gradient(to bottom,transparent 5%,#000 95%);filter:blur(1px)}
+.hub-ferry-reflection>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;animation:hub-ferry-reflection-turn 48s linear infinite}
+.hub-ferry-reflection>span{position:absolute;left:20%;top:25%;width:60%;height:50%;display:grid;place-items:center;color:#e8c88d;font:700 30px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:7px;text-shadow:0 0 6px #e8c88d;opacity:.38}
+.hub-ferry-reflection>span{display:none}
+@keyframes hub-ferry-reflection-turn{from{transform:rotate(0deg) scale(.94)}50%{transform:rotate(180deg) scale(1.08)}to{transform:rotate(360deg) scale(.94)}}
+.hub-primary-action .hub-ferry-clouds{position:absolute;z-index:2;left:50%;top:46px;width:250px;height:auto;aspect-ratio:1942 / 809;object-fit:contain;opacity:.42;pointer-events:none;animation:hub-ferry-cloud-wave 9s ease-in-out infinite}
+.hub-primary-action .hub-button-content{z-index:3}
+@keyframes hub-ferry-cloud-wave{0%,100%{transform:translateX(-50%) scaleX(.94);opacity:.32}50%{transform:translateX(-50%) scaleX(1.09);opacity:.49}}
+@media (prefers-reduced-motion:reduce){.hub-ground-fog,.hub-ground-fog-track,.hub-character--seated .hub-character-ambient,.hub-primary-action .hub-ferry-clouds{animation:none}.hub-primary-action .hub-ferry-clouds{transform:translateX(-50%)}}
 .hub-asset-button{position:absolute;display:grid;place-items:center;padding:0;border:0;background:transparent;color:var(--hub-light);cursor:pointer;pointer-events:auto;transition:filter .18s ease-out,transform .18s ease-out}
 .hub-button-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
-.hub-asset-button--primary .hub-button-art{inset:50% auto auto 25%;width:50%;height:auto;aspect-ratio:1;object-fit:contain;transform:translateY(-50%)}
+.hub-asset-button--primary .hub-button-art{inset:50% auto auto 25%;width:50%;height:auto;aspect-ratio:1;object-fit:contain;transform-origin:center;animation:hub-ferry-art-wave 48s linear infinite}
+@keyframes hub-ferry-art-wave{0%{transform:translateY(-50%) rotate(0deg) scale(.94)}50%{transform:translateY(-50%) rotate(180deg) scale(1.08)}100%{transform:translateY(-50%) rotate(360deg) scale(.94)}}
 .hub-button-tint{position:absolute;inset:0;background:var(--hub-green);mask:url('/assets/ui/hub/HB05.png') center/contain no-repeat;mix-blend-mode:multiply;opacity:.57;pointer-events:none;transition:background-color .15s ease,opacity .15s ease}
 .hub-button-content{position:absolute;left:12%;top:13%;width:76%;height:60%;display:grid;place-items:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#F3EBD7;font-size:18px;font-weight:700;letter-spacing:3px;text-shadow:0 1px 3px #263d35;pointer-events:none}
 .hub-button-content.is-ellipsized{justify-items:center}
-.hub-asset-button--primary{left:0px;top:234px;width:420px;height:112px;--hub-button-safe-x:20%;--hub-button-safe-y:23.75%}
-.hub-asset-button--primary .hub-button-content{left:20%;top:20%;width:60%;height:52.5%;color:#F3E8CF;font-size:28px;letter-spacing:5px;text-shadow:0 1px 2px rgba(20,30,25,.45)}
+.hub-asset-button--primary{left:1180px;top:344px;width:420px;height:112px;--hub-button-safe-x:20%;--hub-button-safe-y:23.75%;--ferry-art-brightness:.66;--ferry-art-contrast:1.12;--ferry-art-saturation:1.06}
+.hub-asset-button--primary .hub-button-content{left:20%;top:20%;width:60%;height:52.5%;font-family:"STKaiti","KaiTi","Kaiti SC",var(--serif);font-weight:600;font-size:38px;letter-spacing:7px;background:linear-gradient(180deg,#fff5d7 5%,#f2d79c 45%,#b88948 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-stroke:.45px #fff4d8;text-shadow:0 2px 2px rgba(32,20,10,.6),0 0 6px rgba(255,226,166,.4),0 0 13px rgba(190,133,54,.3);filter:drop-shadow(0 2px 1px rgba(28,20,10,.55))}
 .hub-asset-button--primary .hub-button-tint{mask-image:url('/assets/ui/hub/HB05.png')}
 .hub-asset-button--primary .hub-button-tint{display:none}
 .hub-asset-button--primary:hover{transform:none;filter:brightness(1.08) drop-shadow(0 0 2px rgba(226,213,177,.28))}
 .hub-asset-button--primary:hover .hub-button-tint{background:var(--hub-green-hover);opacity:.68}
 .hub-asset-button--primary:active{transform:none;filter:brightness(.96)}
 .hub-asset-button--primary:active .hub-button-tint{background:var(--hub-green-pressed);opacity:.78}
-.hub-secondary-actions{position:absolute;left:114.8px;top:410px;width:190.4px;height:270px;display:grid;grid-template-columns:1fr;grid-template-rows:repeat(3,60px);align-items:center;gap:0;pointer-events:auto}
+.hub-secondary-actions{position:absolute;left:105px;top:310px;width:190.4px;height:270px;display:grid;grid-template-columns:1fr;grid-template-rows:repeat(3,60px);align-items:center;gap:0;pointer-events:auto}
 .hub-secondary-actions .hub-asset-button{position:relative;justify-self:center;align-self:center;width:190.4px;height:90px}
 .hub-asset-button--secondary .hub-button-tint{display:none}
-.hub-asset-button--secondary .hub-button-content{left:13%;top:23%;width:74%;height:52%;color:#453c30;font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:4px;transform:none;text-shadow:0 1px 1px #fff4d7;transition:text-shadow .18s ease-out,filter .18s ease-out}
+.hub-asset-button--secondary .hub-button-content{left:13%;top:23%;width:74%;height:52%;color:#453c30;font-family:"STKaiti","KaiTi","Kaiti SC",var(--serif);font-size:19px;font-weight:600;letter-spacing:4px;transform:none;text-shadow:0 1px 1px #fff4d7;transition:text-shadow .18s ease-out,filter .18s ease-out}
 .hub-asset-button--secondary{filter:drop-shadow(0 4px 17px rgba(16,39,36,.22))}
 .hub-asset-button--secondary:hover{transform:translateX(9px);filter:brightness(1.1) drop-shadow(0 4px 19px rgba(16,39,36,.29)) drop-shadow(0 0 1px rgba(211,222,205,.2))}
 .hub-asset-button--secondary:hover .hub-button-content{filter:brightness(1.08);text-shadow:0 0 5px rgba(213,226,206,.42),0 1px 1px #fff4d7}
@@ -101,7 +154,7 @@
 .hub-drawer-scrim,.hub-popup-scrim,.hub-settings-backdrop{position:absolute;z-index:90;left:0;top:0;width:1600px;height:800px;background:transparent;backdrop-filter:none;pointer-events:auto}
 .ferryman-drawer{position:absolute;right:20px;top:40px;width:480px;height:700px;padding:48px 24px 26px;background:linear-gradient(155deg,#d9d0b5,#c5baa0);border:2px solid #806c48;box-shadow:0 18px 46px #02090dcc,inset 0 0 0 5px #f5edda66;color:var(--hub-primary);transform:translateX(0);animation:drawer-in .18s ease-out both}
 @keyframes drawer-in{from{transform:translateX(15px);opacity:.65}to{transform:translateX(0);opacity:1}}
-.ferryman-drawer h2{margin:0 0 24px;text-align:center;color:var(--hub-primary);font:600 25px var(--serif);letter-spacing:8px}
+.ferryman-drawer h2{margin:0 0 24px;text-align:center;color:var(--hub-primary);font:600 25px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:8px}
 .ferryman-drawer-close{position:absolute;right:16px;top:12px;width:42px;height:42px;border:0;background:transparent;color:#554735;font-size:28px;cursor:pointer}
 .ferryman-drawer-list{height:590px;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:14px;padding:4px 5px 10px}
 .hub-ferryman-card{position:relative;flex:none;width:100%;height:auto;max-height:174px;aspect-ratio:1983 / 793;padding:0;border:0;background:transparent;color:var(--hub-primary);cursor:pointer;transition:filter .15s ease,transform .15s ease}
@@ -110,7 +163,7 @@
 .ferryman-avatar{position:absolute;z-index:1;left:10%;top:15%;width:25%;height:auto;aspect-ratio:1 / 1;object-fit:cover;object-position:center center;image-rendering:auto;border-radius:50%;pointer-events:none}
 .hub-ferryman-card.is-locked .ferryman-card-frame{filter:grayscale(1)}
 .hub-ferryman-card.is-locked .ferryman-avatar{filter:grayscale(1) brightness(.8);opacity:.72}
-.ferryman-card-name{position:absolute;z-index:5;left:40%;top:15%;width:52.5%;height:70%;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#40352b;font:600 24px var(--serif);letter-spacing:4px}
+.ferryman-card-name{position:absolute;z-index:5;left:40%;top:15%;width:52.5%;height:70%;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#40352b;font:600 24px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:4px}
 .ferryman-lock{position:absolute;z-index:4;left:10%;top:15%;width:25%;height:60%;object-fit:contain;pointer-events:none}
 .hub-ferryman-card.is-current .ferryman-card-name{color:#634f2d}
 .hub-ferryman-card.is-current .ferryman-avatar{filter:drop-shadow(0 0 7px #ffe083) drop-shadow(0 0 15px #e7b845aa)}
@@ -125,17 +178,17 @@
 .hub-info-panel{position:absolute;box-sizing:border-box;min-width:320px;min-height:110px;border:var(--hb19-render-border) solid transparent;border-image-source:var(--hub-info-panel-art);border-image-slice:var(--hb19-slice-top) var(--hb19-slice-right) var(--hb19-slice-bottom) var(--hb19-slice-left) fill;border-image-width:var(--hb19-render-border);border-image-repeat:stretch;color:#51463B}
 .growth-header{position:absolute;left:0;top:0;width:780px;height:72px;display:flex;align-items:center;justify-content:center}
 .growth-safe-content{position:absolute;left:calc(var(--hb19-content-x) - var(--hb19-render-border));top:calc(var(--hb19-content-y) - var(--hb19-render-border));width:var(--hb19-content-width);height:var(--hb19-content-height);box-sizing:border-box;padding-inline:12px}
-.growth-header-identity{width:100%;display:flex;align-items:baseline;justify-content:center;gap:18px;color:#40352B;text-align:left}
-.growth-header-identity h1{margin:0;background:linear-gradient(180deg,#fff0bd 0%,#d4b36b 48%,#856435 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-stroke:.45px #82683d;font:700 42px/1 var(--serif);letter-spacing:8px;filter:drop-shadow(0 2px 1px #21190eaa) drop-shadow(0 0 9px #e1c17a66)}
+.growth-header-identity{width:100%;display:flex;align-items:baseline;justify-content:center;gap:18px;color:#40352B;text-align:left;font-family:"STKaiti","KaiTi","Kaiti SC",var(--serif)}
+.growth-header-identity h1{margin:0;background:linear-gradient(180deg,#fff0bd 0%,#d4b36b 48%,#856435 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-stroke:.45px #82683d;font:700 42px/1 "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:8px;filter:drop-shadow(0 2px 1px #21190eaa) drop-shadow(0 0 9px #e1c17a66)}
 .growth-header-identity span{color:#51432f;font-size:15px;letter-spacing:1px;text-shadow:0 1px 2px #f7edda}
-.growth-trait-copy,.growth-node-content{display:flex;flex-direction:column;justify-content:center}
+.growth-trait-copy,.growth-node-content{display:flex;flex-direction:column;justify-content:center;font-family:"STKaiti","KaiTi","Kaiti SC",var(--serif)}
 .growth-trait-copy h2{position:static;margin:0;color:#765F34;font-size:20px;font-weight:600;line-height:26px;letter-spacing:1px;text-align:left}
 .growth-trait-panels{position:absolute;left:6px;top:82px;width:783px;height:110px}
 .growth-trait{top:0;width:381px;height:110px;padding:0}
 .growth-trait--merchant{left:0}
 .growth-trait--locked{left:402px}
 .growth-trait-copy{gap:3px}
-.growth-trait-copy h2{color:#725B32;font:600 18px/24px var(--serif);letter-spacing:1px}
+.growth-trait-copy h2{color:#725B32;font:600 18px/24px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:1px}
 .growth-trait-copy p{position:static;margin:0;color:#493F35;font-size:13px;line-height:15px;letter-spacing:.1px;text-align:left}
 .growth-trait--locked h2,.growth-trait--locked p{opacity:.55}
 .growth-exclusive-cards{position:absolute;left:6px;top:200px;width:783px;height:220px;box-sizing:border-box}
@@ -148,9 +201,9 @@
 .growth-card:hover{filter:brightness(1.08) drop-shadow(0 3px 8px rgba(16,28,27,.28))}
 .growth-card-face{position:absolute;inset:0;width:165px;height:220px;container-type:inline-size;display:block}
 .growth-card-face .card-face{border-radius:5px}
-.growth-more-cards{flex:none;width:125px;margin:0;color:#746747;font:600 17px/1.65 var(--serif);letter-spacing:2px;text-align:right;text-shadow:0 1px 2px #f6ecd7}
+.growth-more-cards{flex:none;width:125px;margin:0;color:#746747;font:600 17px/1.65 "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:2px;text-align:right;text-shadow:0 1px 2px #f6ecd7}
 .growth-node-panel{left:6px;top:430px;width:783px;height:110px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 var(--hb19-content-x);gap:24px}
-.growth-node-panel h2{margin:0;color:#725B32;font:600 20px/1 var(--serif);letter-spacing:1px}
+.growth-node-panel h2{margin:0;color:#725B32;font:600 20px/1 "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:1px}
 .growth-node-panel>span{color:#807467;font-size:15px;opacity:.55}
 .growth-node-content{align-items:center;text-align:center;gap:24px}
 .growth-node-content h2{margin:0}
@@ -184,4 +237,37 @@
 .hub-settings-panel p{font-size:17px;letter-spacing:2px;color:#e4e3d4}
 .hub-settings-close{min-width:160px;min-height:52px;border:1px solid #d3c28b;background:linear-gradient(#4f8174,#3e6c61);color:#f2e5c7;font:700 18px var(--serif);letter-spacing:4px;cursor:pointer}
 .hub-toast{position:absolute;z-index:130;left:50%;bottom:65px;transform:translateX(-50%);padding:13px 32px;background:#091d24ed;border:1px solid #bfae78;color:#f1e3bd;font:600 18px var(--serif);letter-spacing:3px;box-shadow:0 8px 25px #0008}
-@media(prefers-reduced-motion:reduce){.hub-screen *{transition:none!important;animation:none!important}}
+/* Gold interaction light stays on visible Hub controls, not their transparent hit areas. */
+.hub-screen,.hub-popup-safe-surface{--hub-gold-idle:drop-shadow(0 0 3px rgba(245,211,139,.65)) drop-shadow(0 0 9px rgba(214,164,76,.28));--hub-gold-hover:drop-shadow(0 0 5px rgba(255,226,156,.85)) drop-shadow(0 0 16px rgba(222,170,75,.55))}
+.hub-screen .hub-asset-button:not(:disabled)>.hub-button-art,
+.hub-screen .hub-settings>img,
+.hub-screen .hub-back-button>img,
+.hub-screen .growth-back>img,
+.hub-screen .hub-page-arrow>img,
+.hub-screen .hub-current-ferryman>.hub-status-frame,
+.hub-screen .hub-current-ferryman>.ferryman-card-frame,
+.hub-popup-safe-surface .hub-ferryman-card:not(.is-locked)>.ferryman-card-frame{filter:var(--hub-gold-idle);transition:filter .18s ease-out}
+.hub-screen .hub-asset-button:not(:disabled):hover>.hub-button-art,
+.hub-screen .hub-settings:hover>img,
+.hub-screen .hub-back-button:hover>img,
+.hub-screen .growth-back:hover>img,
+.hub-screen .hub-page-arrow:hover>img,
+.hub-screen .hub-current-ferryman:hover>.hub-status-frame,
+.hub-screen .hub-current-ferryman:hover>.ferryman-card-frame,
+.hub-popup-safe-surface .hub-ferryman-card:not(.is-locked):hover>.ferryman-card-frame{filter:var(--hub-gold-hover)}
+.hub-collection-screen .hub-memento-slot:not(:disabled)>img,
+.hub-screen .growth-card>.growth-card-face,
+.hub-screen .hub-stage-button:not(:disabled),
+.hub-screen .growth-panel-action,
+.hub-popup-safe-surface .hub-settings-close,
+.hub-popup-safe-surface .ferryman-drawer-close{filter:var(--hub-gold-idle);transition:filter .18s ease-out}
+.hub-collection-screen .hub-memento-slot:not(:disabled):hover>img,
+.hub-screen .growth-card:hover>.growth-card-face,
+.hub-screen .hub-stage-button:not(:disabled):hover,
+.hub-screen .growth-panel-action:hover,
+.hub-popup-safe-surface .hub-settings-close:hover,
+.hub-popup-safe-surface .ferryman-drawer-close:hover{filter:var(--hub-gold-hover)}
+.hub-screen .hub-resource--copper img,.hub-screen .hub-resource--soul-flame img{filter:drop-shadow(0 0 4px rgba(255,220,145,.72)) drop-shadow(0 0 11px rgba(215,165,78,.34))}
+.hub-screen .hub-asset-button--primary>.hub-button-art{filter:brightness(var(--ferry-art-brightness)) contrast(var(--ferry-art-contrast)) saturate(var(--ferry-art-saturation)) var(--hub-gold-idle)}
+.hub-screen .hub-asset-button--primary:hover>.hub-button-art{filter:brightness(calc(var(--ferry-art-brightness) + .08)) contrast(var(--ferry-art-contrast)) saturate(var(--ferry-art-saturation)) var(--hub-gold-hover)}
+@media(prefers-reduced-motion:reduce){.hub-screen *{transition:none!important;animation:none!important}.hub-screen .hub-asset-button--primary>.hub-button-art{transform:translateY(-50%)}}

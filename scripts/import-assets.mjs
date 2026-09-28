@@ -73,7 +73,6 @@ const files = {
   'ui/hub/nacigation/HB16通用返回按钮.png': 'assets/ui/hub/HB16.png',
   'ui/hub/buttons/HB05主功能按钮底板.png': 'assets/ui/hub/HB05.png',
   'ui/hub/buttons/HB06次级功能按钮底板.png': 'assets/ui/hub/HB06.png',
-  'ui/hub/buttons/HB18墨绿圆形主按钮.png': 'assets/ui/hub/buttons/ferry_primary_button.png',
   'ui/hub/icons/HB09未解锁标记.png': 'assets/ui/hub/HB09.png',
   'ui/hub/icons/HB10设置图标.png': 'assets/ui/hub/HB10.png',
   'ui/hub/panels/HB07信物详情面板.png': 'assets/ui/hub/HB07.png',
@@ -110,6 +109,10 @@ try {
     ['HBFX03', 'assets/hub/effects/HBFX03_ambient_glow.png'],
     ['HBFX04', 'assets/hub/effects/HBFX04_particle_atlas.png'],
     ['HBFX05', 'assets/hub/effects/HBFX05_ground_fog.png'],
+    ['HBFX09', 'assets/ui/hub/decorations/HBFX09_hub_title_backplate.png'],
+    ['HBFX10', 'assets/ui/hub/decorations/HBFX10_resource_backplate.png'],
+    ['HBFX11', 'assets/ui/hub/decorations/HBFX11_ferry_clouds.png'],
+    ['HBFX12', 'assets/effects/hub/HBFX12_character_ambient_light.png'],
   ];
   for (const [prefix, destination] of environmentAssets) {
     const source = hubEnvironmentSources.find(name => name.startsWith(prefix));
@@ -118,6 +121,7 @@ try {
 } catch {
   // Environmental foreground/effect artwork is optional until the hub enhancement is enabled.
 }
+files['ferrymen/feichuan/CHH01绯川标准立绘.png'] = 'assets/characters/hub/CHH01_feichuan.png';
 const report = [];
 for (const [source, destination] of Object.entries(files)) {
   const from = resolve(root, '资源图源文件', source);

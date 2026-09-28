@@ -6,6 +6,7 @@ const reviewSizes = [
   { width: 1920, height: 1080 },
   { width: 1280, height: 720 },
   { width: 1920, height: 1200 },
+  { width: 2560, height: 1440 },
   { width: 2560, height: 1080 },
   { width: 932, height: 430 },
 ];
@@ -70,11 +71,15 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await waitForHubCanvas(page, size);
 
     for (const selector of [
-      '.hub-resources', '.hub-settings', '.hub-shelf-area', '.hub-character',
-      '.hub-character img', '.hub-primary-action', '.hub-secondary-actions', '.hub-current-ferryman',
+      '.hub-resource--copper', '.hub-resource--soul-flame', '.hub-settings', '.hub-shelf-area',
+      '.hub-primary-action', '.hub-secondary-actions', '.hub-current-ferryman',
     ]) await expectVisibleInsideViewport(page.locator(selector), size.width, size.height);
+    const portrait = await page.locator('.hub-portrait-image').boundingBox();
+    expect(portrait).not.toBeNull();
+    expect(portrait!.y).toBeLessThan(size.height / 2);
+    expect(portrait!.y + portrait!.height).toBeGreaterThan(size.height * .8);
     for (const button of await page.locator('.hub-secondary-actions .hub-asset-button').all()) await expectVisibleInsideViewport(button, size.width, size.height);
-    await expect(page.locator('.hub-home .hub-title')).toHaveCount(0);
+    await expect(page.locator('.hub-home-title h1')).toHaveText('渡魂驿站');
 
     if (index === 0) await capture(page, testInfo, 'hub-home-1600x800');
 
@@ -129,7 +134,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     if (index === 0 || index === reviewSizes.length - 1) await capture(page, testInfo, `hub-stage-select-${size.width}x${size.height}`);
     await page.getByRole('button', { name: '返回' }).click();
 
-    await page.locator('.hub-character').click();
+    await page.locator('.hub-character').press('Enter');
     await expect(page.locator('.growth-screen')).toBeVisible();
     for (const selector of ['.growth-portrait', '.growth-header', '.growth-trait--merchant', '.growth-trait--locked', '.growth-exclusive-cards', '.growth-more-cards', '.growth-node-panel', '.growth-bottom-row']) {
       await expectVisibleInsideViewport(page.locator(selector), size.width, size.height);

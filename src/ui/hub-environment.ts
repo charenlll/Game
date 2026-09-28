@@ -4,15 +4,6 @@ import { assetURL } from './card-view';
 const DESIGN_WIDTH = 2560;
 const DESIGN_HEIGHT = 1440;
 const BOTTOM_FOREGROUND_SCALE = 1.12;
-const FOG_ALPHA = 0.26;
-const FOG_ALPHA_BREATH = 0.008;
-const FOG_BREATH_PERIOD = 24;
-// The supplied 1983×793 fog texture has usable mist in its lower ~386 px.
-// That crop maps almost exactly to the requested 2560×500 ground band.
-const FOG_GROUND_TOP = 940;
-const FOG_SOURCE_BAND_HEIGHT = 386;
-const FOG_DRIFT_DISTANCE = 18;
-const FOG_DRIFT_PERIOD = 110;
 const ATLAS_WIDTH = 1254;
 const ATLAS_HEIGHT = 1254;
 const ATLAS_COLUMNS = 4;
@@ -261,10 +252,10 @@ export class HubSpiritParticles extends HubParticleSystem {
 
 function createGlows(): Glow[] {
   return [
-    { x: 105, y: 840, scale: randomBetween(0.65, 0.85), alpha: 0.23, pulse: 0.03, period: randomBetween(4, 7), phase: Math.random() * Math.PI * 2 },
-    { x: 1880, y: 285, scale: randomBetween(0.9, 1.15), alpha: 0.3, pulse: 0.035, period: randomBetween(5, 8), phase: Math.random() * Math.PI * 2 },
-    { x: 1875, y: 716, scale: randomBetween(0.35, 0.5), alpha: 0.11, pulse: 0.02, period: randomBetween(5, 8), phase: Math.random() * Math.PI * 2 },
-    { x: 2415, y: 865, scale: randomBetween(0.55, 0.75), alpha: 0.16, pulse: 0.025, period: randomBetween(4, 7), phase: Math.random() * Math.PI * 2 },
+    { x: 105, y: 840, scale: randomBetween(0.65, 0.85), alpha: 0.23, pulse: 0.055, period: randomBetween(4, 7), phase: Math.random() * Math.PI * 2 },
+    { x: 1880, y: 285, scale: randomBetween(0.9, 1.15), alpha: 0.3, pulse: 0.07, period: randomBetween(5, 8), phase: Math.random() * Math.PI * 2 },
+    { x: 1875, y: 716, scale: randomBetween(0.35, 0.5), alpha: 0.11, pulse: 0.03, period: randomBetween(5, 8), phase: Math.random() * Math.PI * 2 },
+    { x: 2415, y: 865, scale: randomBetween(0.55, 0.75), alpha: 0.16, pulse: 0.04, period: randomBetween(4, 7), phase: Math.random() * Math.PI * 2 },
   ];
 }
 
@@ -274,7 +265,6 @@ export class HubEnvironment {
   private readonly ctx: CanvasRenderingContext2D | null;
   private readonly topForeground = loadImage(Assets.hub.environment.topForeground);
   private readonly bottomForeground = loadImage(Assets.hub.environment.bottomForeground);
-  private readonly groundFog = loadImage(Assets.hub.environment.groundFog);
   private readonly ambientGlow = loadImage(Assets.hub.environment.ambientGlow);
   private readonly atlas = loadImage(Assets.hub.environment.particleAtlas);
   private readonly glows = createGlows();
@@ -392,7 +382,6 @@ export class HubEnvironment {
     this.drawGlows(ctx, reducedMotion);
     this.dust.draw(ctx, this.atlas);
     this.spirits.draw(ctx, this.atlas);
-    this.drawGroundFog(ctx, reducedMotion);
     this.drawForeground(ctx);
     this.petals.draw(ctx, this.atlas);
   }
@@ -403,10 +392,15 @@ export class HubEnvironment {
     const imageHeight = this.ambientGlow.naturalHeight;
     for (const glow of this.glows) {
       const breathing = reducedMotion ? 0 : Math.sin((this.elapsed / glow.period) * Math.PI * 2 + glow.phase) * glow.pulse;
+      // Two small, unsynchronised ripples keep the lamps organic without a hard flicker.
+      const flicker = reducedMotion ? 0 : glow.pulse * (
+        0.22 * Math.sin(this.elapsed * 3.7 + glow.phase * 1.7)
+        + 0.11 * Math.sin(this.elapsed * 6.1 + glow.phase * 2.3)
+      );
       const width = imageWidth * glow.scale;
       const height = imageHeight * glow.scale;
       ctx.save();
-      ctx.globalAlpha = Math.max(0, glow.alpha + breathing);
+      ctx.globalAlpha = Math.max(0, Math.min(1, glow.alpha + breathing + flicker));
       ctx.drawImage(this.ambientGlow, glow.x - width / 2, glow.y - height / 2, width, height);
       ctx.restore();
     }
@@ -433,20 +427,4 @@ export class HubEnvironment {
     }
   }
 
-  private drawGroundFog(ctx: CanvasRenderingContext2D, reducedMotion: boolean): void {
-    if (!this.groundFog.complete || this.groundFog.naturalWidth === 0) return;
-    const drift = reducedMotion ? 0 : Math.sin((this.elapsed / FOG_DRIFT_PERIOD) * Math.PI * 2) * FOG_DRIFT_DISTANCE;
-    const breathing = reducedMotion ? 0 : Math.sin((this.elapsed / FOG_BREATH_PERIOD) * Math.PI * 2) * FOG_ALPHA_BREATH;
-    const width = DESIGN_WIDTH;
-    const sourceHeight = Math.min(FOG_SOURCE_BAND_HEIGHT, this.groundFog.naturalHeight);
-    const sourceTop = this.groundFog.naturalHeight - sourceHeight;
-    const height = width * sourceHeight / this.groundFog.naturalWidth;
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, FOG_GROUND_TOP, DESIGN_WIDTH, height);
-    ctx.clip();
-    ctx.globalAlpha = FOG_ALPHA + breathing;
-    ctx.drawImage(this.groundFog, 0, sourceTop, this.groundFog.naturalWidth, sourceHeight, drift, FOG_GROUND_TOP, width, height);
-    ctx.restore();
-  }
 }

@@ -10,35 +10,54 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   await expect(page.locator('.main-menu-screen .ferry-trace-layer')).toHaveCount(0);
   await page.getByRole('button', { name: '开始游戏' }).click();
   await expect(page.locator('.hub-screen')).toBeVisible();
-  await expect(page.locator('.hub-home .hub-title')).toHaveCount(0);
+  await expect(page.locator('.hub-home-title h1')).toHaveText('渡魂驿站');
   await expect(page.locator('.hub-primary-action .hub-button-content')).toHaveText('渡魂');
+  await expect(page.locator('.hub-primary-action .hub-button-content')).toBeVisible();
+  await expect(page.locator('.hub-ferry-reflection>span')).toBeHidden();
   await expect(page.locator('.hub-memento-slot')).toBeVisible();
+  await expect(page.locator('.hub-home .hub-memento-slot')).toHaveCount(1);
+  await expect(page.locator('.hub-home button.hub-memento-slot')).toHaveCount(0);
   await expect(page.locator('.hub-background')).toHaveAttribute('src', /HB01\.png/);
   await expect(page.locator('.hub-resources')).toContainText('0');
+  const goldIdle = await page.locator('.hub-primary-action .hub-button-art').evaluate(image => getComputedStyle(image).filter);
+  expect(goldIdle).toContain('drop-shadow');
+  await page.locator('.hub-primary-action').hover();
+  await expect.poll(() => page.locator('.hub-primary-action .hub-button-art').evaluate(image => getComputedStyle(image).filter)).not.toBe(goldIdle);
+  for (const resourceIcon of ['.hub-resource--copper img', '.hub-resource--soul-flame img']) {
+    await expect(page.locator(resourceIcon)).toHaveCSS('filter', /drop-shadow/);
+  }
+  await page.mouse.move(800, 780);
   const missingHubImages = await page.locator('.hub-screen img').evaluateAll(async images => {
     await Promise.all(images.map(image => (image as HTMLImageElement).decode().catch(() => undefined)));
     return images.filter(image => !(image as HTMLImageElement).naturalWidth).map(image => (image as HTMLImageElement).src);
   });
   expect(missingHubImages).toEqual([]);
+  const hubPortraitRatio = await page.locator('.hub-portrait-image').evaluate(image => {
+    const portrait = image as HTMLImageElement;
+    return { source: portrait.naturalWidth / portrait.naturalHeight, rendered: portrait.offsetWidth / portrait.offsetHeight };
+  });
+  expect(hubPortraitRatio.rendered).toBeCloseTo(hubPortraitRatio.source, 2);
   const homeAlignment = await page.evaluate(() => {
     const safe = document.querySelector('.hub-safe-viewport')!.getBoundingClientRect();
     const center = (selector: string) => { const r = document.querySelector(selector)!.getBoundingClientRect(); return r.x + r.width / 2 - safe.x; };
-    const hero = document.querySelector('.hub-character img')!;
+    const hero = document.querySelector('.hub-portrait-image')!;
     const ferrymanSwitch = document.querySelector('.hub-current-ferryman')!.getBoundingClientRect();
-    const primaryArt = document.querySelector('.hub-primary-action .hub-button-art')!.getBoundingClientRect();
+    const primaryArt = document.querySelector('.hub-primary-action .hub-button-art')! as HTMLImageElement;
+    const primaryButton = document.querySelector('.hub-primary-action')!.getBoundingClientRect();
+    const primaryArtY = primaryButton.y + primaryButton.height / 2 - primaryArt.offsetHeight / 2 - safe.y;
     const heroFrame = document.querySelector('.hub-character')!.getBoundingClientRect();
-    return { primary: center('.hub-primary-action'), secondary: center('.hub-secondary-actions'), primaryArt: { x: primaryArt.x - safe.x, y: primaryArt.y - safe.y, bottom: primaryArt.bottom - safe.y }, heroCenter: heroFrame.x + heroFrame.width / 2 - safe.x, heroWidth: parseFloat(getComputedStyle(hero).width), settingsWidth: document.querySelector('.hub-settings')!.getBoundingClientRect().width, ferrymanSwitch: { x: ferrymanSwitch.x - safe.x, y: ferrymanSwitch.y - safe.y, width: ferrymanSwitch.width, bottom: ferrymanSwitch.bottom - safe.y } };
+    return { primary: center('.hub-primary-action'), secondary: center('.hub-secondary-actions'), primaryArt: { x: primaryButton.x + primaryArt.offsetLeft - safe.x, y: primaryArtY, bottom: primaryArtY + primaryArt.offsetHeight }, heroCenter: heroFrame.x + heroFrame.width / 2 - safe.x, heroWidth: parseFloat(getComputedStyle(hero).width), settingsWidth: document.querySelector('.hub-settings')!.getBoundingClientRect().width, ferrymanSwitch: { x: ferrymanSwitch.x - safe.x, y: ferrymanSwitch.y - safe.y, width: ferrymanSwitch.width, bottom: ferrymanSwitch.bottom - safe.y } };
   });
-  expect(homeAlignment.primary).toBeCloseTo(210, 0);
-  const primaryArt = await page.locator('.hub-primary-action .hub-button-art').evaluate(image => ({ fit: getComputedStyle(image).objectFit, width: image.getBoundingClientRect().width, height: image.getBoundingClientRect().height }));
+  expect(homeAlignment.primary).toBeCloseTo(1390, 0);
+  const primaryArt = await page.locator('.hub-primary-action .hub-button-art').evaluate(image => ({ fit: getComputedStyle(image).objectFit, width: (image as HTMLImageElement).offsetWidth, height: (image as HTMLImageElement).offsetHeight }));
   expect(primaryArt.fit).toBe('contain');
   expect(primaryArt.width).toBeCloseTo(210, 0);
   expect(primaryArt.height).toBeCloseTo(210, 0);
-  expect(homeAlignment.primaryArt.y + 105).toBeCloseTo(290, 0);
+  expect(homeAlignment.primaryArt.y + 105).toBeCloseTo(400, 0);
   const viewportBackgroundFit = await page.locator('.viewport-background').evaluate(image => ({ fit: getComputedStyle(image).objectFit, transform: getComputedStyle(image).transform }));
   expect(viewportBackgroundFit.fit).toBe('cover');
   expect(viewportBackgroundFit.transform).toBe('none');
-  expect(homeAlignment.secondary).toBeCloseTo(210, 0);
+  expect(homeAlignment.secondary).toBeCloseTo(200.2, 0);
   const secondaryButtons = await page.locator('.hub-secondary-actions .hub-asset-button').evaluateAll(buttons => buttons.map(button => {
     const rect = button.getBoundingClientRect();
     const label = button.querySelector('.hub-button-content')!;
@@ -48,12 +67,13 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   expect(secondaryButtons).toHaveLength(3);
   expect(secondaryButtons.every(button => Math.abs(button.width - 190.4) < 0.1)).toBe(true);
   expect(secondaryButtons.every(button => Math.abs(button.height - 90) < 0.1)).toBe(true);
-  expect(secondaryButtons.every(button => Math.abs(button.x - 210) < 0.1)).toBe(true);
+  expect(secondaryButtons.every(button => Math.abs(button.x - 200.2) < 0.1)).toBe(true);
   expect(secondaryButtons[1]!.y).toBeGreaterThan(secondaryButtons[0]!.y);
   expect(secondaryButtons[2]!.y - secondaryButtons[1]!.y).toBeCloseTo(secondaryButtons[1]!.y - secondaryButtons[0]!.y, 0);
-  expect(secondaryButtons[0]!.y).toBeGreaterThan(homeAlignment.primaryArt.bottom);
+  expect(secondaryButtons[1]!.y + 45 - 50).toBeCloseTo(400, 0);
+  expect(secondaryButtons[0]!.x - secondaryButtons[0]!.width / 2).toBeCloseTo(1600 - homeAlignment.primaryArt.x - primaryArt.width, 0);
   expect(secondaryButtons.every(button => Math.abs(parseFloat(button.fontSize) - 19) < 0.1)).toBe(true);
-  expect(secondaryButtons.every(button => button.fontFamily.includes('Songti SC'))).toBe(true);
+  expect(secondaryButtons.every(button => button.fontFamily.includes('STKaiti'))).toBe(true);
   expect(secondaryButtons.every(button => button.fontWeight === '600')).toBe(true);
   expect(secondaryButtons.every(button => button.letterSpacing === '4px')).toBe(true);
   expect(secondaryButtons.every(button => button.labelTransform === 'none')).toBe(true);
@@ -69,15 +89,16 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   expect(secondaryHover.width).toBeCloseTo(secondaryDefault.width, 0);
   expect(secondaryHover.height).toBeCloseTo(secondaryDefault.height, 0);
   await page.mouse.move(800, 780);
-  expect(homeAlignment.heroWidth).toBeCloseTo(602, 0);
+  expect(homeAlignment.heroWidth).toBeCloseTo(808, 0);
   expect(homeAlignment.settingsWidth).toBeCloseTo(92, 0);
-  expect(homeAlignment.heroCenter).toBeCloseTo(homeAlignment.ferrymanSwitch.x + homeAlignment.ferrymanSwitch.width / 2, 0);
-  expect(homeAlignment.ferrymanSwitch.x).toBeCloseTo(1148.8, 0);
-  expect(homeAlignment.ferrymanSwitch.y).toBeCloseTo(664, 0);
-  expect(homeAlignment.ferrymanSwitch.width).toBeCloseTo(302.4, 0);
-  expect(homeAlignment.ferrymanSwitch.bottom).toBeCloseTo(785, 0);
-  await expect(page.locator('.hub-current-ferryman .ferryman-card-frame')).toHaveAttribute('src', /ferryman_card|HB11/i);
-  const bannerAvatar = await page.locator('.hub-current-ferryman .ferryman-avatar').evaluate(image => {
+  expect(homeAlignment.ferrymanSwitch.x).toBeGreaterThan(homeAlignment.heroCenter);
+  expect(homeAlignment.ferrymanSwitch.x).toBeCloseTo(1210, 0);
+  expect(homeAlignment.ferrymanSwitch.y).toBeCloseTo(648, 0);
+  expect(homeAlignment.ferrymanSwitch.width).toBeCloseTo(330, 0);
+  expect(homeAlignment.ferrymanSwitch.bottom).toBeCloseTo(780, 0);
+  await expect(page.locator('.hub-current-ferryman .hub-status-frame')).toHaveAttribute('src', /HB11\.png/);
+  await expect(page.locator('.hub-current-ferryman .hub-status-caption')).toHaveText('当前摆渡人');
+  const bannerAvatar = await page.locator('.hub-current-ferryman .hub-status-avatar').evaluate(image => {
     const element = image as HTMLImageElement;
     const rect = element.getBoundingClientRect();
     return { naturalWidth: element.naturalWidth, naturalHeight: element.naturalHeight, width: rect.width, height: rect.height, fit: getComputedStyle(element).objectFit };
@@ -86,8 +107,10 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   expect(bannerAvatar.naturalHeight).toBe(1254);
   expect(bannerAvatar.width).toBeCloseTo(bannerAvatar.height, 0);
   expect(bannerAvatar.fit).toBe('cover');
-  await expect(page.locator('.hub-character img')).toHaveCSS('animation-name', 'hub-ferryman-idle');
-  await expect(page.locator('.hub-primary-action .hub-button-art')).toHaveAttribute('src', /ferry_primary_button\.png/);
+  await expect(page.locator('.hub-portrait-image')).toHaveCSS('animation-name', 'hub-ferryman-seated-idle');
+  await expect(page.locator('.hub-portrait-image')).toHaveAttribute('src', /CHH01_feichuan\.png/);
+  await expect(page.locator('.hub-primary-action .hub-button-art')).toHaveAttribute('src', /ferry_primary_button1\.png/);
+  await expect(page.locator('.hub-ferry-reflection img')).toHaveAttribute('src', /ferry_primary_button1\.png/);
   const primaryDefault = await page.locator('.hub-primary-action').evaluate(button => {
     const rect = button.getBoundingClientRect(); return { width: rect.width, height: rect.height };
   });
@@ -102,10 +125,11 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   const homeShelfCenter = await page.locator('.hub-home .hub-shelf-area').evaluate(node => { const rect = node.getBoundingClientRect(); const safe = document.querySelector('.hub-safe-viewport')!.getBoundingClientRect(); return rect.x + rect.width / 2 - safe.x; });
   expect(homeShelfCenter).toBeCloseTo(800, 0);
   await expect(page.locator('.hub-home-focus-layer')).toHaveCount(1);
-  await expect(page.locator('.hub-shelf')).toHaveCSS('filter', 'brightness(1.05) contrast(1.04)');
+  await expect(page.locator('.hub-home .hub-shelf')).toHaveCSS('filter', 'brightness(0.7) contrast(1.02)');
 
   await page.getByRole('button', { name: '信物录' }).click();
   await expect(page.locator('.collection-memento')).toBeVisible();
+  await expect(page.locator('.hub-collection-screen .hub-shelf')).toHaveCSS('filter', 'brightness(1.05) contrast(1.04)');
   await expect(page.locator('.hub-category-title,.hub-empty-category')).toHaveCount(0);
   await page.locator('.collection-memento').click();
   await expect(page.getByRole('dialog', { name: '信物详情' })).toContainText('一艘做得不算精致的小木船');
@@ -184,7 +208,7 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('night-ferry.save')!).profile.ferrymen.currentId)).toBe('feichuan');
   await page.locator('.ferryman-drawer-close').click();
 
-  await page.locator('.hub-character').click();
+  await page.locator('.hub-character').press('Enter');
   await expect(page.locator('.growth-screen')).toBeVisible();
   await expect(page.locator('.growth-screen')).not.toContainText('专属卡牌');
   await expect(page.locator('.growth-info-layout .hub-info-panel')).toHaveCount(3);
@@ -356,7 +380,7 @@ test('点击摆渡人卡牌打开无底色预览，点击卡牌外侧关闭后�
   await page.setViewportSize({ width: 1600, height: 800 });
   await page.goto('/?seed=42');
   await page.locator('.menu-start-button').click();
-  await page.locator('.hub-character').click();
+  await page.locator('.hub-character').press('Enter');
   await page.locator('.growth-card').first().click();
   const popup = page.getByRole('dialog', { name: '狐火' });
   await expect(popup).toBeVisible();

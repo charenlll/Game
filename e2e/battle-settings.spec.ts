@@ -76,6 +76,9 @@ test('序章对局中的 F12 控制台入口可返回开始游戏菜单', async 
   await expect(page.locator('.main-menu-screen')).toBeVisible();
   await expect(page.locator('.menu-start-button')).toBeVisible();
   await expect(page.locator('.hub-screen')).toHaveCount(0);
+  await page.reload();
+  await expect(page.locator('.main-menu-screen')).toBeVisible();
+  await expect(page.locator('.game')).toHaveCount(0);
 });
 
 test('从驿站选择渡魂重玩序章，重载后仍返回驿站', async ({ page }) => {
@@ -107,6 +110,9 @@ test('从驿站选择渡魂重玩序章，重载后仍返回驿站', async ({ pa
   await page.locator('[role="dialog"] [data-action="return-menu"]').click();
   await expect(page.locator('.hub-screen')).toBeVisible();
   await expect(page.locator('.main-menu-screen')).toHaveCount(0);
+  await page.reload();
+  await expect(page.locator('.hub-screen')).toBeVisible();
+  await expect(page.locator('.game')).toHaveCount(0);
 });
 
 test('序章完成后的战斗可以从设置返回驿站主页', async ({ page }) => {
@@ -125,6 +131,9 @@ test('序章完成后的战斗可以从设置返回驿站主页', async ({ page 
   const returnButton = page.locator('[role="dialog"] [data-action="return-menu"]');
   await expect(returnButton).toBeEnabled();
   await returnButton.click();
+  await expect(page.locator('.hub-screen')).toBeVisible();
+  await expect(page.locator('.game')).toHaveCount(0);
+  await page.goto('/?seed=42');
   await expect(page.locator('.hub-screen')).toBeVisible();
   await expect(page.locator('.game')).toHaveCount(0);
 });
