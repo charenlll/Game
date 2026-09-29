@@ -15,7 +15,13 @@ export class GameFlow {
   private hub: HubController | null = null;
   private readonly sessions = SessionCoordinator.open(createBrowserSaveRepository());
 
+  private setReducedMotion(enabled: boolean): void {
+    this.sessions.setReducedMotion(enabled);
+    document.documentElement.classList.toggle('user-reduced-motion', enabled);
+  }
+
   constructor(private readonly stage: HTMLElement, private readonly seed: number, showMainMenu = true) {
+    document.documentElement.classList.toggle('user-reduced-motion', this.sessions.settings.reducedMotion);
     const save = this.sessions.snapshot;
     this.prologueCompleted = save.campaign.chapters.prologue?.status === 'complete' || save.profile.mementoIds.includes('prologue_wooden_boat');
     if (showMainMenu && save.launchDestination === 'main_menu') this.showMainMenu();
@@ -55,7 +61,7 @@ export class GameFlow {
     this.hub?.destroy();
     this.prologue = null;
     this.hub = null;
-    this.mainMenu = new MainMenu(this.stage, { startGame: () => this.startGameEntry() });
+    this.mainMenu = new MainMenu(this.stage, { startGame: () => this.startGameEntry(), settings: () => this.sessions.settings, setReducedMotion: enabled => this.setReducedMotion(enabled) });
   }
 
   private startGameEntry(): void {
@@ -108,6 +114,10 @@ export class GameFlow {
       startPrologue: () => this.startPrologue('hub'),
       returnToMenu: () => this.showMainMenu(),
       ferrymanProgress: () => this.sessions.ferrymanProgress(),
+      discoveredCardIds: () => this.sessions.discoveredCardIds(),
+      soulArchive: () => this.sessions.soulArchive(),
+      settings: () => this.sessions.settings,
+      setReducedMotion: enabled => this.setReducedMotion(enabled),
       selectFerryman: id => this.sessions.setCurrentFerryman(id),
     });
   }

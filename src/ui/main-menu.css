@@ -15,7 +15,7 @@
 .main-menu-popup-layer{position:absolute;z-index:5;inset:0;pointer-events:none}
 .menu-settings-backdrop{position:absolute;inset:0;display:grid;place-items:center;background:#03131dcc;backdrop-filter:blur(5px);pointer-events:auto}
 .menu-settings{width:650px;min-height:300px;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:24px;text-align:center}
-.main-menu-popup-layer .menu-settings{transform:scale(var(--viewport-safe-800-scale,1));transform-origin:center}
+.main-menu-popup-layer .game-settings-panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--viewport-safe-800-scale,1));transform-origin:center}
 .menu-settings h2{font-family:var(--serif);font-size:36px;font-weight:500;letter-spacing:12px;color:#e5d09e;text-shadow:0 2px 5px #09171c}
 .menu-settings p{font-size:21px;letter-spacing:3px;color:#e4e3d4}
 .menu-settings-close{min-width:190px;min-height:65px;font-size:23px}

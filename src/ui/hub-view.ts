@@ -7,15 +7,23 @@ import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view'
 import { applyHubInfoPanelContentRects, CardPreviewPopup, FerrymanSelectorDrawer, ferryButton, fitHubButtonLabels, hb19PanelStyle, HubInfoPanel, HubTypography, MementoDetailPopup, type HubFerrymanData, type MementoData } from './hub-components';
 import { HubEnvironment } from './hub-environment';
 import { isOpaqueImagePixel } from './image-alpha-hit';
+import type { SoulArchiveEntry } from '../core/archive/soul-archive';
+import type { UserSettings } from '../infrastructure/save/save-schema';
+import { renderSettingsPanel } from './settings-panel';
 
 export interface HubActions {
   startPrologue(): void;
   returnToMenu(): void;
   ferrymanProgress(): ProloguePersistentState;
   selectFerryman(id: FerrymanId): boolean;
+  discoveredCardIds(): readonly string[];
+  soulArchive(): readonly SoulArchiveEntry[];
+  settings(): UserSettings;
+  setReducedMotion(enabled: boolean): void;
 }
 
 type HubPage = 'hub' | 'collection' | 'stage-select' | 'growth';
+type CatalogTab = 'common' | FerrymanId | 'burden';
 type Category = 'prologue' | 'world' | 'emotion' | 'life' | 'years' | 'ferry';
 const categories: readonly { id: Category; label: string }[] = [
   { id: 'prologue', label: '序｜初见' }, { id: 'world', label: '世｜见天地' }, { id: 'emotion', label: '情｜见众生' },
@@ -25,6 +33,12 @@ const ferrymen: readonly HubFerrymanData[] = [
   { id: 'feichuan', name: '绯川', portrait: Assets.ferrymen.feichuan.portrait, avatar: Assets.ferrymen.feichuan.avatar, role: '赤狐 · 摆渡人', intro: '善于观察得失，也擅长与人打交道。' },
   { id: 'moyu', name: '墨羽', portrait: Assets.ferrymen.moyu.portrait, avatar: Assets.ferrymen.moyu.avatar, role: '尚未开放', intro: '' },
   { id: 'qinglan', name: '青岚', portrait: Assets.ferrymen.qinglan.portrait, avatar: Assets.ferrymen.qinglan.avatar, role: '尚未开放', intro: '' },
+];
+const catalogTabs: readonly { id: CatalogTab; label: string }[] = [
+  { id: 'common', label: '通用牌' },
+  ...ferrymen.filter(person => cardDatabase.all().some(card => card.owner_character_id === person.id))
+    .map(person => ({ id: person.id, label: `${person.name}专属` })),
+  { id: 'burden', label: '浊念' },
 ];
 const mementos: readonly (MementoData & { category: Category; slot: 'A1' | 'A2' | 'A3' | 'A4' | 'B1' | 'B2' | 'B3' | 'B4' })[] = [
   { id: 'prologue_wooden_boat', category: 'prologue', slot: 'A1', asset: Assets.prologue.woodenBoat, name: '小木船', source: '序｜初见', description: '一艘做得不算精致的小木船。\n有人托你暂时替他保管。', quote: '“那也先给他看看。”' },
@@ -53,6 +67,10 @@ export class HubController {
   private previewCard: CardData | null = null;
   private drawerOpen = false;
   private settingsOpen = false;
+  private cardCatalogOpen = false;
+  private catalogTab: CatalogTab = 'common';
+  private soulArchiveOpen = false;
+  private archiveEntryId = 'prologue_child';
   private selectedFerryman: FerrymanId;
   private toast = '';
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -60,7 +78,7 @@ export class HubController {
   private readonly environment = new HubEnvironment();
 
   private isPortraitHit(event: MouseEvent | PointerEvent): boolean {
-    if (this.page !== 'hub' || this.drawerOpen || this.settingsOpen || this.detailMementoId || this.previewCard) return false;
+    if (this.page !== 'hub' || this.drawerOpen || this.settingsOpen || this.cardCatalogOpen || this.soulArchiveOpen || this.detailMementoId || this.previewCard) return false;
     const element = event.target instanceof Element ? event.target : null;
     const action = element?.closest<HTMLElement>('[data-hub-action]')?.dataset.hubAction;
     if ((action && action !== 'open-memento') || element?.closest('.hub-resources')) return false;
@@ -87,8 +105,24 @@ export class HubController {
     const action = target.dataset.hubAction;
     if (action === 'settings') { this.settingsOpen = true; this.render(); }
     else if (action === 'close-settings') { this.settingsOpen = false; this.render(); }
+    else if (action === 'toggle-reduced-motion') { this.actions.setReducedMotion(!this.actions.settings().reducedMotion); this.render(); }
     else if (action === 'open-ferryman-drawer') { this.drawerOpen = true; this.render(); }
     else if (action === 'close-ferryman-drawer') { this.drawerOpen = false; this.render(); }
+    else if (action === 'open-card-catalog') { this.cardCatalogOpen = true; this.catalogTab = 'common'; this.render(); }
+    else if (action === 'close-card-catalog') { this.cardCatalogOpen = false; this.render(); }
+    else if (action === 'open-soul-archive') { this.soulArchiveOpen = true; this.render(); }
+    else if (action === 'close-soul-archive') { this.soulArchiveOpen = false; this.render(); }
+    else if (action === 'archive-entry') {
+      const id = target.dataset.archiveId;
+      if (id && this.actions.soulArchive().some(entry => entry.id === id && entry.status !== 'unknown')) {
+        this.archiveEntryId = id;
+        this.render();
+      }
+    }
+    else if (action === 'catalog-tab') {
+      const tab = target.dataset.catalogTab;
+      if (catalogTabs.some(entry => entry.id === tab)) { this.catalogTab = tab as CatalogTab; this.render(); }
+    }
     else if (action === 'select-ferryman') this.selectFerryman(target.dataset.ferryman as FerrymanId);
     else if (action === 'open-growth') { this.page = 'growth'; this.render(); }
     else if (action === 'open-collection') { this.page = 'collection'; this.categoryIndex = 0; this.render(); }
@@ -158,7 +192,7 @@ export class HubController {
       : this.page === 'collection' ? this.renderCollection(progress)
         : this.page === 'stage-select' ? this.renderStageSelect()
           : this.renderGrowth(current);
-    const hasPopup = this.drawerOpen || this.settingsOpen || !!this.detailMementoId || !!this.previewCard;
+    const hasPopup = this.drawerOpen || this.settingsOpen || this.cardCatalogOpen || this.soulArchiveOpen || !!this.detailMementoId || !!this.previewCard;
     this.root.innerHTML = `<div class="hub-safe-viewport">${layer}${!hasPopup && this.toast ? `<div class="hub-toast" role="status">${esc(this.toast)}</div>` : ''}</div>`;
     if (this.page === 'hub') this.environment.mount(this.root);
     else this.environment.suspend();
@@ -166,13 +200,14 @@ export class HubController {
     if (hasPopup) {
       const closeAction = this.previewCard ? 'close-card-preview'
         : this.detailMementoId ? 'close-memento-detail'
-          : this.settingsOpen ? 'close-settings' : 'close-ferryman-drawer';
+          : this.settingsOpen ? 'close-settings' : this.cardCatalogOpen ? 'close-card-catalog' : this.soulArchiveOpen ? 'close-soul-archive' : 'close-ferryman-drawer';
       const popupLayer = document.createElement('div');
       popupLayer.className = 'hub-popup-layer';
-      popupLayer.innerHTML = `<div class="hub-popup-viewport-backdrop" data-hub-action="${closeAction}" aria-hidden="true"></div><div class="hub-popup-safe-surface">${this.drawerOpen ? FerrymanSelectorDrawer.render(ferrymen, progress, this.selectedFerryman) : ''}${this.settingsOpen ? this.settingsModal() : ''}${this.detailMementoId ? this.renderMementoPopup() : ''}${this.previewCard ? CardPreviewPopup.render(this.previewCard) : ''}${this.toast ? `<div class="hub-toast" role="status">${esc(this.toast)}</div>` : ''}</div>`;
+      popupLayer.innerHTML = `<div class="hub-popup-viewport-backdrop" data-hub-action="${closeAction}" aria-hidden="true"></div><div class="hub-popup-safe-surface">${this.drawerOpen ? FerrymanSelectorDrawer.render(ferrymen, progress, this.selectedFerryman) : ''}${this.settingsOpen ? this.settingsModal() : ''}${this.cardCatalogOpen ? this.renderCardCatalog() : ''}${this.soulArchiveOpen ? this.renderSoulArchive() : ''}${this.detailMementoId ? this.renderMementoPopup() : ''}${this.previewCard ? CardPreviewPopup.render(this.previewCard) : ''}${this.toast ? `<div class="hub-toast" role="status">${esc(this.toast)}</div>` : ''}</div>`;
       this.popupHost.append(popupLayer);
     }
     applyHubInfoPanelContentRects(this.root);
+    if (this.popupHost !== this.root) applyHubInfoPanelContentRects(this.popupHost);
     fitCardText(this.root);
     fitHubButtonLabels(this.root);
     if (this.popupHost !== this.root) {
@@ -213,7 +248,7 @@ export class HubController {
       <img class="hub-bottom-foreground-overlay" src="${assetURL(Assets.hub.environment.bottomForeground)}" alt="" aria-hidden="true">
       <div class="hub-home-actions">
         ${ferryButton('open-stages', '渡魂', 'primary', 'hub-primary-action', `<span class="hub-ferry-reflection" aria-hidden="true"><img src="${assetURL(Assets.hub.ferryPrimaryButton)}" alt=""><span>渡魂</span></span><img class="hub-ferry-clouds" src="${assetURL(Assets.hub.ferryClouds)}" alt="">`)}
-        <div class="hub-secondary-actions">${ferryButton('open-collection', '信物录', 'secondary')}${ferryButton('coming-soon', '牌录', 'secondary')}${ferryButton('coming-soon', '渡魂记录', 'secondary')}</div>
+        <div class="hub-secondary-actions">${ferryButton('open-collection', '信物录', 'secondary')}${ferryButton('open-card-catalog', '牌录', 'secondary')}${ferryButton('open-soul-archive', '渡魂记录', 'secondary')}</div>
       </div>
       ${FerrymanSelectorDrawer.renderHomeCurrent(current)}
     </main>`;
@@ -236,6 +271,43 @@ export class HubController {
   private renderMementoPopup(): string {
     const item = mementos.find(entry => entry.id === this.detailMementoId);
     return item ? MementoDetailPopup.render(item) : '';
+  }
+
+  private renderCardCatalog(): string {
+    const discovered = new Set(this.actions.discoveredCardIds());
+    const cards = cardDatabase.all().filter(card => this.catalogTab === 'burden'
+      ? card.card_type === 'burden'
+      : card.card_type !== 'burden' && (this.catalogTab === 'common' ? card.owner_character_id === null : card.owner_character_id === this.catalogTab));
+    const tabs = catalogTabs.map(tab => `<button type="button" role="tab" class="hub-catalog-tab ${tab.id === this.catalogTab ? 'is-active' : ''}" data-hub-action="catalog-tab" data-catalog-tab="${tab.id}" aria-selected="${tab.id === this.catalogTab}">${esc(tab.label)}</button>`).join('');
+    const entries = cards.map(card => discovered.has(card.id)
+      ? `<button type="button" class="hub-catalog-card" data-hub-action="preview-card" data-card-id="${esc(card.id)}" aria-label="查看卡牌：${esc(card.name)}"><span class="hub-catalog-card-face">${CardView.render(card)}</span></button>`
+      : `<div class="hub-catalog-card is-locked" role="img" aria-label="未解锁的卡牌"><img src="${assetURL(Assets.cards.back)}" alt=""><span>未解锁</span></div>`).join('');
+    return `<section class="hub-info-panel hub-card-catalog" style="${hb19PanelStyle()}" data-hb19-panel role="dialog" aria-modal="true" aria-labelledby="hub-catalog-title" data-hub-action="stop-popup-close">
+      <div class="hub-catalog-content"><header><h2 id="hub-catalog-title">牌录</h2><button type="button" class="hub-catalog-close" data-hub-action="close-card-catalog" aria-label="返回驿站"><img src="${assetURL(Assets.hub.back)}" alt=""></button></header>
+      <nav class="hub-catalog-tabs" role="tablist" aria-label="卡牌分类">${tabs}</nav>
+      <div class="hub-catalog-scroll" role="tabpanel" aria-label="${esc(catalogTabs.find(tab => tab.id === this.catalogTab)!.label)}"><div class="hub-catalog-track">${entries || '<p class="hub-catalog-empty">尚无卡牌</p>'}</div></div></div>
+    </section>`;
+  }
+
+  private renderSoulArchive(): string {
+    const entries = this.actions.soulArchive();
+    const selected = entries.find(entry => entry.id === this.archiveEntryId) ?? entries[0];
+    const list = entries.map(entry => entry.status === 'unknown'
+      ? `<div class="hub-archive-entry is-unknown" role="listitem" aria-label="${esc(entry.chapterTitle)}：尚未遇见"><span>${esc(entry.chapterTitle)}</span><strong>未遇见的亡魂</strong></div>`
+      : `<button type="button" class="hub-archive-entry ${selected?.id === entry.id ? 'is-active' : ''}" data-hub-action="archive-entry" data-archive-id="${esc(entry.id)}" aria-label="查看${esc(entry.name)}的渡魂记录"><span>${esc(entry.chapterTitle)}</span><strong>${esc(entry.name)}</strong><small>${entry.status === 'released' ? '已渡魂' : '尚待渡魂'}</small></button>`).join('');
+    const detail = selected && selected.status !== 'unknown'
+      ? `<div class="hub-archive-portrait"><img src="${assetURL(selected.portrait!)}" alt="${esc(selected.name)}"></div>
+          <div class="hub-archive-copy"><span class="hub-archive-chapter">${esc(selected.chapterTitle)}</span><h3>${esc(selected.name)}</h3>
+            <strong class="hub-archive-status">${selected.status === 'released' ? '已渡魂' : '尚待渡魂'}</strong>
+            <p>${esc(selected.story)}</p>
+            ${selected.status === 'released' && selected.mementoArt ? `<div class="hub-archive-memento"><img src="${assetURL(selected.mementoArt)}" alt=""><span>留下的信物：${esc(selected.mementoName ?? '')}</span></div>` : ''}
+          </div>`
+      : `<div class="hub-archive-unknown-detail"><span aria-hidden="true">?</span><p>尚未遇见这位亡魂</p></div>`;
+    return `<section class="hub-info-panel hub-soul-archive" style="${hb19PanelStyle()}" data-hb19-panel role="dialog" aria-modal="true" aria-labelledby="hub-archive-title" data-hub-action="stop-popup-close">
+      <div class="hub-archive-content"><header><h2 id="hub-archive-title">渡魂记录</h2><button type="button" class="hub-archive-close" data-hub-action="close-soul-archive" aria-label="返回驿站"><img src="${assetURL(Assets.hub.back)}" alt=""></button></header>
+        <div class="hub-archive-layout"><nav class="hub-archive-list" aria-label="亡魂档案" role="list">${list}</nav><article class="hub-archive-detail">${detail}</article></div>
+      </div>
+    </section>`;
   }
 
   private renderStageSelect(): string {
@@ -270,7 +342,7 @@ export class HubController {
     </main>`;
   }
   private settingsModal(): string {
-    return `<div class="hub-settings-backdrop" data-hub-action="close-settings"><section class="hub-settings-panel" role="dialog" aria-modal="true" aria-labelledby="hub-settings-title" data-hub-action="stop-popup-close"><h2 id="hub-settings-title">设置</h2><p>设置功能将在后续版本开放。</p><button class="hub-settings-close" data-hub-action="close-settings">返回</button></section></div>`;
+    return `<div class="hub-settings-backdrop" data-hub-action="close-settings">${renderSettingsPanel(this.actions.settings(), 'data-hub-action', 'hub-settings-title')}</div>`;
   }
 }
 

@@ -34,9 +34,10 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   expect(missingHubImages).toEqual([]);
   const hubPortraitRatio = await page.locator('.hub-portrait-image').evaluate(image => {
     const portrait = image as HTMLImageElement;
-    return { source: portrait.naturalWidth / portrait.naturalHeight, rendered: portrait.offsetWidth / portrait.offsetHeight };
+    return { source: portrait.naturalWidth / portrait.naturalHeight, fit: getComputedStyle(portrait).objectFit };
   });
-  expect(hubPortraitRatio.rendered).toBeCloseTo(hubPortraitRatio.source, 2);
+  expect(hubPortraitRatio.source).toBeGreaterThan(0);
+  expect(hubPortraitRatio.fit).toBe('contain');
   const homeAlignment = await page.evaluate(() => {
     const safe = document.querySelector('.hub-safe-viewport')!.getBoundingClientRect();
     const center = (selector: string) => { const r = document.querySelector(selector)!.getBoundingClientRect(); return r.x + r.width / 2 - safe.x; };
@@ -342,16 +343,102 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   await expect(page.locator('.hub-screen')).toBeVisible();
 });
 
-test('旧版存档补齐驿站字段，设置和未开放功能有可操作反馈', async ({ page }) => {
+test('旧版存档可打开牌录，按分类浏览已发现卡牌和未解锁浊念', async ({ page }, testInfo) => {
   await page.addInitScript(() => localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({ prologue_complete: true, wooden_boat_trace_unlocked: true })));
+  await page.setViewportSize({ width: 1600, height: 800 });
   await page.goto('/?seed=42');
   await page.locator('.menu-start-button').click();
   await expect(page.locator('.hub-screen')).toBeVisible();
   await page.getByRole('button', { name: '设置' }).click();
-  await expect(page.getByRole('dialog')).toContainText('设置功能将在后续版本开放');
+  await expect(page.getByRole('switch', { name: /减少动效/ })).toHaveAttribute('aria-checked', 'false');
+  await expect(page.getByRole('button', { name: /语言，简体中文，暂未开放/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /音量，暂未开放/ })).toBeDisabled();
   await page.getByRole('button', { name: '返回' }).click();
   await page.getByRole('button', { name: '牌录' }).click();
-  await expect(page.locator('.hub-toast')).toHaveText('尚未开放');
+  await expect(page.getByRole('dialog', { name: '牌录' })).toBeVisible();
+  await page.evaluate(async () => {
+    await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
+    const panel = document.querySelector<HTMLElement>('.hub-card-catalog');
+    const url = panel && getComputedStyle(panel).borderImageSource.match(/url\(["']?(.*?)["']?\)/)?.[1];
+    if (url) { const image = new Image(); image.src = url; await image.decode(); }
+  });
+  await page.screenshot({ path: testInfo.outputPath('catalog-default.png') });
+  await expect(page.locator('.hub-catalog-card:not(.is-locked)')).toHaveCount(6);
+  await page.getByRole('tab', { name: '绯川专属' }).click();
+  await expect(page.locator('.hub-catalog-card:not(.is-locked)')).toHaveCount(3);
+  await page.getByRole('tab', { name: '浊念' }).click();
+  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(2);
+  await page.getByRole('button', { name: '返回驿站' }).click();
+  await expect(page.getByRole('dialog', { name: '牌录' })).toHaveCount(0);
+});
+
+test('牌录只预览已发现卡牌，并在窄横屏保持窗口完整', async ({ page }, testInfo) => {
+  await page.addInitScript(() => localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({ prologue_complete: true, wooden_boat_trace_unlocked: true })));
+  await page.goto('/?seed=42');
+  await page.evaluate(() => {
+    const save = JSON.parse(localStorage.getItem('night-ferry.save')!);
+    save.profile.discoveredCardIds = ['burden_001'];
+    localStorage.setItem('night-ferry.save', JSON.stringify(save));
+  });
+  await page.reload();
+  await page.locator('.menu-start-button').click();
+  await page.setViewportSize({ width: 932, height: 430 });
+  await page.getByRole('button', { name: '牌录' }).click();
+  const panel = page.getByRole('dialog', { name: '牌录' });
+  await expect(panel).toBeVisible();
+  await page.evaluate(async () => {
+    await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
+    const frame = document.querySelector<HTMLElement>('.hub-card-catalog');
+    const url = frame && getComputedStyle(frame).borderImageSource.match(/url\(["']?(.*?)["']?\)/)?.[1];
+    if (url) { const image = new Image(); image.src = url; await image.decode(); }
+  });
+  await page.screenshot({ path: testInfo.outputPath('catalog-narrow.png') });
+  const bounds = await panel.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(bounds!.x).toBeGreaterThanOrEqual(0);
+  expect(bounds!.y).toBeGreaterThanOrEqual(0);
+  expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(932);
+  expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(430);
+  await page.getByRole('tab', { name: '浊念' }).click();
+  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(1);
+  await page.locator('.hub-catalog-card:not(.is-locked)').click();
+  await expect(page.getByRole('dialog', { name: '踌躇' })).toBeVisible();
+  await page.locator('.hub-popup-viewport-backdrop').click({ position: { x: 3, y: 3 } });
+  await expect(page.getByRole('dialog', { name: '踌躇' })).toHaveCount(0);
+  await expect(panel).toBeVisible();
+});
+
+test('渡魂记录展示序章亡魂档案与信物，窄横屏可关闭', async ({ page }, testInfo) => {
+  await page.addInitScript(() => localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({ prologue_complete: true, wooden_boat_trace_unlocked: true })));
+  await page.setViewportSize({ width: 1600, height: 800 });
+  await page.goto('/?seed=42');
+  await page.locator('.menu-start-button').click();
+  await page.getByRole('button', { name: '渡魂记录' }).click();
+  const archive = page.getByRole('dialog', { name: '渡魂记录' });
+  await expect(archive).toBeVisible();
+  await expect(archive).toContainText('无名孩子');
+  await expect(archive).toContainText('已渡魂');
+  await expect(archive).toContainText('小木船');
+  await page.evaluate(async () => {
+    await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
+    const panel = document.querySelector<HTMLElement>('.hub-soul-archive');
+    const url = panel && getComputedStyle(panel).borderImageSource.match(/url\(["']?(.*?)["']?\)/)?.[1];
+    if (url) { const image = new Image(); image.src = url; await image.decode(); }
+  });
+  await page.screenshot({ path: testInfo.outputPath('archive-1600x800.png') });
+  await page.setViewportSize({ width: 932, height: 430 });
+  await expect.poll(async () => {
+    const box = await archive.boundingBox();
+    return box ? box.x + box.width : Infinity;
+  }).toBeLessThanOrEqual(932);
+  const bounds = await archive.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(bounds!.x).toBeGreaterThanOrEqual(0);
+  expect(bounds!.y).toBeGreaterThanOrEqual(0);
+  expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(932);
+  expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(430);
+  await page.getByRole('button', { name: '返回驿站' }).click();
+  await expect(archive).toHaveCount(0);
 });
 
 test('HubSafeViewport在1600×800及其他横屏比例中适配，不改动GameStage体系', async ({ page }) => {

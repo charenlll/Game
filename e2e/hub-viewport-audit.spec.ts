@@ -49,7 +49,7 @@ async function capture(page: Page, testInfo: TestInfo, name: string): Promise<vo
     await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
     const panel = document.querySelector<HTMLElement>('[data-hb19-panel]');
     if (panel) {
-      const source = getComputedStyle(panel, '::before').borderImageSource;
+      const source = getComputedStyle(panel).borderImageSource;
       const url = source.match(/url\(["']?(.*?)["']?\)/)?.[1];
       if (url) {
         const image = new Image();
@@ -86,7 +86,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await page.locator('.hub-settings').click();
     await expect(page.getByRole('dialog', { name: '设置' })).toBeVisible();
     await expectVisibleInsideViewport(page.locator('.hub-popup-viewport-backdrop'), size.width, size.height);
-    await expectVisibleInsideViewport(page.locator('.hub-settings-panel'), size.width, size.height);
+    await expectVisibleInsideViewport(page.locator('.game-settings-panel'), size.width, size.height);
     const settingsBackdrop = await page.locator('.hub-popup-viewport-backdrop').boundingBox();
     const safeGeometry = await page.evaluate(() => {
       const safe = document.querySelector('.hub-safe-viewport')!.getBoundingClientRect();
@@ -103,8 +103,22 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     expect(settingsBackdrop!.height).toBeCloseTo(size.height, 0);
     if (index === 0 || index === reviewSizes.length - 1) await capture(page, testInfo, `hub-settings-${size.width}x${size.height}`);
     if (index === reviewSizes.length - 1) await page.locator('.hub-popup-viewport-backdrop').click({ position: { x: 4, y: 4 } });
-    else await page.locator('.hub-settings-close').click();
+    else await page.locator('.game-settings-close').click();
     await expect(page.getByRole('dialog', { name: '设置' })).toHaveCount(0);
+
+    await page.getByRole('button', { name: '牌录' }).click();
+    await expect(page.getByRole('dialog', { name: '牌录' })).toBeVisible();
+    await expectVisibleInsideViewport(page.locator('.hub-card-catalog'), size.width, size.height);
+    await page.getByRole('tab', { name: '绯川专属' }).click();
+    await expect(page.locator('.hub-catalog-card')).toHaveCount(3);
+    await page.getByRole('button', { name: '返回驿站' }).click();
+    await expect(page.getByRole('dialog', { name: '牌录' })).toHaveCount(0);
+
+    await page.getByRole('button', { name: '渡魂记录' }).click();
+    await expect(page.getByRole('dialog', { name: '渡魂记录' })).toBeVisible();
+    await expectVisibleInsideViewport(page.locator('.hub-soul-archive'), size.width, size.height);
+    await page.getByRole('button', { name: '返回驿站' }).click();
+    await expect(page.getByRole('dialog', { name: '渡魂记录' })).toHaveCount(0);
 
     await page.locator('.hub-current-ferryman').click();
     await expect(page.getByRole('dialog', { name: '摆渡人' })).toBeVisible();

@@ -1,9 +1,14 @@
 import { Assets } from '../core/asset-manifest';
 import { assetURL } from './card-view';
 import { primaryButton } from './ui-components';
+import type { UserSettings } from '../infrastructure/save/save-schema';
+import { renderSettingsPanel } from './settings-panel';
+import { applyHubInfoPanelContentRects } from './hub-components';
 
 export interface MainMenuActions {
   startGame(): void;
+  settings(): UserSettings;
+  setReducedMotion(enabled: boolean): void;
 }
 
 export class MainMenu {
@@ -16,6 +21,7 @@ export class MainMenu {
     if (action === 'start-game') this.actions.startGame();
     else if (action === 'settings') { this.settingsOpen = true; this.render(); }
     else if (action === 'close-settings') { this.settingsOpen = false; this.render(); }
+    else if (action === 'toggle-reduced-motion') { this.actions.setReducedMotion(!this.actions.settings().reducedMotion); this.render(); }
   };
 
   constructor(private readonly root: HTMLElement, private readonly actions: MainMenuActions) {
@@ -51,8 +57,9 @@ export class MainMenu {
       this.popupHost.append(popupLayer);
     }
     popupLayer.innerHTML = this.settingsOpen
-      ? `<div class="menu-settings-backdrop"><section class="menu-settings" role="dialog" aria-modal="true" aria-labelledby="menu-settings-title"><h2 id="menu-settings-title">设置</h2><p>设置功能将在后续版本开放。</p>${primaryButton('返回', 'close-settings', false, 'menu-settings-close')}</section></div>`
+      ? `<div class="menu-settings-backdrop">${renderSettingsPanel(this.actions.settings(), 'data-menu-action', 'menu-settings-title')}</div>`
       : '';
+    applyHubInfoPanelContentRects(popupLayer);
     const logo = this.root.querySelector<HTMLImageElement>('.menu-logo img');
     const fallback = this.root.querySelector<HTMLHeadingElement>('.menu-logo h1');
     if (logo && fallback) {

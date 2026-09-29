@@ -2,8 +2,11 @@ import type { ChapterProgress } from '../../core/campaign/campaign-types';
 import type { FerrymanId } from '../../core/profile/profile-types';
 import type { RunState } from '../../core/run';
 import { applyGrant, type ProgressionGrant } from '../../core/progression/grants';
-import { createDefaultSaveGame, type ActiveSessionSnapshot, type ChapterEntrySource, type SaveGameV1 } from '../../infrastructure/save/save-schema';
+import { createDefaultSaveGame, type ActiveSessionSnapshot, type ChapterEntrySource, type SaveGameV1, type UserSettings } from '../../infrastructure/save/save-schema';
 import { LocalSaveRepository } from '../../infrastructure/save/local-save-repository';
+import { cardDatabase } from '../../core/card-database';
+import { startingDeck } from '../../core/content';
+import { projectSoulArchive, type SoulArchiveEntry } from '../../core/archive/soul-archive';
 
 export interface ChapterCheckpoint {
   chapterId: string;
@@ -34,6 +37,25 @@ export class SessionCoordinator {
   get snapshot(): SaveGameV1 { return structuredClone(this.save); }
   get lastSaveDiagnostic(): string | null { return this.diagnostic; }
 
+  get settings(): UserSettings { return structuredClone(this.save.settings); }
+
+  setReducedMotion(enabled: boolean): boolean {
+    return this.commit(next => { next.settings.reducedMotion = enabled; });
+  }
+
+  discoveredCardIds(): readonly string[] {
+    const ids = new Set(this.save.profile.discoveredCardIds ?? []);
+    // Existing completed saves predate the catalogue; their starting deck was already played.
+    if (this.save.campaign.chapters.prologue?.status === 'complete' || this.save.profile.mementoIds.includes('prologue_wooden_boat')) {
+      for (const id of startingDeck) ids.add(id);
+    }
+    return [...ids];
+  }
+
+  soulArchive(): readonly SoulArchiveEntry[] {
+    return projectSoulArchive(this.save.profile, this.save.campaign);
+  }
+
   ferrymanProgress(): { currentFerrymanId: FerrymanId; unlockedFerrymen: Partial<Record<FerrymanId, true>>; copper: number; soulFlame: number; prologue_complete: boolean; wooden_boat_trace_unlocked: boolean } {
     const chapter = this.save.campaign.chapters.prologue;
     const prologueCompleted = chapter?.status === 'complete' || this.save.profile.mementoIds.includes('prologue_wooden_boat');
@@ -56,6 +78,16 @@ export class SessionCoordinator {
 
   checkpoint(activeSession: ActiveSessionSnapshot, chapter?: ChapterCheckpoint): boolean {
     return this.commit(next => {
+      const discovered = new Set(next.profile.discoveredCardIds ?? []);
+      const known = new Set(cardDatabase.all().map(card => card.id));
+      for (const id of activeSession.runState?.RunDeck ?? []) if (known.has(id)) discovered.add(id);
+      if (activeSession.battle) {
+        const state = activeSession.battle.state;
+        for (const card of [...state.DrawPile, ...state.Hand, ...state.DiscardPile, ...state.Resolving, ...state.ExhaustPile]) {
+          if (known.has(card.DefinitionID)) discovered.add(card.DefinitionID);
+        }
+      }
+      next.profile.discoveredCardIds = [...discovered];
       next.activeSession = structuredClone(activeSession);
       delete next.launchDestination;
       if (chapter) {

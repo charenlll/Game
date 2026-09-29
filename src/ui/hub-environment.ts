@@ -367,7 +367,7 @@ export class HubEnvironment {
   private render(dt: number): void {
     const ctx = this.ctx;
     if (!ctx) return;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = document.documentElement.classList.contains('user-reduced-motion') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const step = reducedMotion ? 0 : dt;
     this.dust.update(step);
     this.spirits.update(step);

@@ -14,4 +14,5 @@ export interface ProfileState {
   ferrymen: { currentId: FerrymanId; unlockedIds: FerrymanId[] };
   mementoIds: string[];
   characterProgress: Record<string, CharacterProgress>;
+  discoveredCardIds?: string[];
 }

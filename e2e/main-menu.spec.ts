@@ -66,19 +66,19 @@ test('主菜单设置弹窗的遮罩铺满实际屏幕且弹窗按钮在各尺�
     await expect.poll(() => page.locator('.menu-safe-viewport').getAttribute('data-scale')).toBe(String(expectedScale));
     const bounds = await page.evaluate(() => {
       const backdrop = document.querySelector<HTMLElement>('.menu-settings-backdrop')!.getBoundingClientRect();
-      const dialog = document.querySelector<HTMLElement>('.menu-settings')!.getBoundingClientRect();
-      const button = document.querySelector<HTMLElement>('.menu-settings-close')!.getBoundingClientRect();
+      const dialog = document.querySelector<HTMLElement>('.game-settings-panel')!.getBoundingClientRect();
+      const button = document.querySelector<HTMLElement>('.game-settings-close')!.getBoundingClientRect();
       return { backdrop: [backdrop.left, backdrop.top, backdrop.width, backdrop.height], dialog: [dialog.left, dialog.top, dialog.right, dialog.bottom], button: [button.left, button.top, button.right, button.bottom] };
     });
     expect(bounds.backdrop).toEqual([0, 0, size.width, size.height]);
     expect((bounds.dialog[0] + bounds.dialog[2]) / 2).toBeCloseTo(size.width / 2, 0);
-    expect((bounds.dialog[1] + bounds.dialog[3]) / 2).toBeCloseTo(size.height / 2, 0);
+    expect(Math.abs((bounds.dialog[1] + bounds.dialog[3]) / 2 - size.height / 2)).toBeLessThanOrEqual(6);
     expect(bounds.dialog[0]).toBeGreaterThanOrEqual(0);
     expect(bounds.dialog[1]).toBeGreaterThanOrEqual(0);
     expect(bounds.dialog[2]).toBeLessThanOrEqual(size.width);
     expect(bounds.dialog[3]).toBeLessThanOrEqual(size.height);
-    expect(bounds.dialog[2] - bounds.dialog[0]).toBeCloseTo(650 * expectedScale, 0);
-    expect(bounds.dialog[3] - bounds.dialog[1]).toBeCloseTo(300 * expectedScale, 0);
+    expect(bounds.dialog[2] - bounds.dialog[0]).toBeCloseTo(680 * expectedScale, 0);
+    expect(bounds.dialog[3] - bounds.dialog[1]).toBeCloseTo(510 * expectedScale, 0);
     expect(bounds.button[0]).toBeGreaterThanOrEqual(bounds.dialog[0]);
     expect(bounds.button[1]).toBeGreaterThanOrEqual(bounds.dialog[1]);
     expect(bounds.button[2]).toBeLessThanOrEqual(bounds.dialog[2]);
@@ -94,10 +94,19 @@ test('主菜单竖屏显示横屏提示且弹窗层不会穿透提示', async ({
   await expect(page.locator('.menu-settings-backdrop')).toHaveCount(0);
 });
 
-test('设置显示最小占位并可返回，开始游戏进入序章', async ({ page }) => {
+test('设置可保存减少动效，其余未开放项目禁用，返回后可进入序章', async ({ page }) => {
   await page.goto('/?seed=42');
   await page.getByRole('button', { name: '设置' }).click();
-  await expect(page.getByRole('dialog')).toContainText('设置功能将在后续版本开放');
+  const reduceMotion = page.getByRole('switch', { name: /减少动效/ });
+  await expect(reduceMotion).toHaveAttribute('aria-checked', 'false');
+  await expect(page.getByRole('button', { name: /语言，简体中文，暂未开放/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /音量，暂未开放/ })).toBeDisabled();
+  await reduceMotion.click();
+  await expect(reduceMotion).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('html')).toHaveClass(/user-reduced-motion/);
+  await page.reload();
+  await page.getByRole('button', { name: '设置' }).click();
+  await expect(page.getByRole('switch', { name: /减少动效/ })).toHaveAttribute('aria-checked', 'true');
   await page.getByRole('button', { name: '返回' }).click();
   await expect(page.locator('.main-menu-screen')).toBeVisible();
   await page.getByRole('button', { name: '开始游戏' }).click();

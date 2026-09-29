@@ -70,6 +70,7 @@ export function createDefaultSaveGame(now = new Date().toISOString()): SaveGameV
       ferrymen: { currentId: 'feichuan', unlockedIds: ['feichuan'] },
       mementoIds: [],
       characterProgress: {},
+      discoveredCardIds: [],
     },
     campaign: { chapters: { prologue: { chapterId: 'prologue', flags: {}, status: 'available', variables: {} } } },
     activeSession: null,
@@ -103,6 +104,7 @@ export function isSaveGameV1(value: unknown): value is SaveGameV1 {
   if (!isNonNegativeInteger(value.profile.currencies.copper) || !isNonNegativeInteger(value.profile.currencies.soulFlame)) return false;
   if (!isFerrymanId(value.profile.ferrymen.currentId) || !value.profile.ferrymen.unlockedIds.every(isFerrymanId) || !value.profile.ferrymen.unlockedIds.includes(value.profile.ferrymen.currentId)) return false;
   if (!isStringArray(value.profile.mementoIds) || !isRecord(value.profile.characterProgress)) return false;
+  if (value.profile.discoveredCardIds !== undefined && !isStringArray(value.profile.discoveredCardIds)) return false;
   if (!isRecord(value.campaign) || !isRecord(value.campaign.chapters)) return false;
   for (const [id, chapter] of Object.entries(value.campaign.chapters)) if (!isChapterProgress(chapter, id)) return false;
   if (value.campaign.activeChapterId !== undefined && typeof value.campaign.activeChapterId !== 'string') return false;

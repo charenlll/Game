@@ -231,6 +231,55 @@
 .card-preview-art{position:relative;width:300px;height:450px;container-type:inline-size}
 .card-preview-art .card-face{border-radius:8px}
 .card-preview-name{font:600 21px var(--serif);letter-spacing:4px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+.hub-card-catalog{z-index:96;left:220px;top:75px;width:1160px;height:650px;color:#40352b;pointer-events:auto}
+.hub-catalog-content{position:absolute;left:calc(var(--hb19-content-x) - var(--hb19-render-border));top:calc(var(--hb19-content-y) - var(--hb19-render-border));width:var(--hb19-content-width);height:var(--hb19-content-height);display:flex;flex-direction:column;box-sizing:border-box;min-width:0}
+.hub-catalog-content>header{position:relative;display:flex;align-items:center;justify-content:center;flex:none;height:58px}
+.hub-catalog-content h2{margin:0;color:#58452f;font:700 28px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:8px;text-shadow:0 1px 1px #fff0d2}
+.hub-catalog-close{position:absolute;right:0;top:0;width:55px;height:55px;padding:0;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 2px 3px #37281955)}
+.hub-catalog-close img{width:100%;height:100%;object-fit:contain}
+.hub-catalog-close:hover{filter:brightness(1.1) drop-shadow(0 2px 5px #a48050aa)}
+.hub-catalog-tabs{display:flex;align-items:center;justify-content:center;gap:18px;flex:none;height:66px;border-bottom:1px solid #8c76514d}
+.hub-catalog-tab{min-width:150px;height:44px;padding:3px 15px;border:0;border-bottom:2px solid transparent;background:transparent;color:#76654f;font:600 19px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:2px;cursor:pointer}
+.hub-catalog-tab:hover{color:#4f503b;text-shadow:0 0 7px #cbb679}
+.hub-catalog-tab.is-active{color:#453621;border-bottom-color:#977141;text-shadow:0 1px 1px #fff2d8}
+.hub-catalog-scroll{flex:1;min-height:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;touch-action:pan-x;scrollbar-width:thin;scrollbar-color:#a4936f transparent}
+.hub-catalog-track{display:flex;align-items:center;gap:19px;width:max-content;min-width:100%;height:100%;padding:16px 8px 20px;box-sizing:border-box}
+.hub-catalog-card{position:relative;flex:none;width:170px;height:255px;display:block;padding:0;border:0;background:transparent;scroll-snap-align:start;cursor:pointer;transition:filter .18s ease-out,transform .18s ease-out}
+.hub-catalog-card:not(.is-locked):hover{filter:brightness(1.1) drop-shadow(0 5px 7px #1e241f55);transform:translateY(-4px)}
+.hub-catalog-card-face{position:absolute;inset:0;display:block;container-type:inline-size}
+.hub-catalog-card.is-locked{cursor:default;filter:grayscale(1) brightness(.68)}
+.hub-catalog-card.is-locked img{display:block;width:100%;height:100%;object-fit:contain}
+.hub-catalog-card.is-locked>span{position:absolute;left:0;right:0;bottom:8px;color:#f0e7d4;font:600 15px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:2px;text-align:center;text-shadow:0 2px 4px #000}
+.hub-catalog-empty{margin:auto;color:#827768;font:600 20px "STKaiti","KaiTi","Kaiti SC",var(--serif)}
+.hub-soul-archive{z-index:96;left:220px;top:75px;width:1160px;height:650px;color:#40352b;pointer-events:auto}
+.hub-archive-content{position:absolute;left:calc(var(--hb19-content-x) - var(--hb19-render-border));top:calc(var(--hb19-content-y) - var(--hb19-render-border));width:var(--hb19-content-width);height:var(--hb19-content-height);display:flex;flex-direction:column;box-sizing:border-box;min-width:0}
+.hub-archive-content>header{position:relative;flex:none;height:62px;display:grid;place-items:center}
+.hub-archive-content h2{margin:0;color:#58452f;font:700 28px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:8px;text-shadow:0 1px 1px #fff0d2}
+.hub-archive-close{position:absolute;right:0;top:0;width:55px;height:55px;padding:0;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 2px 3px #37281955)}
+.hub-archive-close img{width:100%;height:100%;object-fit:contain}
+.hub-archive-close:hover{filter:brightness(1.1) drop-shadow(0 2px 5px #a48050aa)}
+.hub-archive-layout{flex:1;min-height:0;display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;padding:18px 0 14px;border-top:1px solid #8c76514d;box-sizing:border-box}
+.hub-archive-list{min-height:0;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding:3px 8px 8px 0;border-right:1px solid #9f8b634d;scrollbar-width:thin}
+.hub-archive-entry{flex:none;width:100%;min-height:92px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;padding:12px 17px;border:1px solid #9f8b6370;background:#ede0c566;color:#5e4a34;text-align:left;cursor:pointer;transition:background .17s ease-out,filter .17s ease-out}
+.hub-archive-entry>span{font:600 14px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:2px}
+.hub-archive-entry>strong{font:700 22px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:2px}
+.hub-archive-entry>small{font-size:13px;color:#667968}
+.hub-archive-entry.is-active{border-color:#8b7047;background:#e8d3aa9c;box-shadow:inset 3px 0 #917149}
+.hub-archive-entry:hover:not(.is-unknown){filter:brightness(1.06)}
+.hub-archive-entry.is-unknown{filter:grayscale(1);opacity:.7;cursor:default}
+.hub-archive-detail{min-width:0;min-height:0;display:grid;grid-template-columns:43% minmax(0,1fr);gap:22px;align-items:center;padding:12px 8px;color:#4e4132}
+.hub-archive-portrait{width:100%;height:100%;min-height:0;display:grid;place-items:center}
+.hub-archive-portrait img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 8px 9px #44352255)}
+.hub-archive-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px}
+.hub-archive-chapter{font:600 16px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:3px;color:#7b6a50}
+.hub-archive-copy h3{margin:0;font:700 30px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:4px}
+.hub-archive-status{color:#52715f;font:700 16px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:3px}
+.hub-archive-copy p{margin:0;font-size:17px;line-height:1.7;white-space:pre-line}
+.hub-archive-memento{width:100%;display:flex;align-items:center;gap:14px;padding-top:16px;border-top:1px solid #9f8b6360;font:600 16px "STKaiti","KaiTi","Kaiti SC",var(--serif);letter-spacing:1px}
+.hub-archive-memento img{flex:none;width:64px;height:64px;object-fit:contain}
+.hub-archive-unknown-detail{grid-column:1/-1;display:grid;place-content:center;justify-items:center;color:#8a7d68}
+.hub-archive-unknown-detail>span{font:600 90px "STKaiti","KaiTi","Kaiti SC",var(--serif);opacity:.36}
+.hub-archive-unknown-detail p{font-size:19px;letter-spacing:2px}
 .hub-settings-backdrop{z-index:95;display:grid;place-items:center}
 .hub-settings-panel{width:570px;min-height:260px;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:20px;padding:25px 30px;text-align:center;background:linear-gradient(140deg,#243d3e,#102931);border:1px solid #ad9b6a;border-radius:7px;box-shadow:0 20px 80px #0007,inset 0 0 0 5px #c4b4770a;color:var(--hub-light)}
 .hub-settings-panel h2{margin:0;color:#ead5a1;font:500 30px var(--serif);letter-spacing:8px}
@@ -271,3 +320,5 @@
 .hub-screen .hub-asset-button--primary>.hub-button-art{filter:brightness(var(--ferry-art-brightness)) contrast(var(--ferry-art-contrast)) saturate(var(--ferry-art-saturation)) var(--hub-gold-idle)}
 .hub-screen .hub-asset-button--primary:hover>.hub-button-art{filter:brightness(calc(var(--ferry-art-brightness) + .08)) contrast(var(--ferry-art-contrast)) saturate(var(--ferry-art-saturation)) var(--hub-gold-hover)}
 @media(prefers-reduced-motion:reduce){.hub-screen *{transition:none!important;animation:none!important}.hub-screen .hub-asset-button--primary>.hub-button-art{transform:translateY(-50%)}}
+.user-reduced-motion .hub-screen .hub-asset-button--primary>.hub-button-art{transform:translateY(-50%)}
+.user-reduced-motion .hub-primary-action .hub-ferry-clouds{transform:translateX(-50%)}
