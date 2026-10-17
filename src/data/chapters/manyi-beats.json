@@ -1,0 +1,2642 @@
+{
+  "opening": [
+    {
+      "id": "manyi-opening-0001",
+      "kind": "story",
+      "textKey": "manyi.opening.0001",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家",
+      "propId": "PR1-01"
+    },
+    {
+      "id": "manyi-opening-0002",
+      "kind": "story",
+      "textKey": "manyi.opening.0002",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0003",
+      "kind": "story",
+      "textKey": "manyi.opening.0003",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0004",
+      "kind": "story",
+      "textKey": "manyi.opening.0004",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0005",
+      "kind": "story",
+      "textKey": "manyi.opening.0005",
+      "speakerId": "feichuan",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0006",
+      "kind": "story",
+      "textKey": "manyi.opening.0006",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0007",
+      "kind": "story",
+      "textKey": "manyi.opening.0007",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0008",
+      "kind": "story",
+      "textKey": "manyi.opening.0008",
+      "speakerId": "feichuan",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0009",
+      "kind": "story",
+      "textKey": "manyi.opening.0009",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0010",
+      "kind": "story",
+      "textKey": "manyi.opening.0010",
+      "speakerId": "feichuan",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0011",
+      "kind": "story",
+      "textKey": "manyi.opening.0011",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-opening-0012",
+      "kind": "story",
+      "textKey": "manyi.opening.0012",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    }
+  ],
+  "battle1": [
+    {
+      "id": "manyi-battle1-0013",
+      "kind": "story",
+      "textKey": "manyi.battle1.0013",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0014",
+      "kind": "story",
+      "textKey": "manyi.battle1.0014",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0015",
+      "kind": "story",
+      "textKey": "manyi.battle1.0015",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0016",
+      "kind": "story",
+      "textKey": "manyi.battle1.0016",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0017",
+      "kind": "story",
+      "textKey": "manyi.battle1.0017",
+      "speakerId": "feichuan",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0018",
+      "kind": "story",
+      "textKey": "manyi.battle1.0018",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0019",
+      "kind": "story",
+      "textKey": "manyi.battle1.0019",
+      "speakerId": "merchant_voice",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0020",
+      "kind": "story",
+      "textKey": "manyi.battle1.0020",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0021",
+      "kind": "story",
+      "textKey": "manyi.battle1.0021",
+      "speakerId": "other_merchant",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0022",
+      "kind": "story",
+      "textKey": "manyi.battle1.0022",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0023",
+      "kind": "story",
+      "textKey": "manyi.battle1.0023",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0024",
+      "kind": "story",
+      "textKey": "manyi.battle1.0024",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0025",
+      "kind": "story",
+      "textKey": "manyi.battle1.0025",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0026",
+      "kind": "story",
+      "textKey": "manyi.battle1.0026",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0027",
+      "kind": "story",
+      "textKey": "manyi.battle1.0027",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0028",
+      "kind": "story",
+      "textKey": "manyi.battle1.0028",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0029",
+      "kind": "story",
+      "textKey": "manyi.battle1.0029",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0030",
+      "kind": "story",
+      "textKey": "manyi.battle1.0030",
+      "speakerId": "feichuan",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0031",
+      "kind": "story",
+      "textKey": "manyi.battle1.0031",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0032",
+      "kind": "story",
+      "textKey": "manyi.battle1.0032",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0033",
+      "kind": "story",
+      "textKey": "manyi.battle1.0033",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-1",
+      "backgroundId": "street"
+    },
+    {
+      "id": "manyi-battle1-0034",
+      "kind": "story",
+      "textKey": "manyi.battle1.0034",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0035",
+      "kind": "story",
+      "textKey": "manyi.battle1.0035",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0036",
+      "kind": "story",
+      "textKey": "manyi.battle1.0036",
+      "speakerId": "feichuan",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0037",
+      "kind": "story",
+      "textKey": "manyi.battle1.0037",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0038",
+      "kind": "story",
+      "textKey": "manyi.battle1.0038",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0039",
+      "kind": "story",
+      "textKey": "manyi.battle1.0039",
+      "speakerId": "feichuan",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0040",
+      "kind": "story",
+      "textKey": "manyi.battle1.0040",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0041",
+      "kind": "story",
+      "textKey": "manyi.battle1.0041",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    },
+    {
+      "id": "manyi-battle1-0042",
+      "kind": "story",
+      "textKey": "manyi.battle1.0042",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "绯川、持盈、玩家；匿名商人声音"
+    }
+  ],
+  "battle2": [
+    {
+      "id": "manyi-battle2-0043",
+      "kind": "story",
+      "textKey": "manyi.battle2.0043",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家",
+      "propId": "PR1-02"
+    },
+    {
+      "id": "manyi-battle2-0044",
+      "kind": "story",
+      "textKey": "manyi.battle2.0044",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0045",
+      "kind": "story",
+      "textKey": "manyi.battle2.0045",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0046",
+      "kind": "story",
+      "textKey": "manyi.battle2.0046",
+      "speakerId": "awei",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0047",
+      "kind": "story",
+      "textKey": "manyi.battle2.0047",
+      "speakerId": "achou",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0048",
+      "kind": "story",
+      "textKey": "manyi.battle2.0048",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家",
+      "propId": "PR1-02"
+    },
+    {
+      "id": "manyi-battle2-0049",
+      "kind": "story",
+      "textKey": "manyi.battle2.0049",
+      "speakerId": "feichuan",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0050",
+      "kind": "story",
+      "textKey": "manyi.battle2.0050",
+      "speakerId": "achou",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0051",
+      "kind": "story",
+      "textKey": "manyi.battle2.0051",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0052",
+      "kind": "story",
+      "textKey": "manyi.battle2.0052",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0053",
+      "kind": "story",
+      "textKey": "manyi.battle2.0053",
+      "speakerId": "awei",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0054",
+      "kind": "story",
+      "textKey": "manyi.battle2.0054",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0055",
+      "kind": "story",
+      "textKey": "manyi.battle2.0055",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0056",
+      "kind": "story",
+      "textKey": "manyi.battle2.0056",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0057",
+      "kind": "story",
+      "textKey": "manyi.battle2.0057",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0058",
+      "kind": "story",
+      "textKey": "manyi.battle2.0058",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0059",
+      "kind": "story",
+      "textKey": "manyi.battle2.0059",
+      "speakerId": "merchant_voice",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0060",
+      "kind": "story",
+      "textKey": "manyi.battle2.0060",
+      "speakerId": "other_merchant",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0061",
+      "kind": "story",
+      "textKey": "manyi.battle2.0061",
+      "speakerId": "merchant_voice",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0062",
+      "kind": "story",
+      "textKey": "manyi.battle2.0062",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-2",
+      "backgroundId": "street"
+    },
+    {
+      "id": "manyi-battle2-0063",
+      "kind": "story",
+      "textKey": "manyi.battle2.0063",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0064",
+      "kind": "story",
+      "textKey": "manyi.battle2.0064",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0065",
+      "kind": "story",
+      "textKey": "manyi.battle2.0065",
+      "speakerId": "achou",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0066",
+      "kind": "story",
+      "textKey": "manyi.battle2.0066",
+      "speakerId": "awei",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0067",
+      "kind": "story",
+      "textKey": "manyi.battle2.0067",
+      "speakerId": "chiying",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0068",
+      "kind": "story",
+      "textKey": "manyi.battle2.0068",
+      "speakerId": "narrator",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle2-0069",
+      "kind": "story",
+      "textKey": "manyi.battle2.0069",
+      "speakerId": "achou",
+      "backgroundId": "street",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家"
+    }
+  ],
+  "optionalA": [
+    {
+      "id": "manyi-optionalA-0070",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0070",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0071",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0071",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0072",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0072",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0073",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0073",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0074",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0074",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0075",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0075",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0076",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0076",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-optional-a",
+      "backgroundId": "ledger"
+    },
+    {
+      "id": "manyi-optionalA-0077",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0077",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家",
+      "propId": "PR1-02"
+    },
+    {
+      "id": "manyi-optionalA-0078",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0078",
+      "speakerId": "achou",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0079",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0079",
+      "speakerId": "chiying",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0080",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0080",
+      "speakerId": "achou",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0081",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0081",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0082",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0082",
+      "speakerId": "feichuan",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0083",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0083",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家",
+      "propId": "PR1-02"
+    },
+    {
+      "id": "manyi-optionalA-0084",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0084",
+      "speakerId": "achou",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0085",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0085",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-optionalA-0086",
+      "kind": "story",
+      "textKey": "manyi.optionalA.0086",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "阿筹、持盈、阿桅、绯川、玩家"
+    }
+  ],
+  "battle3": [
+    {
+      "id": "manyi-battle3-0087",
+      "kind": "story",
+      "textKey": "manyi.battle3.0087",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0088",
+      "kind": "story",
+      "textKey": "manyi.battle3.0088",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0089",
+      "kind": "story",
+      "textKey": "manyi.battle3.0089",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0090",
+      "kind": "story",
+      "textKey": "manyi.battle3.0090",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0091",
+      "kind": "story",
+      "textKey": "manyi.battle3.0091",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0092",
+      "kind": "story",
+      "textKey": "manyi.battle3.0092",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0093",
+      "kind": "story",
+      "textKey": "manyi.battle3.0093",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0094",
+      "kind": "story",
+      "textKey": "manyi.battle3.0094",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0095",
+      "kind": "story",
+      "textKey": "manyi.battle3.0095",
+      "speakerId": "achou",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0096",
+      "kind": "story",
+      "textKey": "manyi.battle3.0096",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0097",
+      "kind": "story",
+      "textKey": "manyi.battle3.0097",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0098",
+      "kind": "story",
+      "textKey": "manyi.battle3.0098",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0099",
+      "kind": "story",
+      "textKey": "manyi.battle3.0099",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0100",
+      "kind": "story",
+      "textKey": "manyi.battle3.0100",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0101",
+      "kind": "story",
+      "textKey": "manyi.battle3.0101",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0102",
+      "kind": "story",
+      "textKey": "manyi.battle3.0102",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0103",
+      "kind": "story",
+      "textKey": "manyi.battle3.0103",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0104",
+      "kind": "story",
+      "textKey": "manyi.battle3.0104",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0105",
+      "kind": "story",
+      "textKey": "manyi.battle3.0105",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0106",
+      "kind": "story",
+      "textKey": "manyi.battle3.0106",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音",
+      "propId": "PR1-06"
+    },
+    {
+      "id": "manyi-battle3-0107",
+      "kind": "story",
+      "textKey": "manyi.battle3.0107",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0108",
+      "kind": "story",
+      "textKey": "manyi.battle3.0108",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音",
+      "propId": "PR1-06"
+    },
+    {
+      "id": "manyi-battle3-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-3",
+      "backgroundId": "dock"
+    },
+    {
+      "id": "manyi-battle3-0109",
+      "kind": "story",
+      "textKey": "manyi.battle3.0109",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0110",
+      "kind": "story",
+      "textKey": "manyi.battle3.0110",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0111",
+      "kind": "story",
+      "textKey": "manyi.battle3.0111",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0112",
+      "kind": "story",
+      "textKey": "manyi.battle3.0112",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0113",
+      "kind": "story",
+      "textKey": "manyi.battle3.0113",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0114",
+      "kind": "story",
+      "textKey": "manyi.battle3.0114",
+      "speakerId": "achou",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0115",
+      "kind": "story",
+      "textKey": "manyi.battle3.0115",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0116",
+      "kind": "story",
+      "textKey": "manyi.battle3.0116",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-battle3-0117",
+      "kind": "story",
+      "textKey": "manyi.battle3.0117",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音",
+      "propId": "PR1-06"
+    },
+    {
+      "id": "manyi-battle3-0118",
+      "kind": "story",
+      "textKey": "manyi.battle3.0118",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿筹、阿桅、绯川、玩家；匿名船工声音"
+    }
+  ],
+  "optionalB": [
+    {
+      "id": "manyi-optionalB-0119",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0119",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0120",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0120",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0121",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0121",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0122",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0122",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0123",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0123",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0124",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0124",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0125",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0125",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-optional-b",
+      "backgroundId": "dock"
+    },
+    {
+      "id": "manyi-optionalB-0126",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0126",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0127",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0127",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0128",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0128",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0129",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0129",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0130",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0130",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    },
+    {
+      "id": "manyi-optionalB-0131",
+      "kind": "story",
+      "textKey": "manyi.optionalB.0131",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "阿桅、绯川、玩家；匿名船工声音"
+    }
+  ],
+  "battle4": [
+    {
+      "id": "manyi-battle4-0132",
+      "kind": "story",
+      "textKey": "manyi.battle4.0132",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0133",
+      "kind": "story",
+      "textKey": "manyi.battle4.0133",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-04"
+    },
+    {
+      "id": "manyi-battle4-0134",
+      "kind": "story",
+      "textKey": "manyi.battle4.0134",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0135",
+      "kind": "story",
+      "textKey": "manyi.battle4.0135",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0136",
+      "kind": "story",
+      "textKey": "manyi.battle4.0136",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0137",
+      "kind": "story",
+      "textKey": "manyi.battle4.0137",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0138",
+      "kind": "story",
+      "textKey": "manyi.battle4.0138",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0139",
+      "kind": "story",
+      "textKey": "manyi.battle4.0139",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0140",
+      "kind": "story",
+      "textKey": "manyi.battle4.0140",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0141",
+      "kind": "story",
+      "textKey": "manyi.battle4.0141",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0142",
+      "kind": "story",
+      "textKey": "manyi.battle4.0142",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0143",
+      "kind": "story",
+      "textKey": "manyi.battle4.0143",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0144",
+      "kind": "story",
+      "textKey": "manyi.battle4.0144",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0145",
+      "kind": "story",
+      "textKey": "manyi.battle4.0145",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0146",
+      "kind": "story",
+      "textKey": "manyi.battle4.0146",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0147",
+      "kind": "story",
+      "textKey": "manyi.battle4.0147",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0148",
+      "kind": "story",
+      "textKey": "manyi.battle4.0148",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0149",
+      "kind": "story",
+      "textKey": "manyi.battle4.0149",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0150",
+      "kind": "story",
+      "textKey": "manyi.battle4.0150",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-4",
+      "backgroundId": "dock"
+    },
+    {
+      "id": "manyi-battle4-0151",
+      "kind": "story",
+      "textKey": "manyi.battle4.0151",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0152",
+      "kind": "story",
+      "textKey": "manyi.battle4.0152",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0153",
+      "kind": "story",
+      "textKey": "manyi.battle4.0153",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0154",
+      "kind": "story",
+      "textKey": "manyi.battle4.0154",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0155",
+      "kind": "story",
+      "textKey": "manyi.battle4.0155",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle4-0156",
+      "kind": "story",
+      "textKey": "manyi.battle4.0156",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    }
+  ],
+  "optionalC": [
+    {
+      "id": "manyi-optionalC-0157",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0157",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0158",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0158",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0159",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0159",
+      "speakerId": "family_voice",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0160",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0160",
+      "speakerId": "merchant_voice",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0161",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0161",
+      "speakerId": "worker_voice",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0162",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0162",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0163",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0163",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0164",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0164",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-optional-c",
+      "backgroundId": "ledger"
+    },
+    {
+      "id": "manyi-optionalC-0165",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0165",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0166",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0166",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0167",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0167",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0168",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0168",
+      "speakerId": "feichuan",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0169",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0169",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0170",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0170",
+      "speakerId": "feichuan",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0171",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0171",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    },
+    {
+      "id": "manyi-optionalC-0172",
+      "kind": "story",
+      "textKey": "manyi.optionalC.0172",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；匿名家属与商人声音"
+    }
+  ],
+  "battle5": [
+    {
+      "id": "manyi-battle5-0173",
+      "kind": "story",
+      "textKey": "manyi.battle5.0173",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0174",
+      "kind": "story",
+      "textKey": "manyi.battle5.0174",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0175",
+      "kind": "story",
+      "textKey": "manyi.battle5.0175",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0176",
+      "kind": "story",
+      "textKey": "manyi.battle5.0176",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0177",
+      "kind": "story",
+      "textKey": "manyi.battle5.0177",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0178",
+      "kind": "story",
+      "textKey": "manyi.battle5.0178",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0179",
+      "kind": "story",
+      "textKey": "manyi.battle5.0179",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0180",
+      "kind": "story",
+      "textKey": "manyi.battle5.0180",
+      "speakerId": "chiying",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0181",
+      "kind": "story",
+      "textKey": "manyi.battle5.0181",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0182",
+      "kind": "story",
+      "textKey": "manyi.battle5.0182",
+      "speakerId": "chiying",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0183",
+      "kind": "story",
+      "textKey": "manyi.battle5.0183",
+      "speakerId": "awei",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0184",
+      "kind": "story",
+      "textKey": "manyi.battle5.0184",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0185",
+      "kind": "story",
+      "textKey": "manyi.battle5.0185",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0186",
+      "kind": "story",
+      "textKey": "manyi.battle5.0186",
+      "speakerId": "narrator",
+      "backgroundId": "ledger",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0187",
+      "kind": "story",
+      "textKey": "manyi.battle5.0187",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0188",
+      "kind": "story",
+      "textKey": "manyi.battle5.0188",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-03"
+    },
+    {
+      "id": "manyi-battle5-0189",
+      "kind": "story",
+      "textKey": "manyi.battle5.0189",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0190",
+      "kind": "story",
+      "textKey": "manyi.battle5.0190",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0191",
+      "kind": "story",
+      "textKey": "manyi.battle5.0191",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-05"
+    },
+    {
+      "id": "manyi-battle5-0192",
+      "kind": "story",
+      "textKey": "manyi.battle5.0192",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0193",
+      "kind": "story",
+      "textKey": "manyi.battle5.0193",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0194",
+      "kind": "story",
+      "textKey": "manyi.battle5.0194",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0195",
+      "kind": "story",
+      "textKey": "manyi.battle5.0195",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0196",
+      "kind": "story",
+      "textKey": "manyi.battle5.0196",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0197",
+      "kind": "story",
+      "textKey": "manyi.battle5.0197",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0198",
+      "kind": "story",
+      "textKey": "manyi.battle5.0198",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0199",
+      "kind": "story",
+      "textKey": "manyi.battle5.0199",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0200",
+      "kind": "story",
+      "textKey": "manyi.battle5.0200",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0201",
+      "kind": "story",
+      "textKey": "manyi.battle5.0201",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0202",
+      "kind": "story",
+      "textKey": "manyi.battle5.0202",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0203",
+      "kind": "story",
+      "textKey": "manyi.battle5.0203",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0204",
+      "kind": "story",
+      "textKey": "manyi.battle5.0204",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-05"
+    },
+    {
+      "id": "manyi-battle5-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-5",
+      "backgroundId": "dock"
+    },
+    {
+      "id": "manyi-battle5-0205",
+      "kind": "story",
+      "textKey": "manyi.battle5.0205",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0206",
+      "kind": "story",
+      "textKey": "manyi.battle5.0206",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0207",
+      "kind": "story",
+      "textKey": "manyi.battle5.0207",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0208",
+      "kind": "story",
+      "textKey": "manyi.battle5.0208",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0209",
+      "kind": "story",
+      "textKey": "manyi.battle5.0209",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0210",
+      "kind": "story",
+      "textKey": "manyi.battle5.0210",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0211",
+      "kind": "story",
+      "textKey": "manyi.battle5.0211",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0212",
+      "kind": "story",
+      "textKey": "manyi.battle5.0212",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-battle5-0213",
+      "kind": "story",
+      "textKey": "manyi.battle5.0213",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家"
+    }
+  ],
+  "battle6": [
+    {
+      "id": "manyi-battle6-0214",
+      "kind": "story",
+      "textKey": "manyi.battle6.0214",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0215",
+      "kind": "story",
+      "textKey": "manyi.battle6.0215",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0216",
+      "kind": "story",
+      "textKey": "manyi.battle6.0216",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0217",
+      "kind": "story",
+      "textKey": "manyi.battle6.0217",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0218",
+      "kind": "story",
+      "textKey": "manyi.battle6.0218",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0219",
+      "kind": "story",
+      "textKey": "manyi.battle6.0219",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0220",
+      "kind": "story",
+      "textKey": "manyi.battle6.0220",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0221",
+      "kind": "story",
+      "textKey": "manyi.battle6.0221",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0222",
+      "kind": "story",
+      "textKey": "manyi.battle6.0222",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0223",
+      "kind": "story",
+      "textKey": "manyi.battle6.0223",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0224",
+      "kind": "story",
+      "textKey": "manyi.battle6.0224",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0225",
+      "kind": "story",
+      "textKey": "manyi.battle6.0225",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0226",
+      "kind": "story",
+      "textKey": "manyi.battle6.0226",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0227",
+      "kind": "story",
+      "textKey": "manyi.battle6.0227",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0228",
+      "kind": "story",
+      "textKey": "manyi.battle6.0228",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0229",
+      "kind": "story",
+      "textKey": "manyi.battle6.0229",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0230",
+      "kind": "story",
+      "textKey": "manyi.battle6.0230",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0231",
+      "kind": "story",
+      "textKey": "manyi.battle6.0231",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0232",
+      "kind": "story",
+      "textKey": "manyi.battle6.0232",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-encounter",
+      "kind": "encounter",
+      "encounterId": "manyi-battle-6",
+      "backgroundId": "dock"
+    },
+    {
+      "id": "manyi-battle6-0233",
+      "kind": "story",
+      "textKey": "manyi.battle6.0233",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0234",
+      "kind": "story",
+      "textKey": "manyi.battle6.0234",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    },
+    {
+      "id": "manyi-battle6-0235",
+      "kind": "story",
+      "textKey": "manyi.battle6.0235",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": true,
+      "cast": "持盈、阿桅、绯川、玩家；阿筹的记忆声音"
+    }
+  ],
+  "ending": [
+    {
+      "id": "manyi-ending-0236",
+      "kind": "story",
+      "textKey": "manyi.ending.0236",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0237",
+      "kind": "story",
+      "textKey": "manyi.ending.0237",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0238",
+      "kind": "story",
+      "textKey": "manyi.ending.0238",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0239",
+      "kind": "story",
+      "textKey": "manyi.ending.0239",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0240",
+      "kind": "story",
+      "textKey": "manyi.ending.0240",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0241",
+      "kind": "story",
+      "textKey": "manyi.ending.0241",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0242",
+      "kind": "story",
+      "textKey": "manyi.ending.0242",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0243",
+      "kind": "story",
+      "textKey": "manyi.ending.0243",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0244",
+      "kind": "story",
+      "textKey": "manyi.ending.0244",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0245",
+      "kind": "story",
+      "textKey": "manyi.ending.0245",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0246",
+      "kind": "story",
+      "textKey": "manyi.ending.0246",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0247",
+      "kind": "story",
+      "textKey": "manyi.ending.0247",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0248",
+      "kind": "story",
+      "textKey": "manyi.ending.0248",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0249",
+      "kind": "story",
+      "textKey": "manyi.ending.0249",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0250",
+      "kind": "story",
+      "textKey": "manyi.ending.0250",
+      "speakerId": "awei",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0251",
+      "kind": "story",
+      "textKey": "manyi.ending.0251",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0252",
+      "kind": "story",
+      "textKey": "manyi.ending.0252",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0253",
+      "kind": "story",
+      "textKey": "manyi.ending.0253",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0254",
+      "kind": "story",
+      "textKey": "manyi.ending.0254",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0255",
+      "kind": "story",
+      "textKey": "manyi.ending.0255",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-03"
+    },
+    {
+      "id": "manyi-ending-0256",
+      "kind": "story",
+      "textKey": "manyi.ending.0256",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0257",
+      "kind": "story",
+      "textKey": "manyi.ending.0257",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0258",
+      "kind": "story",
+      "textKey": "manyi.ending.0258",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0259",
+      "kind": "story",
+      "textKey": "manyi.ending.0259",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0260",
+      "kind": "story",
+      "textKey": "manyi.ending.0260",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0261",
+      "kind": "story",
+      "textKey": "manyi.ending.0261",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0262",
+      "kind": "story",
+      "textKey": "manyi.ending.0262",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0263",
+      "kind": "story",
+      "textKey": "manyi.ending.0263",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0264",
+      "kind": "story",
+      "textKey": "manyi.ending.0264",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家",
+      "propId": "PR1-03"
+    },
+    {
+      "id": "manyi-ending-0265",
+      "kind": "story",
+      "textKey": "manyi.ending.0265",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0266",
+      "kind": "story",
+      "textKey": "manyi.ending.0266",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0267",
+      "kind": "story",
+      "textKey": "manyi.ending.0267",
+      "speakerId": "achou_memory",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0268",
+      "kind": "story",
+      "textKey": "manyi.ending.0268",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0269",
+      "kind": "story",
+      "textKey": "manyi.ending.0269",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0270",
+      "kind": "story",
+      "textKey": "manyi.ending.0270",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0271",
+      "kind": "story",
+      "textKey": "manyi.ending.0271",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0272",
+      "kind": "story",
+      "textKey": "manyi.ending.0272",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0273",
+      "kind": "story",
+      "textKey": "manyi.ending.0273",
+      "speakerId": "feichuan",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0274",
+      "kind": "story",
+      "textKey": "manyi.ending.0274",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0275",
+      "kind": "story",
+      "textKey": "manyi.ending.0275",
+      "speakerId": "chiying",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    },
+    {
+      "id": "manyi-ending-0276",
+      "kind": "story",
+      "textKey": "manyi.ending.0276",
+      "speakerId": "narrator",
+      "backgroundId": "dock",
+      "afterBattle": false,
+      "cast": "持盈、阿桅、绯川、玩家"
+    }
+  ],
+  "epilogue": [
+    {
+      "id": "manyi-epilogue-0277",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0277",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家",
+      "propId": "PR1-03"
+    },
+    {
+      "id": "manyi-epilogue-0278",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0278",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-epilogue-0279",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0279",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-epilogue-0280",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0280",
+      "speakerId": "feichuan",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-epilogue-0281",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0281",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-epilogue-0282",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0282",
+      "speakerId": "feichuan",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    },
+    {
+      "id": "manyi-epilogue-0283",
+      "kind": "story",
+      "textKey": "manyi.epilogue.0283",
+      "speakerId": "narrator",
+      "backgroundId": "ferry",
+      "afterBattle": false,
+      "cast": "绯川、玩家"
+    }
+  ]
+}

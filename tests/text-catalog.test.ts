@@ -8,7 +8,7 @@ describe('序章 textKey 迁移', () => {
   it('旧对白逐条、逐字迁移，节点 ID 与顺序保持一致', async () => {
     const keyedBeats = prologueBeats.filter(beat => beat.textKey);
     expect(keyedBeats).toHaveLength(manifest.entries.length);
-    expect(Object.keys(getTextCatalog())).toHaveLength(manifest.entries.length);
+    expect(Object.keys(getTextCatalog()).filter(key => key.startsWith('prologue.'))).toHaveLength(manifest.entries.length);
     for (let index = 0; index < manifest.entries.length; index++) {
       const expected = manifest.entries[index]!;
       const beat = keyedBeats[index]!;

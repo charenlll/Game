@@ -122,8 +122,11 @@ try {
   // Environmental foreground/effect artwork is optional until the hub enhancement is enabled.
 }
 files['ferrymen/feichuan/CHH01绯川标准立绘.png'] = 'assets/characters/hub/CHH01_feichuan.png';
+Object.assign(files, JSON.parse(await readFile(resolve(root, 'scripts/manyi-asset-map.json'), 'utf8')));
+const onlyManyi = process.argv.includes('--manyi');
 const report = [];
 for (const [source, destination] of Object.entries(files)) {
+  if (onlyManyi && !source.startsWith('character1/')) continue;
   const from = resolve(root, '资源图源文件', source);
   const to = resolve(root, 'public', destination);
   await mkdir(dirname(to), { recursive: true });
@@ -132,6 +135,13 @@ for (const [source, destination] of Object.entries(files)) {
   if (!original.equals(copied)) throw new Error(`素材复制校验失败：${source}`);
   report.push({ source, destination, bytes: copied.length, sha256: createHash('sha256').update(copied).digest('hex') });
 }
-const formattedReport = JSON.stringify(report, null, 4).replace(/": /g, '":  ');
+let bindings = report;
+if (onlyManyi) {
+  const previous = JSON.parse(await readFile(resolve(root, 'docs/asset-bindings.json'), 'utf8'));
+  const replaced = new Set(report.map(entry => entry.destination));
+  bindings = [...previous.filter(entry => !replaced.has(entry.destination)), ...report];
+  await writeFile(resolve(root, 'docs/manyi-asset-import.json'), JSON.stringify(report, null, 2) + '\n');
+}
+const formattedReport = JSON.stringify(bindings, null, 4).replace(/": /g, '":  ');
 await writeFile(resolve(root, 'docs/asset-bindings.json'), formattedReport + '\n');
 console.log(`已按明确文件名映射复制并校验 ${report.length} 个素材；未解码、修改或视觉识别图片。`);

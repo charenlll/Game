@@ -16,9 +16,9 @@ export const BattleConfig = Object.freeze({
     { IntentID: 'intent_dim_light' },
   ] as const satisfies readonly IntentInstance[],
 });
-export type IntentEffectType = 'restore_obsession' | 'next_cost' | 'add_burden' | 'next_light';
+export type IntentEffectType = 'restore_obsession' | 'next_cost' | 'add_burden' | 'next_light' | 'account_inflation';
 export interface IntentData { readonly id: IntentID; readonly name: string; readonly shortDescription: string; readonly longDescription: string; readonly effectType: IntentEffectType; readonly value: number }
-const ids = new Set(BattleConfig.intentPool.map(intent => intent.IntentID));
+const ids = new Set([...BattleConfig.intentPool.map(intent => intent.IntentID), 'intent_account_inflation']);
 export const intents = new Map<IntentID, IntentData>(rawIntents.map(raw => {
   if (!ids.has(raw.id as IntentID)) throw new Error(`未知Intent：${raw.id}`);
   return [raw.id as IntentID, Object.freeze(raw as IntentData)];
@@ -37,7 +37,7 @@ export function getIntentDisplay(instance: IntentInstance): IntentData {
   return { ...intent, shortDescription: `手牌加入1张「${name}」`, longDescription: `回合结束时，将1张「${name}」直接加入当前手牌。它不能弃置，只有支付1灯火主动处理后才会进入消耗牌堆。` };
 }
 
-export function resolveIntent(state: BattleState, addBurden: (cardID: 'burden_001' | 'burden_002', destination: 'draw_random' | 'hand') => void): void {
+export function resolveIntent(state: BattleState, addBurden: (cardID: 'burden_001' | 'burden_002' | 'burden_003', destination: 'draw_random' | 'hand' | 'discard') => void): void {
   const intent = getIntentDisplay(state.CurrentIntent);
   switch (intent.effectType) {
     case 'restore_obsession': state.Obsession = Math.min(state.MaxObsession, state.Obsession + intent.value); break;
@@ -48,6 +48,10 @@ export function resolveIntent(state: BattleState, addBurden: (cardID: 'burden_00
       break;
     }
     case 'next_light': state.PendingLightModifier += intent.value; break;
+    case 'account_inflation':
+      addBurden('burden_003', 'discard');
+      state.Obsession = Math.min(state.MaxObsession, state.Obsession + intent.value);
+      break;
   }
   state.Log.push(`亡魂意图「${intent.name}」生效：${intent.shortDescription}。`);
 }

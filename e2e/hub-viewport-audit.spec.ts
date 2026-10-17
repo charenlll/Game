@@ -110,7 +110,7 @@ test('驿站页面与弹窗在不同横屏视口内完整显示，遮罩覆盖�
     await expect(page.getByRole('dialog', { name: '牌录' })).toBeVisible();
     await expectVisibleInsideViewport(page.locator('.hub-card-catalog'), size.width, size.height);
     await page.getByRole('tab', { name: '绯川专属' }).click();
-    await expect(page.locator('.hub-catalog-card')).toHaveCount(3);
+    await expect(page.locator('.hub-catalog-card')).toHaveCount(4);
     await page.getByRole('button', { name: '返回驿站' }).click();
     await expect(page.getByRole('dialog', { name: '牌录' })).toHaveCount(0);
 

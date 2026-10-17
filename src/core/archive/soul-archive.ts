@@ -31,6 +31,12 @@ export const soulArchiveDefinitions: readonly SoulArchiveDefinition[] = [
     mementoId: 'prologue_wooden_boat', mementoName: '小木船',
     mementoArt: 'assets/story/prologue/PR-P01.png',
   },
+  {
+    id: 'manyi_chiying', chapterId: 'manyi', chapterTitle: '世｜满溢', soulId: 'manyi-chiying-full',
+    encounterFlag: 'chiying_met', releaseFlag: 'manyi_complete',
+    mementoId: 'manyi_return_voucher', mementoName: '归潮返航凭证',
+    mementoArt: 'assets/story/manyi/PR1-03.png',
+  },
 ];
 
 export function projectSoulArchive(profile: ProfileState, campaign: CampaignState): readonly SoulArchiveEntry[] {

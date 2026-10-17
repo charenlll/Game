@@ -1,0 +1,36 @@
+.manyi-scene{position:relative;width:1600px;height:900px;overflow:hidden;background:#101b1c;color:#f5eddb;isolation:isolate;font-family:var(--serif),"Microsoft YaHei",sans-serif}
+.manyi-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.04)}
+.manyi-scene-filter{position:absolute;inset:0;background:linear-gradient(90deg,#07131a88 0%,#07131a25 42%,#07131a66 100%),linear-gradient(0deg,#07131abb 0%,transparent 65%);pointer-events:none}
+.manyi-time-dusk .manyi-background{filter:saturate(.95) sepia(.18) brightness(.82)}
+.manyi-time-night .manyi-background{filter:saturate(.72) brightness(.58) hue-rotate(5deg)}
+.manyi-time-dawn .manyi-background{filter:saturate(.85) sepia(.1) brightness(1.08)}
+.manyi-portrait{position:absolute;z-index:2;left:-20%;top:7%;bottom:auto;height:185%;max-width:none;width:auto;object-fit:contain;object-position:center top;filter:drop-shadow(0 16px 20px #050b0dcc);pointer-events:none}
+.manyi-portrait.is-feichuan{left:auto;right:-8%}
+.manyi-portrait.is-companion{opacity:.74;filter:brightness(.72) drop-shadow(0 16px 20px #050b0dcc)}
+.manyi-flash-dark .manyi-scene-filter{animation:manyi-flash-dark .8s ease-out both}
+@keyframes manyi-flash-dark{50%{background:#000}to{background:#020609dd}}
+.manyi-dialogue{position:absolute;z-index:5;left:50%;top:51%;transform:translate(-50%,-50%);width:640px;min-height:174px;box-sizing:border-box;padding:25px 24px 30px;text-align:center;background:transparent;border:0;box-shadow:none;pointer-events:none}
+.manyi-speaker{display:block;color:#ead3a3;font-size:23px;letter-spacing:5px;margin-bottom:11px;text-shadow:0 2px 8px #000}
+.manyi-text{margin:0;color:#fbf7e9;font-size:27px;line-height:1.62;letter-spacing:2px;text-shadow:0 2px 8px #000,0 0 14px #07141bcc}
+.manyi-continue{position:absolute;z-index:6;left:50%;bottom:51px;transform:translateX(-50%);font-size:16px;letter-spacing:4px;color:#e5d8b2;text-shadow:0 2px 9px #000;pointer-events:none}
+.manyi-scene .story-skip-trigger{top:38px;right:44px}
+.manyi-section-label{position:absolute;z-index:5;top:46px;left:44px;max-width:65%;color:#e6d8b9;font-size:20px;letter-spacing:3px;text-shadow:0 2px 8px #000;pointer-events:none}
+.manyi-scene .skip-confirm-actions button,.manyi-choice-button{min-width:180px;min-height:55px;padding:10px 24px;border:0;border-radius:0;background:transparent url('/assets/ui/run/buttons/RB01-A.png') center/111.5% 350% no-repeat;color:#f6e7bf;font:800 22px var(--serif),serif;letter-spacing:3px;cursor:pointer;text-shadow:0 2px 4px #241506;box-shadow:none;transition:filter .18s ease-out}
+.manyi-scene .skip-confirm-actions button:hover,.manyi-choice-button:hover{filter:brightness(1.15)}
+.manyi-scene .skip-confirm-actions button:hover:not(:disabled),.manyi-choice-button:hover:not(:disabled){background-image:url('/assets/ui/run/buttons/RB01-B.png')}
+.manyi-scene .skip-confirm-actions button:active:not(:disabled),.manyi-choice-button:active:not(:disabled){background-image:url('/assets/ui/run/buttons/RB01-C.png')}
+.manyi-choice-panel{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:740px;padding:44px;text-align:center;background:#0b2025e8;border:1px solid #bca976;box-shadow:0 14px 45px #000b}
+.manyi-choice-panel h1{font-size:29px;letter-spacing:3px;line-height:1.5;margin:0 0 30px}
+.manyi-choice-panel>div{display:flex;justify-content:center;gap:24px}
+.manyi-reward-screen .reward-options{justify-content:center}
+.manyi-keepsake p{font-size:21px;color:#dfd5bb;letter-spacing:3px}
+.game-viewport:has(.manyi-keepsake){background:#000}
+.game-viewport:has(.manyi-keepsake) .viewport-background{visibility:hidden}
+.game-viewport:has(.manyi-keepsake)::after{display:none}
+.boss-phase{margin-left:15px;padding:3px 9px;border:1px solid #bba86a88;color:#f3dfae;background:#18343aac;font:600 18px var(--serif),serif;letter-spacing:3px}
+.game[data-boss-phase="2"] .boss-phase{color:#e9c5b2;border-color:#be866b;background:#382d36cc}
+.game[data-boss-phase="3"] .boss-phase{color:#f0becb;border-color:#b77993;background:#36213acc}
+.game[data-boss-phase="2"] .soul-unresolved{filter:sepia(.2) brightness(.85) drop-shadow(0 0 18px #b5837155)}
+.game[data-boss-phase="3"] .soul-unresolved{filter:brightness(.7) saturate(.7) drop-shadow(0 0 26px #8d5d8b88)}
+.manyi-scene .manyi-choice-button.is-secondary{filter:grayscale(.65) brightness(.8);margin-left:20px}
+@media(prefers-reduced-motion:reduce){.manyi-portrait,.manyi-background{animation:none!important}}

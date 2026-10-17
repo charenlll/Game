@@ -7,6 +7,7 @@ import { createGameViewport } from './ui/viewport';
 import './ui/viewport.css';
 import './ui/main-menu.css';
 import './ui/prologue.css';
+import './ui/manyi.css';
 import './ui/hub-view.css';
 import './ui/settings-panel.css';
 

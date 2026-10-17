@@ -1,9 +1,9 @@
 import rawCards from '../data/cards.json';
 import type { CardDefinition, CardEffect, CardType } from './types';
 
-export type DataEffect = { type: 'reduce_obsession' | 'gain_light' | 'draw_card' | 'next_round_light' | 'discount_selected_normal'; value: number }
+export type DataEffect = { type: 'reduce_obsession' | 'gain_light' | 'draw_card' | 'next_round_light' | 'discount_selected_normal' | 'exhaust_selected_burden' | 'next_normal_obsession_bonus'; value: number }
   | { type: 'conditional_reduce_obsession'; value: number; bonus: number }
-  | { type: 'discard_and_draw'; discard: number; draw: number } | { type: 'none' };
+  | { type: 'discard_and_draw' | 'draw_then_discard'; discard: number; draw: number } | { type: 'none' };
 export interface CardData {
   readonly id: string;
   readonly name: string;
@@ -18,7 +18,7 @@ export interface CardData {
   readonly owner_character_id: string | null;
   readonly frame_style: 'common' | 'feichuan';
 }
-const supported = new Set(['reduce_obsession', 'conditional_reduce_obsession', 'gain_light', 'draw_card', 'next_round_light', 'discount_selected_normal', 'discard_and_draw', 'none']);
+const supported = new Set(['reduce_obsession', 'conditional_reduce_obsession', 'gain_light', 'draw_card', 'next_round_light', 'discount_selected_normal', 'discard_and_draw', 'draw_then_discard', 'exhaust_selected_burden', 'next_normal_obsession_bonus', 'none']);
 const types = new Set(['安抚', '引魂', '净化', '洞察', '灵术']);
 const positive = (value: unknown): boolean => typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 
@@ -43,7 +43,7 @@ export class CardDatabase {
       if (!effects.length) throw new Error(`${raw.id}：缺少效果`);
       for (const [index, effect] of effects.entries()) {
         if (!effect || !supported.has(effect.type)) throw new Error(`${raw.id}：未知效果`);
-        if (effect.type === 'discard_and_draw') {
+        if (effect.type === 'discard_and_draw' || effect.type === 'draw_then_discard') {
           if (index !== 0 || !positive(effect.discard) || !positive(effect.draw)) throw new Error(`${raw.id}：弃牌效果必须在首位且数值有效`);
         } else if (effect.type === 'conditional_reduce_obsession') {
           if (!positive(effect.value) || !positive(effect.bonus)) throw new Error(`${raw.id}：条件化解数值无效`);
@@ -73,8 +73,11 @@ export function toBattleDefinition(data: CardData): CardDefinition {
       case 'gain_light': return [{ Type: 'GainLight', Amount: effect.value }];
       case 'draw_card': return [{ Type: 'DrawCard', Amount: effect.value }];
       case 'discard_and_draw': return [{ Type: 'DiscardCard', Amount: effect.discard }, { Type: 'DrawCard', Amount: effect.draw }];
+      case 'draw_then_discard': return [{ Type: 'DrawCard', Amount: effect.draw }, { Type: 'DiscardCard', Amount: effect.discard }];
       case 'next_round_light': return [{ Type: 'ModifyNextRoundLight', Amount: effect.value }];
       case 'discount_selected_normal': return [{ Type: 'ModifySelectedCost', Amount: effect.value }];
+      case 'exhaust_selected_burden': return [{ Type: 'ExhaustSelectedBurden', Amount: effect.value }];
+      case 'next_normal_obsession_bonus': return [{ Type: 'ModifyNextNormalObsession', Amount: effect.value }];
       case 'none': return [];
     }
   });

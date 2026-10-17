@@ -1,24 +1,36 @@
 import { expect, test, type Page } from '@playwright/test';
 
-test('序章开场使用全屏纯黑底，旁白逐字显示，点击可完成当前句', async ({ page }) => {
+test('序章开场使用彩色场景与无底色文字，旁白逐字显示且点击可完成当前句', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 900 });
   await page.goto('/?seed=42');
   await page.evaluate(() => document.querySelector<HTMLButtonElement>('.menu-start-button')!.click());
   const viewport = page.locator('.game-viewport');
   const scene = page.locator('.prologue-scene');
   await expect(scene).toHaveAttribute('data-beat-id', 'beat-0001');
-  await expect(viewport).toHaveClass(/prologue-story-black/);
+  await expect(viewport).not.toHaveClass(/prologue-story-black/);
+  await expect(scene).toHaveClass(/is-story-color/);
+  await expect(page.locator('.prologue-background')).toBeVisible();
+  await expect(page.locator('.story-dialogue')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(page.locator('.story-dialogue')).toHaveCSS('border-top-width', '0px');
   await expect(page.locator('.story-child, .story-feichuan, .prologue-obsession')).toHaveCount(0);
-  await expect.poll(() => page.evaluate(() => getComputedStyle(document.querySelector('.game-viewport')!, '::before').backgroundColor)).toBe('rgb(0, 0, 0)');
-  for (const size of [{ width: 1280, height: 720 }, { width: 932, height: 430 }]) {
+  for (const size of [{ width: 1912, height: 914 }, { width: 1280, height: 720 }, { width: 932, height: 430 }, { width: 1440, height: 1000 }]) {
     await page.setViewportSize(size);
+    await expect.poll(() => page.locator('.prologue-background').evaluate(image => image.getBoundingClientRect().width)).toBeCloseTo(size.width, 0);
     const coverage = await page.evaluate(() => {
       const viewport = document.querySelector<HTMLElement>('.game-viewport')!;
       const rect = viewport.getBoundingClientRect();
-      const veil = getComputedStyle(viewport, '::before');
-      return { rect: [rect.left, rect.top, rect.width, rect.height], opacity: veil.opacity, color: veil.backgroundColor };
+      const background = document.querySelector('.viewport-background')!.getBoundingClientRect();
+      return { rect: [rect.left, rect.top, rect.width, rect.height], covered: background.left <= 0 && background.top <= 0 && background.right >= innerWidth && background.bottom >= innerHeight };
     });
-    expect(coverage).toEqual({ rect: [0, 0, size.width, size.height], opacity: '1', color: 'rgb(0, 0, 0)' });
+    expect(coverage).toEqual({ rect: [0, 0, size.width, size.height], covered: true });
+    for (const layer of ['.prologue-background', '.prologue-darken']) {
+      const bounds = await page.locator(layer).boundingBox();
+      expect(bounds!.x).toBeCloseTo(0, 0);
+      expect(bounds!.y).toBeCloseTo(0, 0);
+      expect(bounds!.width).toBeCloseTo(size.width, 0);
+      expect(bounds!.height).toBeCloseTo(size.height, 0);
+    }
+    await expect(scene).toHaveCSS('overflow', 'visible');
   }
 
   const result = await page.evaluate(() => {

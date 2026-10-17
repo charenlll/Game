@@ -21,8 +21,9 @@ export function discardCount(card: CardInstance): number {
 }
 export function selectionCount(card: CardInstance): number {
   const definition = getCard(card.DefinitionID);
-  return definition.Effects.reduce((total, effect) => total + (effect.Type === 'DiscardCard' || effect.Type === 'ModifySelectedCost' ? effect.Amount > 0 ? effect.Amount : 1 : 0), 0);
+  return definition.Effects.reduce((total, effect) => total + (effect.Type === 'DiscardCard' || effect.Type === 'ModifySelectedCost' || effect.Type === 'ExhaustSelectedBurden' ? effect.Amount > 0 ? effect.Amount : 1 : 0), 0);
 }
+export function selectsBurden(card: CardInstance): boolean { return getCard(card.DefinitionID).Effects.some(effect => effect.Type === 'ExhaustSelectedBurden'); }
 export function endTurnDiscardCount(state: Pick<BattleState, 'Hand' | 'HandSize'>): number {
   const excess = Math.max(0, state.Hand.length - state.HandSize);
   const discardable = state.Hand.filter(card => getCard(card.DefinitionID).DataType === 'normal').length;
@@ -60,6 +61,8 @@ export class Battle {
       if (snapshot.state.BattleID !== battleID || snapshot.state.CharacterID !== selectedCharacter.CharacterID || snapshot.state.SoulID !== selectedSoul.SoulID) throw new Error('战斗快照与遭遇配置不匹配');
       if (!Number.isSafeInteger(snapshot.turnIndex) || snapshot.turnIndex < 0 || !Number.isSafeInteger(snapshot.nextInstanceNumber) || snapshot.nextInstanceNumber < 1) throw new Error('战斗快照游标无效');
       this.state = structuredClone(snapshot.state);
+      this.state.PendingNormalObsessionBonus ??= 0;
+      this.state.BossPhase ??= 1;
       this.turnIndex = snapshot.turnIndex;
       this.nextInstanceNumber = snapshot.nextInstanceNumber;
       return;
@@ -74,6 +77,7 @@ export class Battle {
       Obsession: this.encounter.StartingObsession, MaxObsession: this.encounter.StartingObsession, Status: 'playing',
       Phase: 'ROUND_START', CurrentIntent: { IntentID: 'intent_close' }, PendingLightModifier: 0, PendingCostIncrease: 0,
       CombatTraitID: selectedCharacter.CombatTrait, GainedLightThisTurn: false, CombatTraitTriggeredThisTurn: false, CombatTraitDiscountActive: false,
+      PendingNormalObsessionBonus: 0, BossPhase: 1,
       CharacterID: selectedCharacter.CharacterID, SoulID: selectedSoul.SoulID,
       DrawPile: selectedDeck.map((id, index) => ({ InstanceID: `card-${index + 1}`, DefinitionID: id, IsTemporary: false, CostModifiers: [] })),
       Hand: [], DiscardPile: [], Resolving: [], ExhaustPile: [],
@@ -110,10 +114,11 @@ export class Battle {
     if (this.busy) return '正在处理上一张牌。';
     const card = state.Hand.find(item => item.InstanceID === instanceID);
     if (!card) return '这张牌不在手中。';
-    if (getCard(card.DefinitionID).PlayBehavior === 'unplayable') return '「踌躇」无法主动使用。';
+    if (getCard(card.DefinitionID).PlayBehavior === 'unplayable') return '这张浊念无法主动使用。';
     if (state.Light < this.cost(card)) return '灯火不足，试试添灯或结束回合。';
-    const discardable = state.Hand.filter(item => item.InstanceID !== instanceID && getCard(item.DefinitionID).DataType === 'normal').length;
-    if (discardable < selectionCount(card)) return `需要至少 ${selectionCount(card)} 张其他普通手牌。`;
+    const needed = selectionCount(card);
+    const candidates = state.Hand.filter(item => item.InstanceID !== instanceID && (selectsBurden(card) ? getCard(item.DefinitionID).DataType === 'burden' : getCard(item.DefinitionID).DataType === 'normal')).length;
+    if (candidates < needed) return selectsBurden(card) ? '手牌中没有可清除的浊念。' : `需要至少 ${needed} 张其他普通手牌。`;
     return null;
   }
 
@@ -126,9 +131,9 @@ export class Battle {
     const definition = getCard(card.DefinitionID);
     if (selected.length !== selectionCount(card) || new Set(selected).size !== selected.length || selected.some(id => {
       const selectedCard = state.Hand.find(item => item.InstanceID === id);
-      return id === instanceID || !selectedCard || getCard(selectedCard.DefinitionID).DataType === 'burden';
+      return id === instanceID || !selectedCard || (selectsBurden(card) ? getCard(selectedCard.DefinitionID).DataType !== 'burden' : getCard(selectedCard.DefinitionID).DataType === 'burden');
     })) {
-      return { Ok: false, Message: `请选择 ${selectionCount(card)} 张不同的其他普通手牌。` };
+      return { Ok: false, Message: `请选择 ${selectionCount(card)} 张有效目标。` };
     }
     this.busy = true;
     state.Phase = 'RESOLVING_CARD';
@@ -144,6 +149,13 @@ export class Battle {
         applyEffect(effect, state, selected, this.events);
         if (state.Light > lightBefore && onLightGained(state)) this.events.emit({ Type: 'OnTraitTriggered', BattleID: state.BattleID, TraitID: state.CombatTraitID! });
       }
+      if (definition.DataType === 'normal' && !definition.Effects.some(effect => effect.Type === 'ReduceObsession' || effect.Type === 'ConditionalReduceObsession') && (state.PendingNormalObsessionBonus ?? 0) > 0 && !definition.Effects.some(effect => effect.Type === 'ModifyNextNormalObsession')) {
+        const reduced = Math.min(state.Obsession, state.PendingNormalObsessionBonus!);
+        state.Obsession -= reduced;
+        state.PendingNormalObsessionBonus = 0;
+        state.Log.push(`借势额外化解 ${reduced} 点执念。`);
+      }
+      this.advanceBossPhase();
       state.Resolving.pop();
       if (definition.PlayBehavior === 'exhaust') state.ExhaustPile.push(card);
       else state.DiscardPile.push(card);
@@ -179,6 +191,9 @@ export class Battle {
         this.events.emit({ Type: 'OnCardDiscarded', BattleID: state.BattleID, InstanceID: card.InstanceID, Reason: 'turn-end' });
       }
       state.Log.push(`第 ${state.Turn} 回合结束。`);
+      const virtualDebts = state.Hand.filter(card => card.DefinitionID === 'burden_003');
+      for (const _card of virtualDebts) this.addBurden('burden_003', 'discard');
+      state.PendingNormalObsessionBonus = 0;
       state.Phase = 'RESOLVING_INTENT';
       resolveIntent(state, (cardID, destination) => this.addBurden(cardID, destination));
       if (state.Obsession <= this.encounter.VictoryObsession) {
@@ -225,10 +240,26 @@ export class Battle {
     this.events.emit({ Type: 'OnBattleEnd', BattleID: state.BattleID, Result: result, Stats: Object.freeze({ ...state.Stats }) });
   }
 
-  private addBurden(definitionID: string, destination: 'draw_random' | 'hand'): CardInstance {
+  private advanceBossPhase(): void {
+    const thresholds = this.encounter.PhaseThresholds;
+    if (!thresholds?.length) return;
+    const phase = this.state.BossPhase ?? 1;
+    const threshold = thresholds[phase - 1];
+    if (threshold === undefined || this.state.Obsession > threshold) return;
+    this.state.Obsession = threshold;
+    this.state.BossPhase = phase + 1;
+    this.state.Log.push(`满溢进入第 ${phase + 1} 阶段。`);
+  }
+
+  private addBurden(definitionID: string, destination: 'draw_random' | 'hand' | 'discard'): CardInstance | null {
+    if (definitionID === 'burden_003' && [...this.state.DrawPile, ...this.state.Hand, ...this.state.DiscardPile, ...this.state.Resolving].filter(card => card.DefinitionID === 'burden_003').length >= 6) {
+      this.state.Log.push('虚账已达本场上限，未再复制。');
+      return null;
+    }
     const card: CardInstance = { InstanceID: `card-${this.nextInstanceNumber++}`, DefinitionID: definitionID, IsTemporary: false, CostModifiers: [] };
     getCard(definitionID);
     if (destination === 'hand') this.state.Hand.push(card);
+    else if (destination === 'discard') this.state.DiscardPile.push(card);
     else this.state.DrawPile.splice(Math.floor(random(this.state) * (this.state.DrawPile.length + 1)), 0, card);
     return card;
   }

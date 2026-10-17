@@ -7,6 +7,9 @@
 .viewport-background[src=""]{visibility:hidden}
 .safe-area-probe{position:absolute;inset:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);pointer-events:none;visibility:hidden}
 .game-stage{position:absolute;z-index:1;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:visible}
+/* Only the physical viewport clips story art, never the fitted 16:9 stage. */
+.game-stage>:is(.prologue-scene.is-story-color,.manyi-scene){overflow:visible;background:transparent}
+.game-stage>:is(.prologue-scene.is-story-color,.manyi-scene)>:is(.prologue-background,.prologue-darken,.manyi-background,.manyi-scene-filter,.skip-confirm-backdrop,.prologue-retry-layer){inset:auto;left:var(--story-screen-x,0px);top:var(--story-screen-y,0px);width:var(--story-screen-width,1600px);height:var(--story-screen-height,900px)}
 .viewport-overlay{position:fixed;z-index:90;inset:0;overflow:hidden;pointer-events:none}
 .battle-popup-layer{position:absolute;z-index:100;inset:0;pointer-events:none}
 .battle-popup-layer .modal-backdrop{position:absolute;z-index:1;inset:0;pointer-events:auto}

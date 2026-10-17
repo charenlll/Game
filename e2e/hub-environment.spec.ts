@@ -82,20 +82,20 @@ test('驿站环境层按背景cover覆盖完整视口，并在页面离开、返
     }
   }
 
-  const fogResponse = await page.request.get('/assets/hub/effects/HBFX05_ground_fog.png');
+  const fogResponse = await page.request.get(new URL('assets/hub/effects/HBFX05_ground_fog.png', page.url()).href);
   expect(fogResponse.ok()).toBe(true);
-  const fogDimensions = await page.evaluate(async () => {
+  const fogDimensions = await page.evaluate(async (src) => {
     const image = new Image();
-    image.src = '/assets/hub/effects/HBFX05_ground_fog.png';
+    image.src = src;
     await image.decode();
     return { width: image.naturalWidth, height: image.naturalHeight };
-  });
+  }, fogResponse.url());
   expect(fogDimensions).toEqual({ width: 1983, height: 793 });
 
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(1);
   await page.locator('.hub-settings').click();
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(1);
-  await page.locator('.hub-settings-close').click();
+  await page.locator('.game-settings-close').click();
   await page.getByRole('button', { name: '信物录' }).click();
   await expect(page.locator('.hub-environment-canvas')).toHaveCount(0);
   await page.getByRole('button', { name: '返回' }).click();

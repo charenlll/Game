@@ -1,1 +1,1 @@
-export const CONTENT_VERSION = 'phase-3-architecture-v1';
+export const CONTENT_VERSION = 'chapter-manyi-v1.1';

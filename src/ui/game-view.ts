@@ -1,4 +1,4 @@
-import { Battle, discardCount, endTurnDiscardCount, selectionCount, type BattleRuntimeSnapshot } from '../core/battle';
+import { Battle, discardCount, endTurnDiscardCount, selectionCount, selectsBurden, type BattleRuntimeSnapshot } from '../core/battle';
 import { getCard, getCharacter, getSoul } from '../core/content';
 import { cardDatabase } from '../core/card-database';
 import { Assets } from '../core/asset-manifest';
@@ -25,6 +25,11 @@ export interface BattleViewOptions {
   onCheckpoint?: (snapshot: BattleRuntimeSnapshot) => void;
   backgroundPath?: string;
   soulArtState?: 'normal' | 'hesitant';
+  locationName?: string;
+  timeLabel?: string;
+  phaseNames?: readonly string[];
+  phaseSoulArts?: readonly string[];
+  soulPortraitTopPx?: number;
   skipVictoryPresentation?: boolean;
   releaseOnlyVictory?: boolean;
   onReturnToMenu?: () => void;
@@ -119,8 +124,11 @@ export class BattleView {
       const id = button.dataset.id;
       if (this.pending.kind === 'card' && id === this.pending.card) return;
       const selectedCard = this.battle.state.Hand.find(card => card.InstanceID === id);
-      if (selectedCard && getCard(selectedCard.DefinitionID).DataType === 'burden') {
-        this.notice = '浊念牌不能被选择。';
+      const sourceCardId = this.pending.kind === 'card' ? this.pending.card : undefined;
+      const source = sourceCardId ? this.battle.state.Hand.find(item => item.InstanceID === sourceCardId) : undefined;
+      const wantsBurden = source ? selectsBurden(source) : false;
+      if (selectedCard && (wantsBurden ? getCard(selectedCard.DefinitionID).DataType !== 'burden' : getCard(selectedCard.DefinitionID).DataType === 'burden')) {
+        this.notice = wantsBurden ? '清账只能选择浊念牌。' : '浊念牌不能被选择。';
         this.render();
         return;
       }
@@ -214,7 +222,7 @@ export class BattleView {
     if (!card || this.battle.reasonUnavailable(drag.cardId)) { this.cancelDraggedCard(drag); return; }
     if (selectionCount(card)) {
       this.pending = { kind: 'card', card: drag.cardId, selected: new Set() };
-      this.notice = `选择 ${selectionCount(card)} 张其他普通手牌后确认。`;
+      this.notice = selectsBurden(card) ? '选择1张浊念牌后确认。' : `选择 ${selectionCount(card)} 张其他普通手牌后确认。`;
       this.render();
       return;
     }
@@ -536,7 +544,8 @@ export class BattleView {
     const isDiscard = isEnd || (source !== null && discardCount(source) > 0);
     const eyebrow = isEnd ? '回合结束' : getCard(source!.DefinitionID).Name;
     const confirmLabel = isEnd ? '确认结束' : isDiscard ? '确认弃牌' : '确认选择';
-    return `<div class="selection-control selection-${pending.kind}" role="group" aria-label="手牌选择"><div class="selection-heading"><span>${esc(eyebrow)}</span><strong>${isEnd ? '整理手牌' : isDiscard ? '选择弃牌' : '选择目标'}</strong></div><p>${isDiscard ? '点击要弃置的普通牌' : '点击要降低费用的普通牌'}</p><div class="selection-progress" aria-label="已选择 ${pending.selected.size} 张，共需 ${required} 张"><b>${pending.selected.size}</b><i>/</i><span>${required}</span></div><div class="selection-actions">${primaryButton('取消', 'cancel', false, 'quiet-button secondary-button')}${primaryButton(confirmLabel, 'confirm', pending.selected.size !== required)}</div></div>`;
+    const selectingBurden = pending.kind === 'card' && !!this.battle.state.Hand.find(card => card.InstanceID === pending.card && selectsBurden(card));
+    return `<div class="selection-control selection-${pending.kind}" role="group" aria-label="手牌选择"><div class="selection-heading"><span>${esc(eyebrow)}</span><strong>${isEnd ? '整理手牌' : isDiscard ? '选择弃牌' : '选择目标'}</strong></div><p>${selectingBurden ? '点击要清除的浊念牌' : isDiscard ? '点击要弃置的普通牌' : '点击要降低费用的普通牌'}</p><div class="selection-progress" aria-label="已选择 ${pending.selected.size} 张，共需 ${required} 张"><b>${pending.selected.size}</b><i>/</i><span>${required}</span></div><div class="selection-actions">${primaryButton('取消', 'cancel', false, 'quiet-button secondary-button')}${primaryButton(confirmLabel, 'confirm', pending.selected.size !== required)}</div></div>`;
   }
 
   private pileContent(title: string, pile: readonly CardInstance[]): string {
@@ -574,9 +583,9 @@ export class BattleView {
     const s = this.battle.state, finished = s.Status !== 'playing';
     const activeCharacter = getCharacter(s.CharacterID);
     const activeSoul = getSoul(s.SoulID);
-    const unresolvedSoulArt = this.options.soulArtState === 'hesitant'
+    const unresolvedSoulArt = this.options.phaseSoulArts?.[(s.BossPhase ?? 1) - 1] ?? (this.options.soulArtState === 'hesitant'
       ? activeSoul.HesitantArtReference ?? activeSoul.ArtReference
-      : activeSoul.ArtReference;
+      : activeSoul.ArtReference);
     const releasedSoulArt = activeSoul.ReleasedArtReference;
     const trait = s.CombatTraitID ? getTrait(s.CombatTraitID) : null;
     const intent = getIntentDisplay(this.intentVisualOverride ?? s.CurrentIntent);
@@ -586,12 +595,12 @@ export class BattleView {
       HandLayout.maxSpreadVw * 16 / (visible.length - 1),
     );
     const modal = this.panel !== null;
-    const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingPx}px`;
-    this.root.innerHTML = `<main class="game ${this.resultStage === 'failed' ? 'battle-unresolved' : ''}" style="${variables}" aria-label="夜渡对局" ${modal ? 'inert' : ''}>
+    const variables = `--ferryman-right:${BattleLayout.ferrymanAnchor.rightPercent}%;--ferryman-bottom:${BattleLayout.ferrymanAnchor.bottomPercent}%;--ferryman-scale:${BattleLayout.ferrymanScale};--soul-x:${BattleLayout.soulAnchor.xPercent}%;--soul-y:${BattleLayout.soulAnchor.yPercent}%;--end-x:${BattleLayout.endTurnAnchor.xPercent}%;--end-bottom:${BattleLayout.endTurnAnchor.bottomPx}px;--intent-gap:${BattleLayout.intent.gapPx}px;--intent-width:${BattleLayout.intent.widthPercent}%;--intent-height:${BattleLayout.intent.heightPx}px;--intent-scale:${BattleLayout.intent.scale};--hand-center:${HandLayout.centerPercent}%;--drag-scale:${DragConfig.dragScale};--step:${spacingPx}px;--soul-image-top:${this.options.soulPortraitTopPx ?? 46}px`;
+    this.root.innerHTML = `<main class="game ${this.resultStage === 'failed' ? 'battle-unresolved' : ''}" ${this.options.phaseNames ? `data-boss-phase="${s.BossPhase ?? 1}"` : ''} style="${variables}" aria-label="夜渡对局" ${modal ? 'inert' : ''}>
       <img class="scene-background" src="${assetURL(this.options.backgroundPath ?? sceneArt.background)}" alt=""><div class="scene-vignette"></div><div class="play-zone" aria-hidden="true"></div>
-      <header class="hud"><div class="location"><div><h1>无名渡口</h1><span>第一夜 · 子时</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button settings-icon-button" data-action="menu" aria-label="设置"><img src="${assetURL(Assets.hub.settings)}" alt=""></button></header>
-      <section class="soul-target ${this.intentVisualOverride ? 'intent-reacting' : ''} ${this.resultStage === 'releasing' ? 'releasing' : ''} ${this.resultStage === 'released' ? 'released' : ''}" aria-label="亡魂"><div class="soul-hud"><div class="soul-title-row"><button class="intent-card ${this.intentResolving ? 'resolving' : ''}" data-testid="intent" data-action="intent" aria-label="查看亡魂意图：${esc(intent.name)}"><img src="${assetURL(Assets.battle.intent)}" alt=""><span><b>${esc(intent.name)}</b></span></button><h2>${esc(activeSoul.Name)}</h2></div><div class="soul-status-line"><button class="obsession-track" data-action="soul" aria-label="查看亡魂状态"><span style="width:${(this.obsessionVisualFrom ?? s.Obsession) / s.MaxObsession * 100}%"></span><strong data-testid="obsession">执念 ${s.Obsession} / ${s.MaxObsession}</strong></button></div></div><span class="soul-feedback-anchor" aria-hidden="true"></span><img class="release-glow" src="${assetURL(Assets.effects.release_glow)}" alt=""><img class="soul-image soul-unresolved" src="${assetURL(unresolvedSoulArt ?? Assets.souls.unresolved)}" alt=""><img class="soul-image soul-released" src="${assetURL(releasedSoulArt ?? Assets.souls.released)}" alt=""></section>
-      <aside class="character" aria-label="绯川"><img class="character-image" src="${assetURL(sceneArt.character)}" alt=""></aside>
+      <header class="hud"><div class="location"><div><h1>${esc(this.options.locationName ?? '无名渡口')}</h1><span>${esc(this.options.timeLabel ?? '第一夜 · 子时')}</span></div></div><div class="turn-badge"><span>第</span><strong data-testid="turn">${String(s.Turn).padStart(2, '0')}</strong><span>/ ${s.MaxTurns} 夜</span></div><button class="icon-button settings-icon-button" data-action="menu" aria-label="设置"><img src="${assetURL(Assets.hub.settings)}" alt=""></button></header>
+      <section class="soul-target ${this.intentVisualOverride ? 'intent-reacting' : ''} ${this.resultStage === 'releasing' ? 'releasing' : ''} ${this.resultStage === 'released' ? 'released' : ''}" aria-label="亡魂"><div class="soul-hud"><div class="soul-title-row"><button class="intent-card ${this.intentResolving ? 'resolving' : ''}" data-testid="intent" data-action="intent" aria-label="查看亡魂意图：${esc(intent.name)}"><img src="${assetURL(Assets.battle.intent)}" alt=""><span><b>${esc(intent.name)}</b></span></button><h2>${esc(activeSoul.Name)}</h2>${this.options.phaseNames ? `<span class="boss-phase" data-testid="boss-phase">${esc(this.options.phaseNames[(s.BossPhase ?? 1) - 1] ?? '')}</span>` : ''}</div><div class="soul-status-line"><button class="obsession-track" data-action="soul" aria-label="查看亡魂状态"><span style="width:${(this.obsessionVisualFrom ?? s.Obsession) / s.MaxObsession * 100}%"></span><strong data-testid="obsession">执念 ${s.Obsession} / ${s.MaxObsession}</strong></button></div></div><span class="soul-feedback-anchor" aria-hidden="true"></span><img class="release-glow" src="${assetURL(Assets.effects.release_glow)}" alt=""><img class="soul-image soul-unresolved" src="${assetURL(unresolvedSoulArt ?? Assets.souls.unresolved)}" alt=""><img class="soul-image soul-released" src="${assetURL(releasedSoulArt ?? Assets.souls.released)}" alt=""></section>
+      <aside class="character" aria-label="${esc(getCharacter(this.battle.state.CharacterID).Name)}"><img class="character-image" src="${assetURL(getCharacter(this.battle.state.CharacterID).ArtReference ?? sceneArt.character)}" alt=""></aside>
       <div class="character-name" aria-hidden="true"><b>${esc(activeCharacter.Name)}</b><span>${esc(activeCharacter.AnimalType)} · 摆渡人</span></div>
       ${trait ? `<button class="trait-badge ${s.CombatTraitDiscountActive ? 'active' : ''}" style="--trait-glow:${esc(trait.glowColor)}" data-action="trait" aria-label="查看角色特性：${esc(trait.name)}" title="点击查看角色特性"><img src="${assetURL(trait.icon)}" alt=""></button>` : ''}
       <section class="resource-cluster" aria-label="对局资源">

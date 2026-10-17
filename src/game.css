@@ -74,7 +74,7 @@
 .card.dragging.valid-target{filter:none;outline:2px solid #67ddc3;outline-offset:3px}
 .card.dragging.invalid-target{filter:grayscale(.55) brightness(.75)}
 .card.previewing{visibility:hidden}
-.card.card-preview{position:absolute;left:50%;top:50%;bottom:auto;z-index:76;transform:translate(-50%,-50%) scale(1.65);transform-origin:center;transition:transform .14s ease;filter:none;outline:none;visibility:visible}
+.card.card-preview{position:absolute;left:50%;top:50%;bottom:auto;z-index:76;transform:translate(-50%,-50%) scale(2);transform-origin:center;transition:transform .14s ease;filter:none;outline:none;visibility:visible}
 
 /* Enlarged soul and deep-blue glowing obsession bar. */
 .hand-layer{z-index:45}
@@ -128,7 +128,7 @@
 .floating-soul{color:#75bdf0}.floating-light{color:#f2d279}.floating-intent{color:#c3d4e4;font-size:clamp(13px,1.5vw,19px)}.floating-trait{color:#ffd58a;font-size:clamp(13px,1.5vw,19px)}
 .soul-flame{position:fixed;z-index:7;width:clamp(24px,3.2vw,48px);height:clamp(35px,5vw,70px);object-fit:contain;pointer-events:none;animation:soul-flame-rise 1.15s ease-out forwards}
 @keyframes soul-flame-rise{from{opacity:0;transform:translate(-50%,8px) scale(.72)}25%{opacity:.82}to{opacity:0;transform:translate(-50%,-55px) scale(1.08)}}
-.soul-image{position:absolute;left:0;top:46px}
+.soul-image{position:absolute;left:0;top:var(--soul-image-top,46px);height:calc(100% - var(--soul-image-top,46px))}
 .soul-unresolved,.soul-released{transition:opacity .65s ease,filter .65s ease,transform .65s ease}
 .soul-target.intent-reacting .soul-unresolved{animation:soul-intent-reaction 1.6s ease-in-out both}
 @keyframes soul-intent-reaction{0%,100%{transform:translateX(0);filter:drop-shadow(0 0 24px #aedabd27)}18%{transform:translateX(-2px);filter:sepia(.28) saturate(1.8) hue-rotate(315deg) brightness(1.12) drop-shadow(0 0 12px #c33b3bcc) drop-shadow(0 0 30px #8e202099)}30%{transform:translateX(2px)}42%{transform:translateX(-1.5px)}54%{transform:translateX(1.5px);filter:sepia(.2) saturate(1.55) hue-rotate(320deg) brightness(1.08) drop-shadow(0 0 9px #b73535aa)}72%{transform:translateX(-.7px)} }

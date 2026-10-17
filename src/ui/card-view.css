@@ -1,7 +1,10 @@
 .card-face{position:absolute;inset:0;container-type:inline-size;display:block;overflow:hidden;border-radius:inherit;isolation:isolate;pointer-events:none;color:#251d13;font-family:"Microsoft YaHei",sans-serif}
 .card-art-mask{position:absolute;z-index:1;display:block;overflow:hidden;clip-path:inset(0)}
 .card-art-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
-.card-frame{position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:fill;display:block}
+/* Fine strokes and glow particles alias when the art is reduced to a ~120px thumbnail.
+   Smooth only the illustration; keep frame edges and live text crisp. */
+.growth-card .card-art-image,.hub-catalog-card .card-art-image,.deck-card .card-art-image,.reward-card .card-art-image,.card:not(.card-preview) .card-art-image{filter:blur(.7px) contrast(.96)}
+.card-frame{position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:contain;display:block}
 .card-cost,.card-title,.card-description-box{position:absolute;box-sizing:border-box;z-index:3;display:flex;align-items:center;justify-content:center;text-align:center;margin:0}
 .card-cost{z-index:6;font-family:Georgia,serif;color:#fff1bc;font-weight:800;text-shadow:0 1px 2px #160d05,0 0 4px #160d05}
 .card-title{z-index:4;white-space:nowrap;font-weight:700;overflow:hidden;letter-spacing:0;color:#ddddb1}

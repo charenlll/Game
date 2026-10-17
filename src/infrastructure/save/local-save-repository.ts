@@ -1,4 +1,4 @@
-import { createDefaultSaveGame, isSaveGameV1, LEGACY_PROLOGUE_KEY, migrateLegacyPrologueSave, SAVE_KEY, type SaveGameV1 } from './save-schema';
+import { createDefaultSaveGame, isSaveGameV1, LEGACY_PROLOGUE_KEY, migrateLegacyPrologueSave, SAVE_KEY, upgradeSaveGame, type SaveGameV1 } from './save-schema';
 
 export interface StoragePort {
   getItem(key: string): string | null;
@@ -22,7 +22,9 @@ export class LocalSaveRepository {
       try {
         const parsed: unknown = JSON.parse(current);
         if (!isSaveGameV1(parsed)) return { status: 'corrupt', save: null, diagnostic: '新存档结构无效。原始存档已保留，没有覆盖。' };
-        return { status: 'ready', save: parsed, source: 'current', persisted: true };
+        const upgraded = upgradeSaveGame(parsed);
+        if (JSON.stringify(upgraded) !== JSON.stringify(parsed)) this.write(upgraded);
+        return { status: 'ready', save: upgraded, source: 'current', persisted: true };
       } catch (error) {
         return { status: 'corrupt', save: null, diagnostic: `新存档无法解析：${messageOf(error)}。原始存档已保留，没有覆盖。` };
       }
@@ -33,7 +35,7 @@ export class LocalSaveRepository {
     catch (error) { return { status: 'corrupt', save: null, diagnostic: `读取旧存档失败：${messageOf(error)}` }; }
     if (legacy !== null) {
       try {
-        const save = migrateLegacyPrologueSave(JSON.parse(legacy), this.now());
+        const save = upgradeSaveGame(migrateLegacyPrologueSave(JSON.parse(legacy), this.now()));
         const write = this.write(save);
         return { status: 'ready', save, source: 'legacy', persisted: write.ok, ...(write.ok ? {} : { diagnostic: write.diagnostic }) };
       } catch (error) {
@@ -41,7 +43,7 @@ export class LocalSaveRepository {
       }
     }
 
-    const save = createDefaultSaveGame(this.now());
+    const save = upgradeSaveGame(createDefaultSaveGame(this.now()));
     const write = this.write(save);
     return { status: 'ready', save, source: 'new', persisted: write.ok, ...(write.ok ? {} : { diagnostic: write.diagnostic }) };
   }

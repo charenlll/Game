@@ -6,5 +6,17 @@
     "CombatTrait": "good_merchant", "ResourceTrait": null,
     "ExclusiveCards": ["feichuan_001", "feichuan_002", "feichuan_003"], "TraitUpgrades": [],
     "StartingDeckModifier": { "Add": ["feichuan_001", "feichuan_002", "feichuan_003"], "Remove": [] }, "StoryID": null, "ArtReference": null
+  },
+  {
+    "CharacterID": "moyu", "Name": "墨羽", "AnimalType": "未知", "Gender": "Male",
+    "AgeGroup": "成年", "Occupation": "摆渡人", "Personality": [], "VisualKeywords": [],
+    "CombatTrait": null, "ResourceTrait": null, "ExclusiveCards": [], "TraitUpgrades": [],
+    "StartingDeckModifier": { "Add": [], "Remove": [] }, "StoryID": null, "ArtReference": "assets/characters/CH02.png"
+  },
+  {
+    "CharacterID": "qinglan", "Name": "青岚", "AnimalType": "未知", "Gender": "Male",
+    "AgeGroup": "成年", "Occupation": "摆渡人", "Personality": [], "VisualKeywords": [],
+    "CombatTrait": null, "ResourceTrait": null, "ExclusiveCards": [], "TraitUpgrades": [],
+    "StartingDeckModifier": { "Add": [], "Remove": [] }, "StoryID": null, "ArtReference": "assets/characters/CH03.png"
   }
 ]

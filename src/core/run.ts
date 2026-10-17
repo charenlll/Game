@@ -1,4 +1,5 @@
 import { buildStartingDeck, cards, getCharacter } from './content';
+import { LEGACY_UNLOCKED_CARDS } from './deck-editor';
 
 export type RunStatus = 'battle' | 'reward' | 'completed' | 'failed';
 
@@ -19,7 +20,7 @@ function random(state: RunState): number {
   return state.RandomState / 0x100000000;
 }
 
-export function createRun(characterID: string, seed: number): RunState {
+export function createRun(characterID: string, seed: number, deckOverride?: readonly string[]): RunState {
   const character = getCharacter(characterID);
   return {
     Seed: seed >>> 0,
@@ -28,7 +29,7 @@ export function createRun(characterID: string, seed: number): RunState {
     CurrentEncounter: 1,
     MaxEncounters: 3,
     CompletedEncounters: 0,
-    RunDeck: [...buildStartingDeck(character)],
+    RunDeck: [...(deckOverride ?? buildStartingDeck(character))],
     AcquiredCards: [],
     Status: 'battle',
   };
@@ -45,9 +46,9 @@ export function finishEncounter(state: RunState, result: 'won' | 'lost'): void {
   state.Status = state.CompletedEncounters >= state.MaxEncounters ? 'completed' : 'reward';
 }
 
-export function generateRewards(state: RunState): readonly string[] {
+export function generateRewards(state: RunState, unlocked: ReadonlySet<string> = new Set(LEGACY_UNLOCKED_CARDS)): readonly string[] {
   if (state.Status !== 'reward') throw new Error('当前没有可领取的奖励');
-  const pool = cards.filter(card => card.DataType === 'normal' && (card.OwnerCharacterID === null || card.OwnerCharacterID === state.SelectedCharacterID)).map(card => card.CardID);
+  const pool = cards.filter(card => card.DataType === 'normal' && unlocked.has(card.CardID) && (card.OwnerCharacterID === null || card.OwnerCharacterID === state.SelectedCharacterID)).map(card => card.CardID);
   if (pool.length < 3) throw new Error('奖励池不足3张');
   const candidates = [...pool];
   for (let index = candidates.length - 1; index > 0; index--) {

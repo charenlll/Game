@@ -10,13 +10,19 @@ import { isOpaqueImagePixel } from './image-alpha-hit';
 import type { SoulArchiveEntry } from '../core/archive/soul-archive';
 import type { UserSettings } from '../infrastructure/save/save-schema';
 import { renderSettingsPanel } from './settings-panel';
+import { defaultEditableDeck, validateEditableDeck } from '../core/deck-editor';
 
 export interface HubActions {
   startPrologue(): void;
+  startManyi(): void;
   returnToMenu(): void;
   ferrymanProgress(): ProloguePersistentState;
   selectFerryman(id: FerrymanId): boolean;
   discoveredCardIds(): readonly string[];
+  unlockedCardIds(): readonly string[];
+  startingDeckFor(id: FerrymanId): readonly string[];
+  saveStartingDeck(id: FerrymanId, deck: readonly string[]): string | null;
+  mementoIds(): readonly string[];
   soulArchive(): readonly SoulArchiveEntry[];
   settings(): UserSettings;
   setReducedMotion(enabled: boolean): void;
@@ -42,6 +48,7 @@ const catalogTabs: readonly { id: CatalogTab; label: string }[] = [
 ];
 const mementos: readonly (MementoData & { category: Category; slot: 'A1' | 'A2' | 'A3' | 'A4' | 'B1' | 'B2' | 'B3' | 'B4' })[] = [
   { id: 'prologue_wooden_boat', category: 'prologue', slot: 'A1', asset: Assets.prologue.woodenBoat, name: '小木船', source: '序｜初见', description: '一艘做得不算精致的小木船。\n有人托你暂时替他保管。', quote: '“那也先给他看看。”' },
+  { id: 'manyi_return_voucher', category: 'world', slot: 'A2', asset: 'assets/story/manyi/PR1-03.png', name: '归潮返航凭证', source: '世｜满溢', description: '一张泛黄的旧凭证。\n出发地与目的地依然清晰，到港日期始终空白。\n它没有等回那艘船。后来，等船的人也离开了。', quote: '“一条就够了。”' },
 ];
 const shelf = { x: 385, y: 125, width: 830, height: 600, sourceWidth: 1600, sourceHeight: 1080 };
 const shelfSlots = {
@@ -68,6 +75,8 @@ export class HubController {
   private drawerOpen = false;
   private settingsOpen = false;
   private cardCatalogOpen = false;
+  private deckEditing = false;
+  private deckDraft: string[] = [];
   private catalogTab: CatalogTab = 'common';
   private soulArchiveOpen = false;
   private archiveEntryId = 'prologue_child';
@@ -108,8 +117,25 @@ export class HubController {
     else if (action === 'toggle-reduced-motion') { this.actions.setReducedMotion(!this.actions.settings().reducedMotion); this.render(); }
     else if (action === 'open-ferryman-drawer') { this.drawerOpen = true; this.render(); }
     else if (action === 'close-ferryman-drawer') { this.drawerOpen = false; this.render(); }
-    else if (action === 'open-card-catalog') { this.cardCatalogOpen = true; this.catalogTab = 'common'; this.render(); }
+    else if (action === 'open-card-catalog') { this.cardCatalogOpen = true; this.deckEditing = false; this.catalogTab = 'common'; this.render(); }
     else if (action === 'close-card-catalog') { this.cardCatalogOpen = false; this.render(); }
+    else if (action === 'open-deck-editor') { this.deckEditing = true; this.deckDraft = [...this.actions.startingDeckFor(this.selectedFerryman)]; this.render(); }
+    else if (action === 'close-deck-editor') { this.deckEditing = false; this.render(); }
+    else if (action === 'deck-add' && target.dataset.cardId) {
+      this.deckDraft.push(target.dataset.cardId);
+      const issue = validateEditableDeck(this.deckDraft, this.selectedFerryman, new Set(this.actions.unlockedCardIds()));
+      if (issue && !(issue === '初始牌组须为6～12张。' && this.deckDraft.length < 6)) { this.deckDraft.pop(); this.showToast(issue); } else this.refreshDeckEditor();
+    }
+    else if (action === 'deck-remove' && target.dataset.cardId) {
+      const index = this.deckDraft.indexOf(target.dataset.cardId);
+      if (index >= 0) this.deckDraft.splice(index, 1);
+      this.refreshDeckEditor();
+    }
+    else if (action === 'deck-default') { this.deckDraft = defaultEditableDeck(this.selectedFerryman); this.refreshDeckEditor(); }
+    else if (action === 'deck-save') {
+      const issue = this.actions.saveStartingDeck(this.selectedFerryman, this.deckDraft);
+      this.showToast(issue ?? '初始牌组已保存');
+    }
     else if (action === 'open-soul-archive') { this.soulArchiveOpen = true; this.render(); }
     else if (action === 'close-soul-archive') { this.soulArchiveOpen = false; this.render(); }
     else if (action === 'archive-entry') {
@@ -140,6 +166,7 @@ export class HubController {
       this.render();
     } else if (action === 'close-card-preview') { this.previewCard = null; this.render(); }
     else if (action === 'replay-prologue') this.actions.startPrologue();
+    else if (action === 'start-manyi') this.actions.startManyi();
     else if (action === 'locked-chapter' || action === 'coming-soon' || action === 'growth-node') this.showToast('尚未开放');
     else if (action === 'return-menu') this.actions.returnToMenu();
   };
@@ -189,7 +216,7 @@ export class HubController {
     const progress = this.actions.ferrymanProgress();
     const current = ferrymen.find(entry => entry.id === this.selectedFerryman) ?? ferrymen[0]!;
     const layer = this.page === 'hub' ? this.renderHub(progress, current)
-      : this.page === 'collection' ? this.renderCollection(progress)
+      : this.page === 'collection' ? this.renderCollection()
         : this.page === 'stage-select' ? this.renderStageSelect()
           : this.renderGrowth(current);
     const hasPopup = this.drawerOpen || this.settingsOpen || this.cardCatalogOpen || this.soulArchiveOpen || !!this.detailMementoId || !!this.previewCard;
@@ -220,9 +247,9 @@ export class HubController {
     return `<div class="hub-resources"><img class="hub-resource-backplate" src="${assetURL(Assets.hub.resourceBackplate)}" alt=""><span class="hub-resource--copper"><img src="${assetURL(Assets.resources.copper)}" alt="铜钱"><b>${progress.copper}</b></span><span class="hub-resource--soul-flame"><img src="${assetURL(Assets.resources.soulFlame)}" alt="魂火"><b>${progress.soulFlame}</b></span></div>`;
   }
 
-  private renderSlot(item: (typeof mementos)[number], progress: ProloguePersistentState): string {
+  private renderSlot(item: (typeof mementos)[number]): string {
     if (!showShelfMementos) return '';
-    if (item.id === 'prologue_wooden_boat' && !progress.wooden_boat_trace_unlocked) return '';
+    if (!this.actions.mementoIds().includes(item.id)) return '';
     if (this.page !== 'collection') return `<span class="hub-memento-slot hub-memento-display" style="${shelfSlotStyle(item.slot)}"><img src="${assetURL(item.asset)}" alt="${esc(item.name)}"></span>`;
     return `<button class="hub-memento-slot collection-memento" style="${shelfSlotStyle(item.slot)}" data-hub-action="open-memento" data-memento-id="${esc(item.id)}" aria-label="查看信物：${esc(item.name)}"><img src="${assetURL(item.asset)}" alt="${esc(item.name)}"></button>`;
   }
@@ -232,7 +259,7 @@ export class HubController {
   }
 
   private renderHub(progress: ProloguePersistentState, current: HubFerrymanData): string {
-    const trace = mementos.filter(item => item.category === 'prologue').map(item => this.renderSlot(item, progress)).join('');
+    const trace = mementos.map(item => this.renderSlot(item)).join('');
     return `<main class="hub-screen hub-home" aria-label="驿站">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <div class="hub-home-title"><img src="${assetURL(Assets.hub.titleBackplate)}" alt=""><h1>渡魂驿站</h1></div>
@@ -254,9 +281,9 @@ export class HubController {
     </main>`;
   }
 
-  private renderCollection(progress: ProloguePersistentState): string {
+  private renderCollection(): string {
     const category = categories[this.categoryIndex]!;
-    const items = showShelfMementos ? mementos.filter(item => item.category === category.id).map(item => this.renderSlot(item, progress)).join('') : '';
+    const items = showShelfMementos ? mementos.filter(item => item.category === category.id).map(item => this.renderSlot(item)).join('') : '';
     return `<main class="hub-screen hub-collection-screen" aria-label="信物录">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
@@ -274,6 +301,7 @@ export class HubController {
   }
 
   private renderCardCatalog(): string {
+    if (this.deckEditing) return this.renderDeckEditor();
     const discovered = new Set(this.actions.discoveredCardIds());
     const cards = cardDatabase.all().filter(card => this.catalogTab === 'burden'
       ? card.card_type === 'burden'
@@ -283,10 +311,40 @@ export class HubController {
       ? `<button type="button" class="hub-catalog-card" data-hub-action="preview-card" data-card-id="${esc(card.id)}" aria-label="查看卡牌：${esc(card.name)}"><span class="hub-catalog-card-face">${CardView.render(card)}</span></button>`
       : `<div class="hub-catalog-card is-locked" role="img" aria-label="未解锁的卡牌"><img src="${assetURL(Assets.cards.back)}" alt=""><span>未解锁</span></div>`).join('');
     return `<section class="hub-info-panel hub-card-catalog" style="${hb19PanelStyle()}" data-hb19-panel role="dialog" aria-modal="true" aria-labelledby="hub-catalog-title" data-hub-action="stop-popup-close">
-      <div class="hub-catalog-content"><header><h2 id="hub-catalog-title">牌录</h2><button type="button" class="hub-catalog-close" data-hub-action="close-card-catalog" aria-label="返回驿站"><img src="${assetURL(Assets.hub.back)}" alt=""></button></header>
+      <div class="hub-catalog-content"><header><h2 id="hub-catalog-title">牌录</h2><button type="button" class="hub-deck-editor-open" data-hub-action="open-deck-editor">编辑初始牌组</button><button type="button" class="hub-catalog-close" data-hub-action="close-card-catalog" aria-label="返回驿站"><img src="${assetURL(Assets.hub.back)}" alt=""></button></header>
       <nav class="hub-catalog-tabs" role="tablist" aria-label="卡牌分类">${tabs}</nav>
       <div class="hub-catalog-scroll" role="tabpanel" aria-label="${esc(catalogTabs.find(tab => tab.id === this.catalogTab)!.label)}"><div class="hub-catalog-track">${entries || '<p class="hub-catalog-empty">尚无卡牌</p>'}</div></div></div>
     </section>`;
+  }
+
+  private renderDeckEditor(): string {
+    const unlocked = new Set(this.actions.unlockedCardIds());
+    const available = cardDatabase.all().filter(card => card.card_type === 'normal' && (card.owner_character_id === null || card.owner_character_id === this.selectedFerryman));
+    const counts = new Map<string, number>();
+    for (const id of this.deckDraft) counts.set(id, (counts.get(id) ?? 0) + 1);
+    const entries = available.map(card => {
+      const count = counts.get(card.id) ?? 0;
+      const known = unlocked.has(card.id);
+      const preview = known ? `<button type="button" data-hub-action="preview-card" data-card-id="${esc(card.id)}" aria-label="查看${esc(card.name)}效果">${CardView.render(card)}</button>`
+        : `<img src="${assetURL(Assets.cards.back)}" alt="未解锁卡牌">`;
+      return `<article class="hub-deck-card ${known ? '' : 'is-locked'}"><div class="hub-deck-card-face">${preview}</div><strong>${known ? esc(card.name) : '未解锁'}</strong><span>${count} / 2</span><div class="hub-deck-controls"><button type="button" data-hub-action="deck-remove" data-card-id="${esc(card.id)}" ${count ? '' : 'disabled'} aria-label="移除1张${esc(card.name)}">－</button><button type="button" data-hub-action="deck-add" data-card-id="${esc(card.id)}" ${!known || count >= 2 || this.deckDraft.length >= 12 ? 'disabled' : ''} aria-label="加入1张${esc(card.name)}">＋</button></div></article>`;
+    }).join('');
+    const issue = validateEditableDeck(this.deckDraft, this.selectedFerryman, unlocked);
+    const name = ferrymen.find(person => person.id === this.selectedFerryman)?.name ?? this.selectedFerryman;
+    return `<section class="hub-info-panel hub-card-catalog hub-deck-editor" style="${hb19PanelStyle()}" data-hb19-panel role="dialog" aria-modal="true" aria-labelledby="hub-deck-title" data-hub-action="stop-popup-close"><div class="hub-catalog-content"><header><button type="button" class="hub-deck-back" data-hub-action="close-deck-editor">返回牌录</button><h2 id="hub-deck-title">${esc(name)} · 初始牌组</h2><button type="button" class="hub-catalog-close" data-hub-action="close-card-catalog" aria-label="返回驿站"><img src="${assetURL(Assets.hub.back)}" alt=""></button></header><p class="hub-deck-count">${this.deckDraft.length} / 12 张 · 同名最多2张</p><div class="hub-deck-grid">${entries}</div><div class="hub-deck-footer"><span role="status">${esc(issue ?? '牌组可保存')}</span><button type="button" data-hub-action="deck-default">恢复默认</button><button type="button" data-hub-action="deck-save" ${issue ? 'disabled' : ''}>保存牌组</button></div></div></section>`;
+  }
+
+  private refreshDeckEditor(): void {
+    const previous = this.popupHost.querySelector<HTMLElement>('.hub-deck-editor');
+    if (!previous) { this.render(); return; }
+    const scrollTop = previous.querySelector('.hub-deck-grid')?.scrollTop ?? 0;
+    const template = document.createElement('template');
+    template.innerHTML = this.renderDeckEditor();
+    const next = template.content.firstElementChild as HTMLElement;
+    previous.replaceWith(next);
+    applyHubInfoPanelContentRects(next.parentElement!);
+    fitCardText(next);
+    next.querySelector('.hub-deck-grid')!.scrollTop = scrollTop;
   }
 
   private renderSoulArchive(): string {
@@ -316,7 +374,7 @@ export class HubController {
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
       <section class="hub-stage-list">
         <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>序｜初见</h2><p>在无名渡口，遇见第一位无法离开的亡魂。</p><small>已完成 · 可再次进入</small></div><button class="hub-stage-button hub-stage-button--replay" data-hub-action="replay-prologue">再次渡魂</button></article>
-        <article class="hub-stage-entry is-unavailable" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>世｜见天地</h2><p>新的相遇仍在前方。</p><small>尚未开放</small></div><button class="hub-stage-button is-muted" data-hub-action="locked-chapter" disabled>尚未开放</button></article>
+        <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>世｜满溢</h2><p>走进商埠，倾听一段未结的账。</p><small>第一章 · 可进入</small></div><button class="hub-stage-button" data-hub-action="start-manyi">开始渡魂</button></article>
       </section>
     </main>`;
   }

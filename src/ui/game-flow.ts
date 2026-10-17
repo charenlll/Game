@@ -1,6 +1,7 @@
 import { RunController } from './run-view';
 import { MainMenu } from './main-menu';
 import { PrologueController } from './prologue-view';
+import { ManyiController } from './manyi-view';
 import { HubController } from './hub-view';
 import { SessionCoordinator } from '../app/session/session-coordinator';
 import { createBrowserSaveRepository } from '../infrastructure/save/local-save-repository';
@@ -10,6 +11,7 @@ export class GameFlow {
   private prologueCompleted = false;
   private prologueEntrySource: ChapterEntrySource = 'main_menu';
   private prologue: PrologueController | null = null;
+  private manyi: ManyiController | null = null;
   private mainMenu: MainMenu | null = null;
   private run: RunController | null = null;
   private hub: HubController | null = null;
@@ -33,17 +35,19 @@ export class GameFlow {
 
   debugFinishBattle(result: 'won' | 'lost'): void {
     if (this.prologue) this.prologue.debugFinishBattle(result);
+    else if (this.manyi) this.manyi.debugFinishBattle(result);
     else this.run?.debugFinishBattle(result);
   }
 
   debugReturnToMenu(): void {
     if (this.prologue) this.returnFromPrologue();
+    else if (this.manyi) this.returnFromManyi();
     else if (this.run && this.prologueCompleted) this.returnFromRun();
     else { this.sessions.setLaunchDestination('main_menu'); this.showMainMenu(); }
   }
 
   debugState(): unknown {
-    return this.prologue ? this.prologue.debugState() : this.run ? structuredClone(this.run.state) : null;
+    return this.prologue ? this.prologue.debugState() : this.manyi ? this.manyi.debugState() : this.run ? structuredClone(this.run.state) : null;
   }
 
   destroy(): void {
@@ -51,6 +55,7 @@ export class GameFlow {
     this.hub?.destroy();
     this.run?.destroy();
     this.prologue?.destroy();
+    this.manyi?.destroy();
   }
 
   private showMainMenu(): void {
@@ -58,6 +63,8 @@ export class GameFlow {
     this.run = null;
     this.mainMenu?.destroy();
     this.prologue?.destroy();
+    this.manyi?.destroy();
+    this.manyi = null;
     this.hub?.destroy();
     this.prologue = null;
     this.hub = null;
@@ -83,6 +90,8 @@ export class GameFlow {
     this.mainMenu?.destroy();
     this.mainMenu = null;
     this.prologue?.destroy();
+    this.manyi?.destroy();
+    this.manyi = null;
     this.prologue = new PrologueController(this.stage, this.seed, {
       returnToMenu: () => this.prologueCompleted ? this.showHub() : this.showMainMenu(),
       returnFromBattleToMenu: () => this.returnFromPrologue(),
@@ -102,19 +111,40 @@ export class GameFlow {
     this.showHub();
   }
 
+  private startManyi(resume?: ActiveSessionSnapshot): void {
+    this.prologue?.destroy(); this.prologue = null;
+    this.manyi?.destroy();
+    this.hub?.destroy(); this.hub = null;
+    this.mainMenu?.destroy(); this.mainMenu = null;
+    this.run?.destroy(); this.run = null;
+    this.manyi = new ManyiController(this.stage, this.seed, this.sessions, { returnToHub: () => this.returnFromManyi() }, resume);
+  }
+
+  private returnFromManyi(): void {
+    this.sessions.setLaunchDestination('hub');
+    this.showHub();
+  }
+
   private showHub(): void {
     this.run?.destroy();
     this.run = null;
     this.prologue?.destroy();
     this.prologue = null;
+    this.manyi?.destroy();
+    this.manyi = null;
     this.mainMenu?.destroy();
     this.mainMenu = null;
     this.hub?.destroy();
     this.hub = new HubController(this.stage, {
       startPrologue: () => this.startPrologue('hub'),
+      startManyi: () => this.startManyi(),
       returnToMenu: () => this.showMainMenu(),
       ferrymanProgress: () => this.sessions.ferrymanProgress(),
       discoveredCardIds: () => this.sessions.discoveredCardIds(),
+      unlockedCardIds: () => this.sessions.unlockedCardIds(),
+      startingDeckFor: id => this.sessions.startingDeckFor(id),
+      saveStartingDeck: (id, deck) => this.sessions.saveStartingDeck(id, deck),
+      mementoIds: () => this.sessions.snapshot.profile.mementoIds,
       soulArchive: () => this.sessions.soulArchive(),
       settings: () => this.sessions.settings,
       setReducedMotion: enabled => this.setReducedMotion(enabled),
@@ -130,6 +160,7 @@ export class GameFlow {
 
   private resumeSession(session: ActiveSessionSnapshot): void {
     if (session.mode === 'chapter' && session.chapterId === 'prologue') this.startPrologue(session.entrySource ?? (this.prologueCompleted ? 'hub' : 'main_menu'), session);
+    else if (session.mode === 'chapter' && session.chapterId === 'manyi') this.startManyi(session);
     else if (session.mode === 'free_run') this.startRun(session);
     else this.showMainMenu();
   }

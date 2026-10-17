@@ -177,7 +177,7 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   expect(stageGeometry.actionWidth).toBeCloseTo(184, 0);
   expect(stageGeometry.actionHeight).toBeCloseTo(64.4, 0);
   await expect(page.locator('.hub-stage-button--replay')).toHaveCSS('background-image', /RB01-A\.png/);
-  await expect(page.locator('.hub-stage-entry.is-unavailable .hub-stage-button')).toBeDisabled();
+  await expect(page.locator('[data-hub-action="start-manyi"]')).toBeEnabled();
   await page.getByRole('button', { name: '再次渡魂' }).click();
   await expect(page.locator('.prologue-scene')).toHaveAttribute('data-beat-id', 'beat-0001');
 });
@@ -195,7 +195,7 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   await expect(page.locator('.hub-ferryman-card.is-locked .ferryman-lock')).toHaveCount(2);
   await page.locator('.ferryman-drawer .ferryman-avatar').evaluateAll(images => Promise.all(images.map(image => (image as HTMLImageElement).decode())));
   const avatarAssets = await page.locator('.ferryman-drawer .ferryman-avatar').evaluateAll(images => images.map(image => ({ src: (image as HTMLImageElement).getAttribute('src'), loaded: (image as HTMLImageElement).naturalWidth > 0 })));
-  expect(avatarAssets.map(avatar => avatar.src)).toEqual(expect.arrayContaining(['/assets/characters/AV01.png', '/assets/characters/AV02.png', '/assets/characters/AV03.png']));
+  expect(['AV01.png', 'AV02.png', 'AV03.png'].every(name => avatarAssets.some(avatar => avatar.src?.endsWith(`/assets/characters/${name}`)))).toBe(true);
   expect(avatarAssets.every(avatar => avatar.loaded)).toBe(true);
   const drawerAvatarGeometry = await page.locator('.ferryman-drawer .ferryman-avatar').evaluateAll(images => images.map(image => {
     const element = image as HTMLImageElement;
@@ -274,7 +274,7 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   expect(traitRects[0]!.x).toBeCloseTo(736, 0);
   expect(traitRects[1]!.x).toBeCloseTo(1138, 0);
   expect(traitRects[0]!.y).toBeCloseTo(142, 0);
-  await expect(page.locator('.growth-exclusive-cards')).toHaveCSS('height', '220px');
+  await expect(page.locator('.growth-exclusive-cards')).toHaveCSS('height', '248px');
   await expect(page.locator('.growth-exclusive-cards')).toHaveCSS('border-image-source', 'none');
   await expect(page.locator('.growth-more-cards')).toContainText('更多卡牌');
   await expect(page.locator('.growth-more-cards')).toContainText('未解锁');
@@ -283,11 +283,12 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
     const growth = document.querySelector('.growth-node-panel')!.getBoundingClientRect();
     const firstCard = document.querySelector('.growth-card')!.getBoundingClientRect();
     const more = document.querySelector('.growth-more-cards')!.getBoundingClientRect();
-    return { gap: growth.top - cards.bottom, growthHeight: growth.height, cardHeight: firstCard.height, cardStart: firstCard.left, sectionStart: cards.left, moreRight: more.right, sectionRight: cards.right, cardCenter: firstCard.top + firstCard.height / 2, moreCenter: more.top + more.height / 2 };
+    return { gap: growth.top - cards.bottom, growthHeight: growth.height, cardWidth: firstCard.width, cardHeight: firstCard.height, cardStart: firstCard.left, sectionStart: cards.left, moreRight: more.right, sectionRight: cards.right, cardCenter: firstCard.top + firstCard.height / 2, moreCenter: more.top + more.height / 2 };
   });
   expect(cardAndGrowthRects.gap).toBeCloseTo(10, 0);
   expect(cardAndGrowthRects.growthHeight).toBeCloseTo(110, 0);
-  expect(cardAndGrowthRects.cardHeight).toBeCloseTo(220, 0);
+  expect(cardAndGrowthRects.cardHeight).toBeCloseTo(247.5, 0);
+  expect(cardAndGrowthRects.cardWidth / cardAndGrowthRects.cardHeight).toBeCloseTo(2 / 3, 2);
   expect(cardAndGrowthRects.cardStart).toBeCloseTo(cardAndGrowthRects.sectionStart, 0);
   expect(cardAndGrowthRects.moreRight).toBeCloseTo(cardAndGrowthRects.sectionRight, 0);
   expect(cardAndGrowthRects.cardCenter).toBeCloseTo(cardAndGrowthRects.moreCenter, 0);
@@ -298,7 +299,7 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
     const style = getComputedStyle(card);
     return { x: slot.x, y: slot.y, width: Number.parseFloat(style.width), height: Number.parseFloat(style.height) };
   }));
-  expect(cardRects.every(card => Math.abs(card.width - 165) < 0.1 && Math.abs(card.height - 220) < 0.1)).toBe(true);
+  expect(cardRects.every(card => Math.abs(card.width / card.height - 2 / 3) < 0.01 && Math.abs(card.height - 247.5) < 0.1)).toBe(true);
   expect(cardRects[0]!.x).toBeLessThan(cardRects[1]!.x);
   expect(cardRects[1]!.x).toBeLessThan(cardRects[2]!.x);
   expect(cardRects[0]!.y).toBeCloseTo(260, 0);
@@ -367,7 +368,7 @@ test('旧版存档可打开牌录，按分类浏览已发现卡牌和未解锁�
   await page.getByRole('tab', { name: '绯川专属' }).click();
   await expect(page.locator('.hub-catalog-card:not(.is-locked)')).toHaveCount(3);
   await page.getByRole('tab', { name: '浊念' }).click();
-  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(2);
+  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(3);
   await page.getByRole('button', { name: '返回驿站' }).click();
   await expect(page.getByRole('dialog', { name: '牌录' })).toHaveCount(0);
 });
@@ -400,7 +401,7 @@ test('牌录只预览已发现卡牌，并在窄横屏保持窗口完整', async
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(932);
   expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(430);
   await page.getByRole('tab', { name: '浊念' }).click();
-  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(1);
+  await expect(page.locator('.hub-catalog-card.is-locked')).toHaveCount(2);
   await page.locator('.hub-catalog-card:not(.is-locked)').click();
   await expect(page.getByRole('dialog', { name: '踌躇' })).toBeVisible();
   await page.locator('.hub-popup-viewport-backdrop').click({ position: { x: 3, y: 3 } });
@@ -471,7 +472,7 @@ test('点击摆渡人卡牌打开无底色预览，点击卡牌外侧关闭后�
   await page.locator('.growth-card').first().click();
   const popup = page.getByRole('dialog', { name: '狐火' });
   await expect(popup).toBeVisible();
-  await expect(popup.locator('.card-preview-art')).toHaveCSS('width', '300px');
+  await expect(popup.locator('.card-preview-art')).toHaveCSS('width', '400px');
   await expect(popup.locator('.hub-popup-close')).toHaveCount(0);
   await expect(popup).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(popup).toHaveCSS('border-top-width', '0px');

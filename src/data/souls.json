@@ -7,5 +7,11 @@
     "SoulID": "soul-000", "Name": "无名孩子", "Obsession": 60,
     "Story": "他在寻找一艘普通的小木船。", "ArtReference": "assets/souls/prologue/GH-P01.png",
     "HesitantArtReference": "assets/souls/prologue/GH-P02.png", "ReleasedArtReference": "assets/souls/prologue/GH-P03.png"
-  }
+  },
+  { "SoulID": "manyi-merchant", "Name": "争胜商人", "Obsession": 32, "Story": "把输赢看得比买卖更重的商人。", "ArtReference": "assets/souls/manyi/EN1-01.png", "ReleasedArtReference": "assets/souls/manyi/EN1-01.png" },
+  { "SoulID": "manyi-ledger-merchant", "Name": "精算商人", "Obsession": 34, "Story": "被不断增殖的虚假账目困住。", "ArtReference": "assets/souls/manyi/EN1-02.png", "ReleasedArtReference": "assets/souls/manyi/EN1-02.png" },
+  { "SoulID": "manyi-delivery-merchant", "Name": "催运商人", "Obsession": 36, "Story": "仍在追赶日落前的交付。", "ArtReference": "assets/souls/manyi/EN1-03.png", "ReleasedArtReference": "assets/souls/manyi/EN1-03.png" },
+  { "SoulID": "manyi-chiying-history", "Name": "持盈·旧日", "Obsession": 38, "Story": "一次又一次改写已经发生的事故。", "ArtReference": "assets/characters/manyi/CH1-02.png", "ReleasedArtReference": "assets/characters/manyi/CH1-01.png" },
+  { "SoulID": "manyi-chiying-voyage", "Name": "持盈·最后一航", "Obsession": 40, "Story": "仍想独自完成最后一次补救。", "ArtReference": "assets/characters/manyi/CH1-02.png", "ReleasedArtReference": "assets/characters/manyi/CH1-01.png" },
+  { "SoulID": "manyi-chiying-full", "Name": "持盈·满溢", "Obsession": 45, "Story": "财富、责任与亏欠在腹中无尽堆积。", "ArtReference": "assets/characters/manyi/CH1-01.png", "HesitantArtReference": "assets/characters/manyi/CH1-02.png", "ReleasedArtReference": "assets/characters/manyi/CH1-06.png" }
 ]

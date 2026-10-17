@@ -1,6 +1,12 @@
 import zhCN from './zh-CN.json';
+import manyiZhCN from './manyi-zh-CN.json';
 
-const catalogs: Readonly<Record<string, Readonly<Record<string, string>>>> = { 'zh-CN': zhCN };
+const catalogs: Readonly<Record<string, Readonly<Record<string, string>>>> = { 'zh-CN': { ...zhCN, ...manyiZhCN,
+  'manyi.choice.a': '货路上还有一桩未完的生意。要去看看吗？',
+  'manyi.choice.b': '空着的泊位仍在等待。要去看看吗？',
+  'manyi.choice.c': '账房里还有未结的记录。要去看看吗？',
+  'manyi.choice.enter': '前去查看', 'manyi.choice.skip': '继续前行',
+} };
 
 export function textForKey(key: string, locale = 'zh-CN'): string {
   if (!key) throw new Error('剧情文本缺少 textKey。');

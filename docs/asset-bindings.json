@@ -538,5 +538,107 @@
         "destination":  "assets/characters/hub/CHH01_feichuan.png",
         "bytes":  2115468,
         "sha256":  "0b56486be099f8aba81e4dd566ce6b039e7a979af6d64196b030dfd9abb2e700"
+    },
+    {
+        "source":  "character1/SC01商埠长街·白昼.png",
+        "destination":  "assets/backgrounds/manyi/SC01.png",
+        "bytes":  3140207,
+        "sha256":  "872c1dbdfa6c3e3d281e73a210074d9b0f42e89a74fdae78840a69a0ce746e50"
+    },
+    {
+        "source":  "character1/SC02商号账房·白昼.png",
+        "destination":  "assets/backgrounds/manyi/SC02.png",
+        "bytes":  2638061,
+        "sha256":  "280155e203c9a404c35a68c75d37f87a91a7e4550561c90702f9a9b5bc80163c"
+    },
+    {
+        "source":  "character1/SC03归潮码头·基础背景.png",
+        "destination":  "assets/backgrounds/manyi/SC03.png",
+        "bytes":  2942631,
+        "sha256":  "e631e3a145c209d14c6d000fb41f7c6164823e02380091bfe21f22bb31c7952c"
+    },
+    {
+        "source":  "character1/CH01持盈·普通.png",
+        "destination":  "assets/characters/manyi/CH1-01.png",
+        "bytes":  2114790,
+        "sha256":  "edc2c0cefe7844098ce36d99dc93c54f22fa67724b3391d289056b959e10af3c"
+    },
+    {
+        "source":  "character1/CH01持盈·执念加深.png",
+        "destination":  "assets/characters/manyi/CH1-02.png",
+        "bytes":  2284828,
+        "sha256":  "aeba775613ea4a4c9810b90487f71168ca441957ca56dbb5bff9e61f46a537a0"
+    },
+    {
+        "source":  "character1/CH01持盈·满溢异化.png",
+        "destination":  "assets/characters/manyi/CH1-03.png",
+        "bytes":  2642635,
+        "sha256":  "eca5f2f4ad9463e4e5f2034c3d81c4ff3edc199e0a5741ff09073b586cc445bc"
+    },
+    {
+        "source":  "character1/CH02阿筹.png",
+        "destination":  "assets/characters/manyi/CH1-04.png",
+        "bytes":  2149697,
+        "sha256":  "33e14ca03a26346e471e8b61797de7264e9c9138b8bdcfc417b9b3ae39a4c417"
+    },
+    {
+        "source":  "character1/CH03阿桅.png",
+        "destination":  "assets/characters/manyi/CH1-05.png",
+        "bytes":  2270315,
+        "sha256":  "da76b8390331e9f26ae45d4eaba0df3ca38ba45bb25e696669f630376208af59"
+    },
+    {
+        "source":  "character1/CH01持盈·释然.png",
+        "destination":  "assets/characters/manyi/CH1-06.png",
+        "bytes":  2080677,
+        "sha256":  "366db1dd299c63dd65d3483d05399ef605da70cdf9d20e3c0877b547fad0b666"
+    },
+    {
+        "source":  "character1/EN01豪商·争胜.png",
+        "destination":  "assets/souls/manyi/EN1-01.png",
+        "bytes":  2815746,
+        "sha256":  "d236c3580d1176f65fe2b63f9c7684627bf4a8715f24328be562b5b1fac03bfe"
+    },
+    {
+        "source":  "character1/EN02｜精算商人·逐利.png",
+        "destination":  "assets/souls/manyi/EN1-02.png",
+        "bytes":  2788592,
+        "sha256":  "9ded8bbb6bb76ba9d6c692a210b1420222b430ad498523220a618249b0dc3c4a"
+    },
+    {
+        "source":  "character1/EN03货商·催运.png",
+        "destination":  "assets/souls/manyi/EN1-03.png",
+        "bytes":  2788592,
+        "sha256":  "9ded8bbb6bb76ba9d6c692a210b1420222b430ad498523220a618249b0dc3c4a"
+    },
+    {
+        "source":  "character1/CA周转.png",
+        "destination":  "assets/cards/common/CA07.png",
+        "bytes":  2620162,
+        "sha256":  "f4f0628344052110b76c32d51fab48a399c6484a54e14bba96b18be0443720f3"
+    },
+    {
+        "source":  "character1/CA清账.png",
+        "destination":  "assets/cards/common/CA08.png",
+        "bytes":  2384512,
+        "sha256":  "4dbafc549fb3c1b01e895ab9a3da3c201757906b0f9f904f55693627c802fa48"
+    },
+    {
+        "source":  "character1/FC借势.png",
+        "destination":  "assets/cards/feichuan/FC04.png",
+        "bytes":  2243348,
+        "sha256":  "f3c4e67b4d6ecf069e50f4072940f996aa496959ca95a2df710a66544c57eb20"
+    },
+    {
+        "source":  "character1/NC虚账.png",
+        "destination":  "assets/cards/burden/ZN03.png",
+        "bytes":  2805278,
+        "sha256":  "aba4f2b32968dd173986850af4e160c039d0e73131c787b9705d1bdcd0cb944a"
+    },
+    {
+        "source":  "character1/PR01｜归潮返航凭证.png",
+        "destination":  "assets/story/manyi/PR1-03.png",
+        "bytes":  2361743,
+        "sha256":  "51a9ceba4f9152713ed9e4fe725e822a51a697391176da94811f866c754f64f1"
     }
 ]

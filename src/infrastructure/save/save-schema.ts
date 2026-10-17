@@ -3,6 +3,7 @@ import type { RunState } from '../../core/run';
 import type { CampaignState } from '../../core/campaign/campaign-types';
 import type { FerrymanId, ProfileState } from '../../core/profile/profile-types';
 import { CONTENT_VERSION } from '../../data/content-version';
+import { configuredStartingDeck, LEGACY_UNLOCKED_CARDS } from '../../core/deck-editor';
 
 export const SAVE_KEY = 'night-ferry.save';
 export const LEGACY_PROLOGUE_KEY = 'night-ferry.prologue.v1';
@@ -71,6 +72,8 @@ export function createDefaultSaveGame(now = new Date().toISOString()): SaveGameV
       mementoIds: [],
       characterProgress: {},
       discoveredCardIds: [],
+      unlockedCardIds: [...LEGACY_UNLOCKED_CARDS],
+      startingDecks: {},
     },
     campaign: { chapters: { prologue: { chapterId: 'prologue', flags: {}, status: 'available', variables: {} } } },
     activeSession: null,
@@ -105,6 +108,8 @@ export function isSaveGameV1(value: unknown): value is SaveGameV1 {
   if (!isFerrymanId(value.profile.ferrymen.currentId) || !value.profile.ferrymen.unlockedIds.every(isFerrymanId) || !value.profile.ferrymen.unlockedIds.includes(value.profile.ferrymen.currentId)) return false;
   if (!isStringArray(value.profile.mementoIds) || !isRecord(value.profile.characterProgress)) return false;
   if (value.profile.discoveredCardIds !== undefined && !isStringArray(value.profile.discoveredCardIds)) return false;
+  if (value.profile.unlockedCardIds !== undefined && !isStringArray(value.profile.unlockedCardIds)) return false;
+  if (value.profile.startingDecks !== undefined && (!isRecord(value.profile.startingDecks) || Object.entries(value.profile.startingDecks).some(([id, deck]) => !isFerrymanId(id) || !isStringArray(deck)))) return false;
   if (!isRecord(value.campaign) || !isRecord(value.campaign.chapters)) return false;
   for (const [id, chapter] of Object.entries(value.campaign.chapters)) if (!isChapterProgress(chapter, id)) return false;
   if (value.campaign.activeChapterId !== undefined && typeof value.campaign.activeChapterId !== 'string') return false;
@@ -112,6 +117,17 @@ export function isSaveGameV1(value: unknown): value is SaveGameV1 {
   if (value.launchDestination !== undefined && value.launchDestination !== 'main_menu' && value.launchDestination !== 'hub') return false;
   if (!isRecord(value.settings) || typeof value.settings.language !== 'string' || typeof value.settings.reducedMotion !== 'boolean' || typeof value.settings.masterVolume !== 'number' || value.settings.masterVolume < 0 || value.settings.masterVolume > 1) return false;
   return isStringArray(value.appliedGrantIds);
+}
+
+export function upgradeSaveGame(save: SaveGameV1): SaveGameV1 {
+  const next = structuredClone(save);
+  const unlocked = new Set([...LEGACY_UNLOCKED_CARDS, ...(next.profile.unlockedCardIds ?? [])]);
+  for (const id of next.profile.discoveredCardIds ?? []) if (LEGACY_UNLOCKED_CARDS.includes(id)) unlocked.add(id);
+  next.profile.unlockedCardIds = [...unlocked];
+  next.profile.startingDecks ??= {};
+  for (const id of next.profile.ferrymen.unlockedIds) next.profile.startingDecks[id] = configuredStartingDeck(next.profile, id);
+  next.campaign.chapters.manyi ??= { chapterId: 'manyi', flags: {}, variables: {}, status: 'available' };
+  return next;
 }
 
 export function isActiveSession(value: unknown): value is ActiveSessionSnapshot {
@@ -173,12 +189,13 @@ function isEncounterConfig(value: unknown): value is BattleEncounterConfig {
   for (const key of ['IntentPool', 'IntentSequence']) {
     if (value[key] !== undefined && (!Array.isArray(value[key]) || !value[key].every(isIntent))) return false;
   }
+  if (value.PhaseThresholds !== undefined && (!Array.isArray(value.PhaseThresholds) || !value.PhaseThresholds.every(isNonNegativeInteger))) return false;
   return true;
 }
 
 function isIntent(value: unknown): boolean {
-  if (!isRecord(value) || !['intent_close', 'intent_hesitate', 'intent_hesitation_spread', 'intent_burden', 'intent_dim_light'].includes(String(value.IntentID))) return false;
-  return value.BurdenCardID === undefined || value.BurdenCardID === 'burden_001' || value.BurdenCardID === 'burden_002';
+  if (!isRecord(value) || !['intent_close', 'intent_hesitate', 'intent_hesitation_spread', 'intent_burden', 'intent_dim_light', 'intent_account_inflation'].includes(String(value.IntentID))) return false;
+  return value.BurdenCardID === undefined || value.BurdenCardID === 'burden_001' || value.BurdenCardID === 'burden_002' || value.BurdenCardID === 'burden_003';
 }
 
 function isRunState(value: unknown): value is RunState {

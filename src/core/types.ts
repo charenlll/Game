@@ -1,6 +1,6 @@
 export type CardType = '安抚' | '引魂' | '净化' | '洞察' | '灵术';
 export type CardEffect =
-  | { Type: 'ReduceObsession' | 'GainLight' | 'DrawCard' | 'DiscardCard' | 'ModifyNextRoundLight' | 'ModifySelectedCost'; Amount: number }
+  | { Type: 'ReduceObsession' | 'GainLight' | 'DrawCard' | 'DiscardCard' | 'ModifyNextRoundLight' | 'ModifySelectedCost' | 'ExhaustSelectedBurden' | 'ModifyNextNormalObsession'; Amount: number }
   | { Type: 'ConditionalReduceObsession'; Amount: number; Bonus: number };
 export interface CardDefinition {
   CardID: string;
@@ -52,8 +52,8 @@ export interface CardInstance {
   CostModifiers: { Source: string; Amount: number; ExpiresAtTurn: number }[];
 }
 export type BattlePhase = 'ROUND_START' | 'PLAYER_TURN' | 'RESOLVING_CARD' | 'TURN_END' | 'RESOLVING_INTENT' | 'RESULT';
-export type IntentID = 'intent_close' | 'intent_hesitate' | 'intent_hesitation_spread' | 'intent_burden' | 'intent_dim_light';
-export interface IntentInstance { IntentID: IntentID; BurdenCardID?: 'burden_001' | 'burden_002' }
+export type IntentID = 'intent_close' | 'intent_hesitate' | 'intent_hesitation_spread' | 'intent_burden' | 'intent_dim_light' | 'intent_account_inflation';
+export interface IntentInstance { IntentID: IntentID; BurdenCardID?: 'burden_001' | 'burden_002' | 'burden_003' }
 export interface BattleEncounterConfig {
   SoulID?: string;
   StartingObsession?: number;
@@ -66,6 +66,7 @@ export interface BattleEncounterConfig {
   IntentPool?: readonly IntentInstance[];
   IntentSequence?: readonly IntentInstance[];
   CompletionLog?: string;
+  PhaseThresholds?: readonly number[];
 }
 export type BattleStatus = 'playing' | 'won' | 'lost';
 export interface BattleState {
@@ -88,6 +89,8 @@ export interface BattleState {
   GainedLightThisTurn: boolean;
   CombatTraitTriggeredThisTurn: boolean;
   CombatTraitDiscountActive: boolean;
+  PendingNormalObsessionBonus?: number;
+  BossPhase?: number;
   CharacterID: string;
   SoulID: string;
   DrawPile: CardInstance[];

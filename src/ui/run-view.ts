@@ -52,14 +52,14 @@ export class RunController {
       this.startBattle();
     } else if (action === 'restart-run') {
       const seed = crypto.getRandomValues(new Uint32Array(1))[0];
-      Object.assign(this.state, createRun(this.state.SelectedCharacterID, seed));
+      Object.assign(this.state, createRun(this.state.SelectedCharacterID, seed, this.sessions?.startingDeckFor(this.state.SelectedCharacterID as 'feichuan' | 'moyu' | 'qinglan')));
       this.appliedSessionEventIds.clear();
       this.startBattle();
     }
   };
 
   constructor(private readonly root: HTMLElement, seed: number, characterID = 'feichuan', private readonly onReturnToMenu?: () => void, private readonly sessions?: SessionCoordinator, resume?: ActiveSessionSnapshot) {
-    this.state = resume?.mode === 'free_run' && resume.runState ? structuredClone(resume.runState) : createRun(characterID, seed);
+    this.state = resume?.mode === 'free_run' && resume.runState ? structuredClone(resume.runState) : createRun(characterID, seed, sessions?.startingDeckFor(characterID as 'feichuan' | 'moyu' | 'qinglan'));
     this.rewards = resume?.offeredRewardIds ?? [];
     this.selectedReward = resume?.selectedRewardId ?? null;
     this.appliedSessionEventIds = new Set(resume?.appliedSessionEventIds ?? []);
@@ -107,7 +107,7 @@ export class RunController {
     finishEncounter(this.state, result);
     this.appliedSessionEventIds.add(eventId);
     if (this.state.Status === 'reward') {
-      this.rewards = generateRewards(this.state);
+      this.rewards = generateRewards(this.state, this.sessions ? new Set(this.sessions.unlockedCardIds()) : undefined);
       this.selectedReward = null;
       this.checkpoint('reward');
       await Promise.all([

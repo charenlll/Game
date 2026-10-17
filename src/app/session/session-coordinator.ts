@@ -7,6 +7,7 @@ import { LocalSaveRepository } from '../../infrastructure/save/local-save-reposi
 import { cardDatabase } from '../../core/card-database';
 import { startingDeck } from '../../core/content';
 import { projectSoulArchive, type SoulArchiveEntry } from '../../core/archive/soul-archive';
+import { configuredStartingDeck, unlockedCards, validateEditableDeck } from '../../core/deck-editor';
 
 export interface ChapterCheckpoint {
   chapterId: string;
@@ -38,6 +39,31 @@ export class SessionCoordinator {
   get lastSaveDiagnostic(): string | null { return this.diagnostic; }
 
   get settings(): UserSettings { return structuredClone(this.save.settings); }
+
+  unlockedCardIds(): readonly string[] { return [...unlockedCards(this.save.profile)]; }
+
+  startingDeckFor(id: FerrymanId): readonly string[] { return configuredStartingDeck(this.save.profile, id); }
+
+  saveStartingDeck(id: FerrymanId, deck: readonly string[]): string | null {
+    if (!this.save.profile.ferrymen.unlockedIds.includes(id)) return '该摆渡人尚未解锁。';
+    const problem = validateEditableDeck(deck, id, unlockedCards(this.save.profile));
+    if (problem) return problem;
+    if (!this.commit(next => { next.profile.startingDecks ??= {}; next.profile.startingDecks[id] = [...deck]; })) return '初始牌组保存失败。';
+    return null;
+  }
+
+  claimChapterCard(cardId: string, claimId: string): boolean {
+    if (this.save.appliedGrantIds.includes(claimId)) return true;
+    const card = cardDatabase.get(cardId);
+    if (card.card_type !== 'normal') return false;
+    return this.commit(next => {
+      next.profile.unlockedCardIds ??= [];
+      if (!next.profile.unlockedCardIds.includes(cardId)) next.profile.unlockedCardIds.push(cardId);
+      next.profile.discoveredCardIds ??= [];
+      if (!next.profile.discoveredCardIds.includes(cardId)) next.profile.discoveredCardIds.push(cardId);
+      next.appliedGrantIds.push(claimId);
+    });
+  }
 
   setReducedMotion(enabled: boolean): boolean {
     return this.commit(next => { next.settings.reducedMotion = enabled; });
@@ -125,6 +151,11 @@ export class SessionCoordinator {
       next.profile = structuredClone(result.state.profile);
       next.campaign = structuredClone(result.state.campaign);
       next.appliedGrantIds = [...result.state.appliedGrantIds];
+      // A replay can be in progress even when its one-time grant was already
+      // claimed. Finishing it must still restore the chapter's complete state.
+      for (const effect of grant.effects) {
+        if (effect.kind === 'completeChapter') next.campaign.chapters[effect.chapterId]!.status = 'complete';
+      }
       next.activeSession = null;
       delete next.launchDestination;
       next.campaign.activeChapterId = undefined;

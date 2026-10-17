@@ -194,7 +194,7 @@ export class PrologueController {
     this.clearTyping();
     this.visibleText = '';
     this.skipConfirmation = false;
-    this.setStoryBlack(true);
+    this.setStoryBlack(false);
     this.applyStoryBeat(beat);
     this.renderStory(beat);
     this.startTyping(beat.textKey ? textForKey(beat.textKey) : '');
@@ -315,7 +315,8 @@ export class PrologueController {
       ? `<button class="story-skip-trigger" data-prologue-action="open-skip-confirmation" aria-label="跳过当前剧情">跳过剧情</button>` : '';
     const skipModal = this.skipConfirmation ? `<div class="skip-confirm-backdrop"><section class="skip-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="skip-confirm-title"><h2 id="skip-confirm-title">跳过剧情？</h2><p>将跳过接下来的对白，直到下一场战斗或章节信物页。</p><div class="skip-confirm-actions">${primaryButton('跳过', 'confirm-skip-story', false, 'skip-confirm-primary')}${primaryButton('继续观看', 'cancel-skip-confirmation', false, 'skip-confirm-secondary')}</div></section></div>` : '';
     const text = beat.textKey ? textForKey(beat.textKey) : '';
-    this.root.innerHTML = `<main class="prologue-scene is-story-black" data-testid="prologue-scene" data-beat-id="${beat.id}" aria-label="序章剧情">
+    this.root.innerHTML = `<main class="prologue-scene is-story-color" data-testid="prologue-scene" data-beat-id="${beat.id}" aria-label="序章剧情">
+      <img class="prologue-background" src="${assetURL(backgrounds[beat.background])}" alt="" draggable="false"><div class="prologue-darken"></div>
       ${skipButton}
       ${showChild ? `<img class="story-character story-child ${childActive ? 'is-active' : ''} ${childReleased ? 'story-released' : ''}" data-testid="story-child" src="${assetURL(childSource)}" alt="孩子" draggable="false">` : ''}
       ${showFeichuan ? `<img class="story-character story-feichuan ${feichuanActive ? 'is-active' : ''}" data-testid="story-feichuan" src="${assetURL(sceneArt.character)}" alt="绯川" draggable="false">` : ''}

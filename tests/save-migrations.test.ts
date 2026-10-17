@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { LocalSaveRepository, type StoragePort } from '../src/infrastructure/save/local-save-repository';
-import { LEGACY_PROLOGUE_KEY, SAVE_KEY, isSaveGameV1 } from '../src/infrastructure/save/save-schema';
+import { LEGACY_PROLOGUE_KEY, SAVE_KEY, createDefaultSaveGame, isSaveGameV1 } from '../src/infrastructure/save/save-schema';
+import { createRun } from '../src/core/run';
+import { SessionCoordinator } from '../src/app/session/session-coordinator';
+import { manyiChapter } from '../src/data/chapters/manyi';
 
 class MemoryStorage implements StoragePort {
   readonly values = new Map<string, string>();
@@ -9,6 +12,20 @@ class MemoryStorage implements StoragePort {
 }
 
 describe('统一存档迁移', () => {
+  it('重玩已通关章节后仍标记完成，信物和永久结算不重复', () => {
+    const sessions = SessionCoordinator.open(new LocalSaveRepository(new MemoryStorage()));
+    const grant = manyiChapter.grants['manyi-complete']!;
+    expect(sessions.completeChapter(grant)).toBe(true);
+    expect(sessions.checkpoint({ mode: 'chapter', chapterId: 'manyi', runState: createRun('feichuan', 11), screen: 'story', appliedSessionEventIds: [] }, {
+      chapterId: 'manyi', currentNodeId: manyiChapter.entryNodeId, flags: {}, variables: {}, status: 'in_progress',
+    })).toBe(true);
+    expect(sessions.completeChapter(grant)).toBe(true);
+    const save = sessions.snapshot;
+    expect(save.campaign.chapters.manyi?.status).toBe('complete');
+    expect(save.profile.mementoIds.filter(id => id === 'manyi_return_voucher')).toHaveLength(1);
+    expect(save.appliedGrantIds.filter(id => id === 'manyi-complete')).toHaveLength(1);
+    expect(save.activeSession).toBeNull();
+  });
   it('迁移旧序章数据，保留旧键且重复加载不重复迁移', () => {
     const storage = new MemoryStorage();
     const legacy = JSON.stringify({
@@ -49,5 +66,27 @@ describe('统一存档迁移', () => {
     const result = new LocalSaveRepository(storage).load();
     expect(result.status).toBe('corrupt');
     expect(storage.getItem(SAVE_KEY)).toBe('{broken');
+  });
+
+  it('旧版进行中的牌组不被编辑规则重写，迁移重复读取保持幂等', () => {
+    const storage = new MemoryStorage();
+    const original = createDefaultSaveGame();
+    delete original.profile.unlockedCardIds;
+    delete original.profile.startingDecks;
+    const run = createRun('feichuan', 77);
+    expect(run.RunDeck).toHaveLength(15);
+    original.activeSession = { mode: 'free_run', runState: run, screen: 'result', appliedSessionEventIds: [] };
+    storage.setItem(SAVE_KEY, JSON.stringify(original));
+    const repository = new LocalSaveRepository(storage);
+    const first = repository.load();
+    expect(first.status).toBe('ready');
+    if (first.status !== 'ready') return;
+    expect(first.save.activeSession?.runState?.RunDeck).toEqual(run.RunDeck);
+    expect(first.save.profile.startingDecks?.feichuan).toHaveLength(12);
+    expect(first.save.profile.unlockedCardIds).not.toContain('common_007');
+    const serialized = storage.getItem(SAVE_KEY);
+    const second = repository.load();
+    expect(second.status).toBe('ready');
+    expect(storage.getItem(SAVE_KEY)).toBe(serialized);
   });
 });

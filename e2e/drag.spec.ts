@@ -24,15 +24,15 @@ test('CardTestScene组合全部卡牌并按归属绑定卡面与卡框', async (
   const failed: string[] = [];
   page.on('requestfailed', request => failed.push(request.url()));
   await page.goto('/?card-test');
-  await expect(page.locator('.test-card')).toHaveCount(11);
-  await expect(page.locator('.card-frame')).toHaveCount(11);
-  await expect(page.locator('.card-art-image')).toHaveCount(11);
+  await expect(page.locator('.test-card')).toHaveCount(15);
+  await expect(page.locator('.card-frame')).toHaveCount(15);
+  await expect(page.locator('.card-art-image')).toHaveCount(15);
   await expect(page.locator('[data-card-id="common_001"] .card-title')).toHaveText('温言');
   await expect(page.locator('[data-card-id="common_006"] .card-description-text')).toContainText('抽 1 张牌');
-  const bindings = await page.locator('.card-face').evaluateAll(faces => faces.map(face => ({ id: face.getAttribute('data-card-id'), art: face.querySelector('img.card-art-image')?.getAttribute('src'), frame: face.querySelector('img.card-frame')?.getAttribute('src') })));
-  expect(bindings.map(x => x.id)).toEqual(['common_001','common_002','common_003','common_004','common_005','common_006','burden_001','burden_002','feichuan_001','feichuan_002','feichuan_003']);
-  expect(bindings.slice(-3).map(x => x.art)).toEqual(['/assets/cards/feichuan/FC01.png','/assets/cards/feichuan/FC02.png','/assets/cards/feichuan/FC03.png']);
-  expect(bindings.slice(-3).map(x => x.frame)).toEqual(['/assets/cards/feichuan/FCF01.png','/assets/cards/feichuan/FCF01.png','/assets/cards/feichuan/FCF01.png']);
+  const bindings = await page.locator('.card-face').evaluateAll(faces => faces.map(face => ({ id: face.getAttribute('data-card-id'), art: face.querySelector('img.card-art-image')?.getAttribute('src')?.replace(/^.*?\/assets\//, '/assets/'), frame: face.querySelector('img.card-frame')?.getAttribute('src')?.replace(/^.*?\/assets\//, '/assets/') })));
+  expect(bindings.map(x => x.id)).toEqual(['common_001','common_002','common_003','common_004','common_005','common_006','common_007','common_008','burden_001','burden_002','burden_003','feichuan_001','feichuan_002','feichuan_003','feichuan_004']);
+  expect(bindings.slice(-4).map(x => x.art)).toEqual(['/assets/cards/feichuan/FC01.png','/assets/cards/feichuan/FC02.png','/assets/cards/feichuan/FC03.png','/assets/cards/feichuan/FC04.png']);
+  expect(bindings.slice(-4).map(x => x.frame)).toEqual(Array(4).fill('/assets/cards/feichuan/FCF01.png'));
   expect(await page.locator('[data-card-id="feichuan_001"] .card-art-mask').evaluate(element => getComputedStyle(element).zIndex)).toBe('1');
   expect(await page.locator('[data-card-id="feichuan_001"] .card-frame').evaluate(element => getComputedStyle(element).zIndex)).toBe('2');
   expect(await page.locator('.card-art-image').first().evaluate(image => ({ fit: getComputedStyle(image).objectFit, overflow: getComputedStyle(image.parentElement!).overflow }))).toEqual({ fit: 'cover', overflow: 'hidden' });
@@ -136,7 +136,7 @@ test('长按卡牌在中央放大，松手后关闭且不出牌', async ({ page 
 });
 
 test('灯火不足拖入有效区仍取消', async ({ page }) => {
-  await page.goto('/?seed=2&test-run=1');
+  await page.goto('/?seed=8&test-run=1');
   await drag(page, page.locator('[data-card="common_002"]').first(), 370, 150);
   await expect(page.getByTestId('light')).toHaveText('1');
   await drag(page, page.locator('[data-card="common_004"]').first(), 370, 150);
@@ -151,7 +151,7 @@ test('灯火不足拖入有效区仍取消', async ({ page }) => {
 });
 
 test('整理行囊拖出后选择弃牌，取消零副作用，确认正确结算', async ({ page }) => {
-  await page.goto('/?seed=3&test-run=1');
+  await page.goto('/?seed=1&test-run=1');
   const before = await handIds(page);
   await drag(page, page.locator('[data-card="common_005"]'), 370, 150);
   await expect(page.getByRole('button', { name: '确认弃牌' })).toBeDisabled();
@@ -242,20 +242,20 @@ test('左下资源整合成一组且卡牌没有投影', async ({ page }) => {
 test('牌库UI、核心图标与灵魂特效使用正式路径且无旧编号', async ({ page }) => {
   await page.goto('/?seed=42&test-run=1');
   await expect(page.locator('.draw-pile .deck-stack img')).toHaveCount(3);
-  await expect(page.locator('.draw-pile .deck-stack img').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
-  await expect(page.locator('.discard-pile img')).toHaveAttribute('src', '/assets/ui/card/UC02.png');
-  await expect(page.locator('.exhaust-pile img')).toHaveAttribute('src', '/assets/ui/card/UC03.png');
-  await expect(page.locator('.release-glow')).toHaveAttribute('src', '/assets/effects/soul/FX02.png');
-  await expect(page.locator('.intent-card img')).toHaveAttribute('src', '/assets/ui/battle/UI03.png');
+  await expect(page.locator('.draw-pile .deck-stack img').first()).toHaveAttribute('src', /\/assets\/cards\/frames\/UI02\.png$/);
+  await expect(page.locator('.discard-pile img')).toHaveAttribute('src', /\/assets\/ui\/card\/UC02\.png$/);
+  await expect(page.locator('.exhaust-pile img')).toHaveAttribute('src', /\/assets\/ui\/card\/UC03\.png$/);
+  await expect(page.locator('.release-glow')).toHaveAttribute('src', /\/assets\/effects\/soul\/FX02\.png$/);
+  await expect(page.locator('.intent-card img')).toHaveAttribute('src', /\/assets\/ui\/battle\/UI03\.png$/);
   const source = await page.locator('html').evaluate(() => document.documentElement.innerHTML);
   expect(source).not.toMatch(/IC08|IC09|IC10|FX04/);
 });
 
 test('善贾使用TR01并在实际获得灯火后进入激活状态', async ({ page }) => {
-  await page.goto('/?seed=3&test-run=1');
+  await page.goto('/?seed=8&test-run=1');
   const trait = page.locator('.trait-badge');
   await expect(trait).toBeEnabled();
-  await expect(trait.locator('img')).toHaveAttribute('src', '/assets/ui/traits/TR01.png');
+  await expect(trait.locator('img')).toHaveAttribute('src', /\/assets\/ui\/traits\/TR01\.png$/);
   expect(await trait.evaluate(element => ({ background: getComputedStyle(element).backgroundColor, border: getComputedStyle(element).borderStyle, shadow: getComputedStyle(element).boxShadow }))).toEqual({ background: 'rgba(0, 0, 0, 0)', border: 'none', shadow: 'none' });
   await trait.click();
   await expect(page.getByRole('dialog').getByRole('heading', { name: '善贾' })).toBeVisible();
@@ -289,7 +289,7 @@ test('讨价还价复用手牌选择并通过UI02抽1张', async ({ page }) => {
   await expect(confirm).toBeEnabled();
   await confirm.click();
   await page.locator('.flow-card-back').first().waitFor({ state: 'attached' });
-  await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
+  await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', /\/assets\/cards\/frames\/UI02\.png$/);
   await expect(page.locator(`.card[data-id="${replacementID}"] .card-cost`)).toHaveText('0');
   await expect(page.locator('.discard-pile strong')).toHaveText('1');
 });
@@ -337,7 +337,7 @@ test('牌组弹窗使用实体卡牌横向滑动并在卡牌下方显示数量',
   await expect(carousel.locator('.card-frame')).toHaveCount(9);
   await expect(carousel.locator('.deck-count')).toHaveCount(9);
   const counts = await carousel.locator('.deck-count').allTextContents();
-  expect(counts.reduce((sum, text) => sum + Number(text.match(/\d+/)?.[0] ?? 0), 0)).toBe(15);
+  expect(counts.reduce((sum, text) => sum + Number(text.match(/\d+/)?.[0] ?? 0), 0)).toBe(12);
   expect(await carousel.evaluate(element => element.scrollWidth)).toBeGreaterThan(await carousel.evaluate(element => element.clientWidth));
 });
 
@@ -395,7 +395,7 @@ test('竖屏提示横屏，旋转后对局保持', async ({ page }) => {
 test('开局统一抽牌流使用UI02并在稳定后恢复手牌输入', async ({ page }) => {
   await page.goto('/?seed=42&test-run=1', { waitUntil: 'commit' });
   await page.locator('.flow-card-back').first().waitFor({ state: 'attached' });
-  await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', '/assets/cards/frames/UI02.png');
+  await expect(page.locator('.flow-card-back').first()).toHaveAttribute('src', /\/assets\/cards\/frames\/UI02\.png$/);
   expect(await page.locator('.flow-card-back').first().evaluate(element => parseFloat((element as HTMLElement).style.left))).toBeGreaterThan(550);
   await expect(page.locator('.hand > .card').first()).toBeDisabled();
   await expect(page.locator('.flow-card-back')).toHaveCount(0);
@@ -430,7 +430,7 @@ test('第六夜未化解时延迟显示渡魂未竟并保留未释然亡魂', as
   await endTurn(page);
   const result = page.locator('.result-banner.failure');
   await expect(result.locator('strong')).toHaveText('渡魂未竟');
-  await expect(result.locator('img')).toHaveAttribute('src', '/assets/ui/results/RT02.png');
+  await expect(result.locator('img')).toHaveAttribute('src', /\/assets\/ui\/results\/RT02\.png$/);
   await expect(page.locator('.soul-unresolved')).toHaveCSS('opacity', '1');
   await expect(page.locator('.soul-released')).toHaveCSS('opacity', '0');
   await expect(result).toHaveCount(0, { timeout: 3000 });
@@ -466,11 +466,11 @@ test('Phase2C奖励选择确认后才扩充Run牌组并进入第二场', async (
   await expect(page.locator('.run-progress-complete')).toHaveCount(1);
   const confirm = page.getByRole('button', { name: '收入行囊' });
   await expect(confirm).toBeDisabled();
-  expect((await page.evaluate(() => (globalThis as any).__nightFerryDebug.state())).RunDeck).toHaveLength(15);
+  expect((await page.evaluate(() => (globalThis as any).__nightFerryDebug.state())).RunDeck).toHaveLength(12);
   const choice = page.locator('.reward-option').nth(1);
   await choice.click();
   await expect(choice).toHaveClass(/selected/);
-  expect((await page.evaluate(() => (globalThis as any).__nightFerryDebug.state())).RunDeck).toHaveLength(15);
+  expect((await page.evaluate(() => (globalThis as any).__nightFerryDebug.state())).RunDeck).toHaveLength(12);
   await expect(confirm).toBeEnabled();
   await confirm.click();
   await expect(page.locator('.game')).toBeVisible();
@@ -478,7 +478,7 @@ test('Phase2C奖励选择确认后才扩充Run牌组并进入第二场', async (
   await expect(page.getByTestId('light')).toHaveText('3');
   const state = await page.evaluate(() => (globalThis as any).__nightFerryDebug.state());
   expect(state.CurrentEncounter).toBe(2);
-  expect(state.RunDeck).toHaveLength(16);
+  expect(state.RunDeck).toHaveLength(13);
   expect(state.AcquiredCards).toHaveLength(1);
 });
 
@@ -496,7 +496,7 @@ test('三场成功进入Run Result，第二场失败会立即暂止', async ({ p
   await expect(page.getByRole('heading', { name: '本次摆渡完成' })).toBeVisible();
   await expect(page.locator('.run-result-icon')).toBeVisible();
   await expect(page.locator('.run-result-panel')).toContainText('3 / 3');
-  await expect(page.locator('.run-result-panel')).toContainText('17');
+  await expect(page.locator('.run-result-panel')).toContainText('14');
   await expect(page.getByRole('button', { name: '重新启程' })).toBeEnabled();
 
   await page.getByRole('button', { name: '重新启程' }).click();

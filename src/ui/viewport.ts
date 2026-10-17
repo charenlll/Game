@@ -33,11 +33,19 @@ export function createGameViewport(host: HTMLElement): GameViewport {
     const safeWidth = Math.max(1, viewportWidth - safeLeft - safeRight);
     const safeHeight = Math.max(1, viewportHeight - safeTop - safeBottom);
     const scale = Math.min(safeWidth / DESIGN_WIDTH, safeHeight / DESIGN_HEIGHT);
-    stage.style.left = `${offsetLeft + (safeWidth - DESIGN_WIDTH * scale) / 2}px`;
-    stage.style.top = `${offsetTop + (safeHeight - DESIGN_HEIGHT * scale) / 2}px`;
+    const stageLeft = offsetLeft + (safeWidth - DESIGN_WIDTH * scale) / 2;
+    const stageTop = offsetTop + (safeHeight - DESIGN_HEIGHT * scale) / 2;
+    stage.style.left = `${stageLeft}px`;
+    stage.style.top = `${stageTop}px`;
     stage.style.transform = `scale(${scale})`;
     stage.dataset.scale = String(scale);
     viewport.style.setProperty('--viewport-stage-scale', String(scale));
+    // Story art and veils cover the physical viewport; dialogue and controls
+    // keep the existing logical-stage scale and safe positioning.
+    viewport.style.setProperty('--story-screen-x', `${-stageLeft / scale}px`);
+    viewport.style.setProperty('--story-screen-y', `${-stageTop / scale}px`);
+    viewport.style.setProperty('--story-screen-width', `${viewportWidth / scale}px`);
+    viewport.style.setProperty('--story-screen-height', `${viewportHeight / scale}px`);
     syncSafeViewports();
   };
 
@@ -73,7 +81,7 @@ export function createGameViewport(host: HTMLElement): GameViewport {
   };
 
   const syncBackground = (): void => {
-    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background,.menu-background,.prologue-background,.hub-background,.growth-background');
+    const source = stage.querySelector<HTMLImageElement>('.scene-background,.run-background,.menu-background,.prologue-background,.manyi-background,.hub-background,.growth-background');
     if (source?.src && background.src !== source.src) background.src = source.src;
     syncSafeViewports();
   };

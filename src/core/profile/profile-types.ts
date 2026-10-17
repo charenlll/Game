@@ -15,4 +15,6 @@ export interface ProfileState {
   mementoIds: string[];
   characterProgress: Record<string, CharacterProgress>;
   discoveredCardIds?: string[];
+  unlockedCardIds?: string[];
+  startingDecks?: Partial<Record<FerrymanId, string[]>>;
 }

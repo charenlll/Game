@@ -1,8 +1,10 @@
 import type { ChapterDefinition } from '../../core/chapters/chapter-types';
 import { prologueChapter } from './prologue';
+import { manyiChapter } from './manyi';
 
 const chapters = Object.freeze({
   prologue: prologueChapter,
+  manyi: manyiChapter,
 } satisfies Readonly<Record<string, ChapterDefinition>>);
 
 export function getChapterDefinition(chapterId: string): ChapterDefinition {

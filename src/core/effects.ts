@@ -6,15 +6,19 @@ import type { BattleState, CardEffect } from './types';
 export function applyEffect(effect: CardEffect, state: BattleState, selected: readonly string[], events: BattleEvents): void {
   switch (effect.Type) {
     case 'ReduceObsession': {
-      const reduced = Math.min(state.Obsession, effect.Amount);
+      const bonus = state.PendingNormalObsessionBonus ?? 0;
+      const reduced = Math.min(state.Obsession, effect.Amount + bonus);
       state.Obsession -= reduced;
+      if (bonus) state.PendingNormalObsessionBonus = 0;
       state.Log.push(`执念减少 ${reduced} 点。`);
       break;
     }
     case 'ConditionalReduceObsession': {
-      const amount = effect.Amount + (state.GainedLightThisTurn ? effect.Bonus : 0);
+      const bonus = state.PendingNormalObsessionBonus ?? 0;
+      const amount = effect.Amount + (state.GainedLightThisTurn ? effect.Bonus : 0) + bonus;
       const reduced = Math.min(state.Obsession, amount);
       state.Obsession -= reduced;
+      if (bonus) state.PendingNormalObsessionBonus = 0;
       state.Log.push(`执念减少 ${reduced} 点。`);
       break;
     }
@@ -29,6 +33,18 @@ export function applyEffect(effect: CardEffect, state: BattleState, selected: re
       state.PendingLightModifier += effect.Amount;
       state.Log.push(`下一回合灯火 ${effect.Amount}。`);
       break;
+    case 'ModifyNextNormalObsession':
+      state.PendingNormalObsessionBonus = (state.PendingNormalObsessionBonus ?? 0) + effect.Amount;
+      state.Log.push(`下一张普通牌额外化解 ${effect.Amount} 点执念。`);
+      break;
+    case 'ExhaustSelectedBurden': {
+      const index = state.Hand.findIndex(card => card.InstanceID === selected[0] && getCard(card.DefinitionID).DataType === 'burden');
+      if (index < 0) throw new Error('清账目标不在手牌中');
+      const [card] = state.Hand.splice(index, 1);
+      state.ExhaustPile.push(card);
+      state.Log.push(`清除浊念「${getCard(card.DefinitionID).Name}」。`);
+      break;
+    }
     case 'ModifySelectedCost': {
       const card = state.Hand.find(item => item.InstanceID === selected[0]);
       if (!card || getCard(card.DefinitionID).DataType !== 'normal') throw new Error('费用调整目标无效');

@@ -1,12 +1,16 @@
 .prologue-scene{position:relative;width:1600px;height:900px;overflow:hidden;isolation:isolate;color:#f4efe0;font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#000}
 .prologue-scene.is-story-black{background:#000}
+.prologue-scene.is-story-color{background:#0e2026}
+.prologue-scene.is-story-color .prologue-background{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.08)}
+.prologue-scene.is-story-color .prologue-darken{z-index:1;background:linear-gradient(90deg,#06131b55,#06131b33 42%,#06131b55),linear-gradient(0deg,#06131ba8,transparent 70%)}
+.prologue-scene.is-story-color .story-dialogue{background:transparent;border:0;box-shadow:none}
 .prologue-background{display:none}
 .prologue-darken{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#06131b55 0%,#07192382 48%,#06131b99 100%);pointer-events:none}
-.story-character{position:absolute;z-index:2;bottom:0;height:83%;object-fit:contain;object-position:center bottom;pointer-events:none;filter:brightness(.38);transition:filter .22s ease,opacity .22s ease}
+.story-character{position:absolute;z-index:2;top:7%;bottom:auto;height:185%;width:auto;max-width:none;object-fit:contain;object-position:center top;pointer-events:none;filter:brightness(.65);transition:filter .22s ease,opacity .22s ease}
 .story-character.is-active{filter:brightness(1)}
 .story-character.story-dim{filter:brightness(.62)}
-.story-character.story-child{left:3%;width:28%}
-.story-character.story-feichuan{right:2%;width:29%;height:90%;bottom:0}
+.story-character.story-child{left:-20%}
+.story-character.story-feichuan{right:-8%}
 .story-character[hidden]{display:none}
 .story-dialogue{position:absolute;z-index:5;left:50%;top:51%;transform:translate(-50%,-50%);width:min(600px,40%);min-height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px 36px;background:transparent;pointer-events:none}
 .story-speaker{margin-bottom:13px;color:#e5cf9b;font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:8px;text-shadow:0 2px 8px #07141b}
