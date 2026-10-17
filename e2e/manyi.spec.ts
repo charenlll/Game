@@ -107,7 +107,7 @@ test('《满溢》六场主线、可选分支、固定奖励与信物形成完�
   await skipToStop();
   await winBattle();
   await skipToStop();
-  await expect(page.locator('[data-testid="boss-phase"]')).toHaveText('聚财');
+  await expect(page.locator('[data-testid="boss-phase"]')).toHaveCount(0);
   await expect(page.locator('.soul-unresolved')).toHaveAttribute('src', /CH1-01\.png$/);
   for (const [phase, art] of [[2, 'CH1-02'], [3, 'CH1-03']] as const) {
     await expect(page.locator('.hand>.card:not(:disabled)').first()).toBeVisible();
@@ -131,6 +131,21 @@ test('《满溢》六场主线、可选分支、固定奖励与信物形成完�
   expect(save.campaign.chapters.manyi.status).toBe('complete');
   expect(save.profile.mementoIds).toContain('manyi_return_voucher');
   expect(save.profile.unlockedCardIds).toEqual(expect.arrayContaining(['common_007', 'common_008', 'feichuan_004']));
+  await page.reload();
+  await page.locator('[data-hub-action="open-collection"]').click();
+  await expect(page.locator('[data-memento-id="prologue_wooden_boat"]')).toBeVisible();
+  await page.locator('[data-memento-id="manyi_return_voucher"]').click();
+  const detail = page.getByRole('dialog', { name: '信物详情' });
+  await expect(detail).toContainText('到港日期始终空白');
+  await expect(detail.locator('.memento-preview img')).toHaveAttribute('src', /PR1-03\.png$/);
+  const textBounds = await detail.locator('.memento-info').boundingBox();
+  const panelBounds = await detail.boundingBox();
+  expect(textBounds!.x + textBounds!.width).toBeLessThanOrEqual(panelBounds!.x + panelBounds!.width - 80 * panelBounds!.width / 714);
+  await page.locator('.memento-popup-scrim').click({ position: { x: 20, y: 20 } });
+  await page.getByRole('button', { name: '返回', exact: true }).click();
+  await page.locator('[data-hub-action="open-stages"]').click();
+  await expect(page.locator('[data-hub-action="start-manyi"]')).toHaveText('再次渡魂');
+  await expect(page.locator('.hub-stage-entry').filter({ hasText: '世｜满溢' })).toContainText('第一章·第一节·已完成·可再次进入');
 });
 
 test('三条可选支线均能进入，奖励未领取时刷新仍保持固定选项', async ({ page }) => {

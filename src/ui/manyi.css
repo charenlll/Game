@@ -19,17 +19,15 @@
 .manyi-scene .skip-confirm-actions button:hover,.manyi-choice-button:hover{filter:brightness(1.15)}
 .manyi-scene .skip-confirm-actions button:hover:not(:disabled),.manyi-choice-button:hover:not(:disabled){background-image:url('/assets/ui/run/buttons/RB01-B.png')}
 .manyi-scene .skip-confirm-actions button:active:not(:disabled),.manyi-choice-button:active:not(:disabled){background-image:url('/assets/ui/run/buttons/RB01-C.png')}
-.manyi-choice-panel{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:740px;padding:44px;text-align:center;background:#0b2025e8;border:1px solid #bca976;box-shadow:0 14px 45px #000b}
-.manyi-choice-panel h1{font-size:29px;letter-spacing:3px;line-height:1.5;margin:0 0 30px}
-.manyi-choice-panel>div{display:flex;justify-content:center;gap:24px}
+.manyi-choice-panel{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:740px;height:240px;box-sizing:border-box;text-align:center;background:none;border:var(--hb19-render-border) solid transparent;border-image-source:var(--hub-info-panel-art);border-image-slice:var(--hb19-slice-top) var(--hb19-slice-right) var(--hb19-slice-bottom) var(--hb19-slice-left) fill;border-image-width:var(--hb19-render-border);border-image-repeat:stretch;filter:drop-shadow(0 14px 22px #0008);color:#40352b}
+.manyi-choice-content{position:absolute;left:calc(var(--hb19-content-x) - var(--hb19-render-border));top:calc(var(--hb19-content-y) - var(--hb19-render-border));width:var(--hb19-content-width);height:var(--hb19-content-height);display:flex;flex-direction:column;justify-content:center;gap:24px}
+.manyi-choice-panel h1{font-size:27px;letter-spacing:3px;line-height:1.5;margin:0;text-shadow:0 1px 1px #fff4dc}
+.manyi-choice-content>div{display:flex;justify-content:center;gap:24px}
 .manyi-reward-screen .reward-options{justify-content:center}
 .manyi-keepsake p{font-size:21px;color:#dfd5bb;letter-spacing:3px}
 .game-viewport:has(.manyi-keepsake){background:#000}
 .game-viewport:has(.manyi-keepsake) .viewport-background{visibility:hidden}
 .game-viewport:has(.manyi-keepsake)::after{display:none}
-.boss-phase{margin-left:15px;padding:3px 9px;border:1px solid #bba86a88;color:#f3dfae;background:#18343aac;font:600 18px var(--serif),serif;letter-spacing:3px}
-.game[data-boss-phase="2"] .boss-phase{color:#e9c5b2;border-color:#be866b;background:#382d36cc}
-.game[data-boss-phase="3"] .boss-phase{color:#f0becb;border-color:#b77993;background:#36213acc}
 .game[data-boss-phase="2"] .soul-unresolved{filter:sepia(.2) brightness(.85) drop-shadow(0 0 18px #b5837155)}
 .game[data-boss-phase="3"] .soul-unresolved{filter:brightness(.7) saturate(.7) drop-shadow(0 0 26px #8d5d8b88)}
 .manyi-scene .manyi-choice-button.is-secondary{filter:grayscale(.65) brightness(.8);margin-left:20px}

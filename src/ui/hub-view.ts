@@ -31,10 +31,6 @@ export interface HubActions {
 type HubPage = 'hub' | 'collection' | 'stage-select' | 'growth';
 type CatalogTab = 'common' | FerrymanId | 'burden';
 type Category = 'prologue' | 'world' | 'emotion' | 'life' | 'years' | 'ferry';
-const categories: readonly { id: Category; label: string }[] = [
-  { id: 'prologue', label: '序｜初见' }, { id: 'world', label: '世｜见天地' }, { id: 'emotion', label: '情｜见众生' },
-  { id: 'life', label: '生｜见生活' }, { id: 'years', label: '岁｜见无常' }, { id: 'ferry', label: '渡｜见自己' },
-];
 const ferrymen: readonly HubFerrymanData[] = [
   { id: 'feichuan', name: '绯川', portrait: Assets.ferrymen.feichuan.portrait, avatar: Assets.ferrymen.feichuan.avatar, role: '赤狐 · 摆渡人', intro: '善于观察得失，也擅长与人打交道。' },
   { id: 'moyu', name: '墨羽', portrait: Assets.ferrymen.moyu.portrait, avatar: Assets.ferrymen.moyu.avatar, role: '尚未开放', intro: '' },
@@ -156,7 +152,8 @@ export class HubController {
     else if (action === 'back-hub') { this.page = 'hub'; this.detailMementoId = null; this.previewCard = null; this.render(); }
     else if (action === 'collection-prev' || action === 'collection-next') {
       const delta = action === 'collection-next' ? 1 : -1;
-      this.categoryIndex = (this.categoryIndex + delta + categories.length) % categories.length;
+      const pages = Math.max(1, Math.ceil(mementos.filter(item => this.actions.mementoIds().includes(item.id)).length / 8));
+      this.categoryIndex = (this.categoryIndex + delta + pages) % pages;
       this.render();
     } else if (action === 'open-memento' && this.page === 'collection') { this.detailMementoId = target.dataset.mementoId ?? null; this.render(); }
     else if (action === 'close-memento-detail') { this.detailMementoId = null; this.render(); }
@@ -282,15 +279,15 @@ export class HubController {
   }
 
   private renderCollection(): string {
-    const category = categories[this.categoryIndex]!;
-    const items = showShelfMementos ? mementos.filter(item => item.category === category.id).map(item => this.renderSlot(item)).join('') : '';
+    const owned = mementos.filter(item => this.actions.mementoIds().includes(item.id));
+    const slots = Object.keys(shelfSlots) as (keyof typeof shelfSlots)[];
+    const items = showShelfMementos ? owned.slice(this.categoryIndex * 8, this.categoryIndex * 8 + 8).map((item, index) => this.renderSlot({ ...item, slot: slots[index]! })).join('') : '';
     return `<main class="hub-screen hub-collection-screen" aria-label="信物录">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
       <section class="hub-shelf-area hub-collection-shelf"><img class="hub-shelf" src="${assetURL(Assets.hub.shelf)}" alt="">
         ${items}
-        <button class="hub-page-arrow previous" data-hub-action="collection-prev" aria-label="上一类"><img src="${assetURL(Assets.hub.arrow)}" alt=""></button>
-        <button class="hub-page-arrow next" data-hub-action="collection-next" aria-label="下一类"><img src="${assetURL(Assets.hub.arrow)}" alt=""></button>
+        ${owned.length > 8 ? `<button class="hub-page-arrow previous" data-hub-action="collection-prev" aria-label="上一页"><img src="${assetURL(Assets.hub.arrow)}" alt=""></button><button class="hub-page-arrow next" data-hub-action="collection-next" aria-label="下一页"><img src="${assetURL(Assets.hub.arrow)}" alt=""></button>` : ''}
       </section>
     </main>`;
   }
@@ -369,27 +366,29 @@ export class HubController {
   }
 
   private renderStageSelect(): string {
+    const manyiComplete = this.actions.mementoIds().includes('manyi_return_voucher');
     return `<main class="hub-screen hub-stage-screen" aria-label="渡魂">
       <img class="hub-background" src="${assetURL(Assets.hub.background)}" alt="" draggable="false">
       <button class="hub-back-button" data-hub-action="back-hub" aria-label="返回"><img src="${assetURL(Assets.hub.back)}" alt=""></button>
       <section class="hub-stage-list">
         <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>序｜初见</h2><p>在无名渡口，遇见第一位无法离开的亡魂。</p><small>已完成 · 可再次进入</small></div><button class="hub-stage-button hub-stage-button--replay" data-hub-action="replay-prologue">再次渡魂</button></article>
-        <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>世｜满溢</h2><p>走进商埠，倾听一段未结的账。</p><small>第一章 · 可进入</small></div><button class="hub-stage-button" data-hub-action="start-manyi">开始渡魂</button></article>
+        <article class="hub-stage-entry" style="${hb19PanelStyle()}" data-hb19-panel><div><h2>世｜满溢</h2><p>走进商埠，倾听一段未结的账。</p><small>${manyiComplete ? '第一章·第一节·已完成·可再次进入' : '第一章·第一节·可进入'}</small></div><button class="hub-stage-button ${manyiComplete ? 'hub-stage-button--replay' : ''}" data-hub-action="start-manyi">${manyiComplete ? '再次渡魂' : '开始渡魂'}</button></article>
       </section>
     </main>`;
   }
 
   private renderGrowth(current: HubFerrymanData): string {
     const trait = getTrait('good_merchant');
-    const cards = ['feichuan_001', 'feichuan_002', 'feichuan_003'].map((id, index) => {
-      const card = cardDatabase.get(id);
+    const characterCards = cardDatabase.all().filter(card => card.owner_character_id === current.id);
+    const cardColumns = characterCards.length > 1 ? `repeat(${characterCards.length - 1},minmax(0,183px)) 165px` : '165px';
+    const cards = characterCards.map((card, index) => {
       return `<div class="growth-card-slot growth-card-slot--${index + 1}">
         <button class="growth-card" data-hub-action="preview-card" data-card-id="${esc(card.id)}" aria-label="预览卡牌：${esc(card.name)}"><span class="growth-card-face">${CardView.render(card)}</span></button>
       </div>`;
     }).join('');
     const header = `<header class="growth-header" aria-label="角色身份"><div class="growth-header-identity"><h1>${esc(current.name)}</h1><span>${esc(current.role)}</span></div></header>`;
     const traits = `<div class="growth-trait-panels">${HubInfoPanel(`<div class="growth-trait-copy growth-safe-content"><h2>善贾</h2><p>${esc(trait.description)}</p></div>`, 'growth-trait growth-trait--merchant', '善贾')}${HubInfoPanel(`<div class="growth-trait-copy growth-safe-content"><h2>后续特性</h2><p>尚未开放</p></div>`, 'growth-trait growth-trait--locked', '后续特性')}</div>`;
-    const exclusiveCards = `<section class="growth-exclusive-cards" aria-label="摆渡人卡牌"><div class="growth-card-content"><div class="growth-card-row"><div class="growth-card-track">${cards}</div></div><p class="growth-more-cards">更多卡牌<br>未解锁</p></div></section>`;
+    const exclusiveCards = `<section class="growth-exclusive-cards" aria-label="摆渡人卡牌"><div class="growth-card-content"><div class="growth-card-row"><div class="growth-card-track" style="grid-template-columns:${cardColumns}">${cards}</div></div><p class="growth-more-cards">更多卡牌<br>未解锁</p></div></section>`;
     const growth = HubInfoPanel(`<div class="growth-node-content growth-safe-content"><h2>成长</h2><span>尚未开放</span></div><button class="growth-panel-action" data-hub-action="growth-node" aria-label="成长：尚未开放"></button>`, 'growth-node-panel', '成长');
     return `<main class="hub-screen growth-screen" aria-label="摆渡人养成页">
       <img class="growth-background" src="${assetURL(Assets.hub.growthBackground)}" alt="" draggable="false">

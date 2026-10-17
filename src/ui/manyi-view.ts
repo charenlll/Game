@@ -15,6 +15,7 @@ import type { ActiveSessionSnapshot, BattleSnapshot } from '../infrastructure/sa
 import type { FerrymanId } from '../core/profile/profile-types';
 import { assetURL, CardView, escapeHTML as esc, fitCardText } from './card-view';
 import { primaryButton } from './ui-components';
+import { hb19PanelStyle, applyHubInfoPanelContentRects } from './hub-components';
 
 const chapter = getChapterDefinition('manyi');
 const names: Record<string, string> = {
@@ -201,7 +202,7 @@ export class ManyiController {
       deck: this.run.RunDeck,
       encounter: definition.battle,
       backgroundPath: manyiSceneAssets[definition.backgroundId as ManyiSceneId],
-      soulPortraitTopPx: 92,
+      soulPortraitTopPx: 140,
       locationName: definition.backgroundId === 'ledger' ? '商号账房' : definition.backgroundId === 'street' ? '商埠长街' : '归潮码头',
       timeLabel: `世｜满溢 · ${manyiEncounterNames[id]}`,
       ...(id === 'manyi-battle-6' ? { phaseNames: ['聚财', '负债', '无尽'], phaseSoulArts: manyiBossPhaseArts } : {}),
@@ -284,7 +285,8 @@ export class ManyiController {
 
   private renderChoice(node: Extract<ChapterNode, { kind: 'choice' }>): void {
     const options = node.options.map(option => `<button type="button" class="manyi-choice-button" data-manyi-action="choose" data-option="${esc(option.id)}">${esc(textForKey(option.textKey))}</button>`).join('');
-    this.root.innerHTML = `<main class="manyi-scene manyi-time-day" data-testid="manyi-choice"><img class="manyi-background" src="${assetURL(manyiSceneAssets[this.scene])}" alt=""><div class="manyi-scene-filter"></div><section class="manyi-choice-panel"><h1>${esc(textForKey(node.promptTextKey))}</h1><div>${options}</div></section></main>`;
+    this.root.innerHTML = `<main class="manyi-scene manyi-time-day" data-testid="manyi-choice"><img class="manyi-background" src="${assetURL(manyiSceneAssets[this.scene])}" alt=""><div class="manyi-scene-filter"></div><section class="manyi-choice-panel" style="${hb19PanelStyle()}" data-hb19-panel><div class="manyi-choice-content"><h1>${esc(textForKey(node.promptTextKey))}</h1><div>${options}</div></div></section></main>`;
+    applyHubInfoPanelContentRects(this.root);
   }
 
   private renderReward(): void {

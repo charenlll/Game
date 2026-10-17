@@ -146,10 +146,8 @@ test('已完成序章的开始入口进入驿站，信物架与入口布局居�
   await expect(page.getByRole('dialog', { name: '信物详情' })).toHaveCount(0);
 
   await expect(page.locator('.hub-page-title')).toHaveCount(0);
-  await page.getByRole('button', { name: '下一类' }).click();
-  await expect(page.locator('.collection-memento')).toHaveCount(0);
+  await expect(page.locator('.hub-page-arrow')).toHaveCount(0);
   await expect(page.locator('.hub-category-title,.hub-empty-category')).toHaveCount(0);
-  await page.locator('.hub-page-arrow.previous').click();
   await expect(page.locator('.collection-memento')).toBeVisible();
 
   await page.getByRole('button', { name: '返回' }).click();
@@ -242,7 +240,8 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   await expect(page.locator('.growth-header-identity')).toHaveCSS('justify-content', 'center');
   await expect(page.locator('.growth-portrait')).toHaveAttribute('src', /CH01\.png/);
   await expect(page.locator('.growth-portrait')).toHaveCSS('animation-name', 'ferryman-idle');
-  await expect(page.locator('.growth-card')).toHaveCount(3);
+  await expect(page.locator('.growth-card')).toHaveCount(4);
+  await expect(page.locator('.growth-card[data-card-id="feichuan_004"]')).toHaveCount(1);
   await expect(page.locator('.growth-card-name')).toHaveCount(0);
   const panelLayout = await page.locator('.growth-info-layout .hub-info-panel').evaluateAll(panels => panels.map(panel => {
     const rect = panel.getBoundingClientRect();
@@ -305,19 +304,21 @@ test('摆渡人锁定状态不允许切换，绯川成长页显示既有专属�
   expect(cardRects[0]!.y).toBeCloseTo(260, 0);
   expect(cardRects[0]!.y).toBeCloseTo(cardRects[1]!.y, 0);
   expect(cardRects[1]!.y).toBeCloseTo(cardRects[2]!.y, 0);
-  await expect(page.locator('.growth-card-row')).toHaveCSS('overflow-x', 'auto');
-  const cardScroll = await page.locator('.growth-card-row').evaluate(row => {
-    const track = row.querySelector('.growth-card-track')!;
+  const denseLayout = await page.locator('.growth-card-row').evaluate(row => {
+    const track = row.querySelector<HTMLElement>('.growth-card-track')!;
     const originalCount = track.children.length;
+    const originalColumns = track.style.gridTemplateColumns;
     for (let index = 0; index < 5; index++) track.append(track.children[0]!.cloneNode(true));
-    const scrollWidth = row.scrollWidth;
-    row.scrollLeft = scrollWidth;
-    const canScroll = row.scrollLeft > 0 && scrollWidth > row.clientWidth;
+    track.style.gridTemplateColumns = `repeat(${track.children.length - 1},minmax(0,183px)) 165px`;
+    const bounds = row.getBoundingClientRect();
+    const cards = [...track.querySelectorAll('.growth-card')].map(card => card.getBoundingClientRect());
+    const fits = cards.every(card => card.left >= bounds.left - 1 && card.right <= bounds.right + 1);
+    const overlaps = cards[1]!.left < cards[0]!.right;
     while (track.children.length > originalCount) track.lastElementChild!.remove();
-    row.scrollLeft = 0;
-    return canScroll;
+    track.style.gridTemplateColumns = originalColumns;
+    return { fits, overlaps };
   });
-  expect(cardScroll).toBe(true);
+  expect(denseLayout).toEqual({ fits: true, overlaps: true });
   const cardsOutsideSafeArea = await page.locator('.growth-card-content').evaluate(content => {
     const safe = content.getBoundingClientRect();
     return [...content.querySelectorAll('.growth-card')].flatMap(card => {
@@ -446,6 +447,7 @@ test('HubSafeViewport在1600×800及其他横屏比例中适配，不改动GameS
   await page.addInitScript(() => localStorage.setItem('night-ferry.prologue.v1', JSON.stringify({ prologue_complete: true, wooden_boat_trace_unlocked: true })));
   await page.goto('/?seed=42');
   await page.locator('.menu-start-button').click();
+  await expect.poll(() => page.locator('.viewport-background').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   for (const size of [{ width: 1600, height: 800 }, { width: 1600, height: 900 }, { width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 932, height: 430 }]) {
     await page.setViewportSize(size);
     await page.waitForTimeout(40);
